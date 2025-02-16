@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Network Privacy and User Exploitation</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bulma/css/bulma.min.css">
+        <style>
+            
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            background-color: black;
+        }
+        /* Reset all text colors to black */
+    body, .content, strong, p, h2, h4, h5, h6, li{
+        color: #000 !important;  /* Force all text elements to black */
+    }
+
+    h3 {
+        color: rgb(43, 44, 67) !important;
+    }
+    /* If specific elements are still grey, you can target them directly */
+    .has-text-grey, .has-text-muted {
+        color: #000 !important;
+    }
+
+    /* If it's within a specific section, you can narrow the scope */
+    section, article {
+        color: #000 !important;
+    }
+
+        .hero {
+            background-color: black;
+            color: white;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .hero .subtitle {
+            font-size: 1.25rem;
+            margin-top: 1rem;
+        }
+
+        .content-container {
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 2rem auto;
+            max-width: 800px;
+            opacity: 0;
+        }
+
+        .content img {
+            max-width: 100%;
+            height: auto;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        .content h2 {
+            margin-top: 2rem;
+            font-size: 1.75rem;
+            color: rgb(51, 153, 255);
+        }
+
+        .back-button {
+            margin-top: 1rem;
+            display: inline-block;
+            color: white;
+            background-color: #3273dc;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            opacity: 0;
+        }
+
+        .back-button:hover {
+            background-color: #275bc1;
+        }
+    </style>
+        <script src="https://cdn.jsdelivr.net/npm/gsap@3.9.0/dist/gsap.min.js"></script>
+    </head>
+    <body>
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="../index.html">David Shonack</a>
+            </div>
+        </nav>
+
+        <section class="hero">
+            <div class="container">
+                <h1 class="title">Network Privacy and User Exploitation</h1>
+                <p class="subtitle">David Shonack</p>
+            </div>
+        </section>
+
+        <div class="content-container">
+            <article class="content">
+                <h1 id="introduction" style="color:rgb(51, 153, 255)">Introduction</h1>
+                <h2>The Hidden Data Leaks Behind a Simple Web Request</h2>
+                <p>After learning about <strong>digital signatures,
+                        certificates, footprints, cookies, and session IDs</strong>,
+                    I decided to get some hands-on experience. I fired up
+                    <strong>Burp Suite</strong>, searched for my university’s
+                    website, and received some <strong>very concerning results</strong>.
+                    Here’s what happened when I made a simple request to <code>http://ucsc.edu</code>:</p>
+                <img src="./burpe_suite_query.png" alt="Networking Image">
+
+                <p>Looking at the results, we can see <strong>two GET requests
+                        and two POST requests</strong>. When I visit a webpage,
+                    I expect to receive the requested content—HTML, images, and
+                    stylesheets. But here, there are hidden
+                    requests.</p>
+
+                <h3>How Do Websites Function?</h3>
+                <p>Everything you see on a webpage is <strong>just a file</strong>.
+                    When you visit a website, your browser requests the <strong>HTML,
+                        CSS, and JavaScript</strong> files. These files are then
+                    processed locally on your machine to <strong>display the
+                        webpage</strong>.</p>
+
+                <img src="./basic_static_app_server.png" alt="Networking Image">
+                <h3>The Problem: Hidden Requests and Unwanted Tracking</h3>
+                <p>So why is this a big deal? Because your machine is <strong>sending
+                        data to external services without your knowledge or
+                        consent</strong>.</p>
+                <p>Looking at the Burp Suite example, let’s examine those extra
+                    requests:</p>
+                <ul>
+                    <li><strong>GET request to <code>siteimproveanalytics.io</code></strong>
+                        → A tracking pixel that logs your visit.</li>
+                    <li><strong>POST request to <code>plausible.io</code></strong>
+                        → Sends analytics data about your activity.</li>
+                    <li><strong>POST request to <code>google-analytics.com</code></strong>
+                        → Another tracker collecting user behavior data.</li>
+                </ul>
+                <p>All three of these requests are to <strong>analytics services</strong>—not
+                    something I explicitly agreed to interact with.</p>
+
+                <h3>How Is Your Data Being Collected?</h3>
+                <p>Remember how I said <strong>everything is a file</strong> and
+                    how your machine compiles the webpage locally? Websites
+                    embed <strong>tracking scripts</strong> that execute
+                    automatically, collecting and sending data without any
+                    visible sign.</p>
+                <p>This is <strong>extremely exploitative</strong>. Many
+                    websites use JavaScript to track <strong>what you click,
+                        what you type, and even how you move your mouse</strong>.
+                    This data can be <strong>silently sent</strong> to analytics
+                    companies in the background—without you ever knowing. And
+                    what's worse is that this data is being sent from <strong>
+                        your </strong> machine to the analytic service. </p>
+                <h3>Conclusion: The Normalization of Exploitation</h3>
+                <p>It’s disturbing how <strong>normalized</strong> this <strong>predatory
+                        behavior</strong> has become. Large corporations have
+                    <strong>manipulated and exploited</strong> consumers for
+                    years under the guise of “analytics” and “user experience
+                    improvements.”</p>
+                <p>What shocks me the most is that <strong>as soon as you land
+                        on a webpage, your machine starts sending data across
+                        the internet—without your explicit permission.</strong></p>
+                <p>This needs to change.</p>
+                <a href="index.html" class="back-button">Back to Blogs</a>
+            </article>
+        </div>
+
+        <script>
+        window.onload = function () {
+            gsap.fromTo(".hero h1", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 2.5, ease: "power2.out" });
+            gsap.from(".hero .subtitle", { opacity: 0, y: 20, duration: 1, ease: "power2.out", delay: 0.5 });
+            gsap.to(".content-container", { opacity: 1, duration: 1.5, ease: "power2.out", delay: 1 });
+            gsap.to(".back-button", { opacity: 1, y: 0, duration: 1.5, ease: "power2.out", delay: 1.5 });
+            gsap.from(".content ul, .content img", { opacity: 0, y: 20, duration: 1, stagger: 0.3, ease: "power2.out", delay: 1 });
+        };
+    </script>
+    </body>
+</html>
