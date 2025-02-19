@@ -97,9 +97,36 @@
         <script src="https://cdn.jsdelivr.net/npm/gsap@3.9.0/dist/gsap.min.js"></script>
     </head>
     <body>
+        <!-- Nav bar -->
         <nav class="navbar" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
-                <a class="navbar-item" href="../index.html">David Shonack</a>
+                <a class="navbar-item" href="index.html">
+                    David Shonack
+                </a>
+                <a role="button" class="navbar-burger" aria-label="menu"
+                    aria-expanded="false" data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+            <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item">Blogs</a>
+                    <a class="navbar-item">Projects</a>
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">More</a>
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item">About</a>
+                            <a class="navbar-item is-selected">Jobs</a>
+                            <a class="navbar-item">Contact</a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item">Report an issue</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="navbar-end"></div>
             </div>
         </nav>
 

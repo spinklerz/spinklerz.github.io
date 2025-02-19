@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>My Blog Collection</title>
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bulma/css/bulma.min.css">
+        <style>
+            .container {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                width: 100%;
+                padding: 0;
+                margin: 0;
+            }
+            .hero {
+                position: relative;
+                height: 50vh;
+                overflow: hidden;
+            }
+            #background-video {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                z-index: -1;
+            }
+            .blogs-container {
+                padding: 6rem;
+                overflow-y: auto;
+                background-color: black;
+            }
+            body, html {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                background-color: black;
+                color: white;
+            }
+            .columns {
+                gap: 3rem;
+                flex-wrap: wrap;
+            }
+            .card {
+                padding: 1.5rem;
+                text-align: center;
+                width: 100%;
+                opacity: 0; /* Initially set to invisible */
+                transform: translateY(-50px); /* Cards start off above */
+            }
+            .card-image img {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+            }
+        </style>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.1/gsap.min.js"></script>
+    </head>
+    <body>
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="index.html">David Shonack</a>
+            </div>
+        </nav>
+        <div class="container">
+            <h2 class="title has-text-white has-text-centered"
+                style="margin-top: 20px;">My Blogs</h2>
+
+            <div class="columns is-multiline is-centered">
+                <!-- Blog Cards -->
+                <div class="column is-one-third">
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="./images/first_blog.jpg" alt="First Blog
+                                Image">
+                        </div>
+                        <div class="card-content">
+                            <p class="title">My First Blog 🥳 🎉 🎉</p>
+                            <p class="subtitle">An introduction to my journery
+                                and who I am.</p>
+                        </div>
+                        <footer class="card-footer">
+                            <a href="./First_Blog.html"
+                                class="card-footer-item">Read More</a>
+                        </footer>
+                    </div>
+                </div>
+                <div class="column is-one-third">
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="./images/network_privacy.jpg" alt="Network
+                                Privacy Image">
+                        </div>
+                        <div class="card-content">
+                            <p class="title">User Exploitation</p>
+                            <p class="subtitle">How analytics APIs quietly
+                                siphon your data.</p>
+                        </div>
+                        <footer class="card-footer">
+                            <a href="./network_privacy.html"
+                                class="card-footer-item">Read More</a>
+                        </footer>
+                    </div>
+                </div>
+                <!-- Add more cards as needed -->
+            </div>
+        </div>
+
+        <script>
+            // GSAP animation for the title and blog cards
+            window.addEventListener('load', () => {
+                const title = document.querySelector('h2.title');
+                const blogCards = document.querySelectorAll('.card');
+                
+                // Animate the title to fade in and slide down
+                gsap.to(title, {
+                    opacity: 1,       // Fade in the title
+                    y: 0,             // Slide down (from 50px)
+                    duration: 1,      // Animation duration
+                    ease: "power4.out" // Ease for smooth animation
+                });
+
+                // Animate each blog card to fade in and slide down from the top with a staggered effect
+                blogCards.forEach((card, index) => {
+                    gsap.to(card, {
+                        opacity: 1,      // Fade in
+                        y: 0,            // Slide down to normal position
+                        duration: 1,      // Animation duration
+                        delay: index * 0.3, // Staggered animation for each card
+                        ease: "power4.out" // Ease for smooth animation
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>

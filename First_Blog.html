@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Blog Article</title>
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bulma/css/bulma.min.css">
+        <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            background-color: black;
+        }
+
+        .hero {
+    background-color: black;
+    color: white;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column; /* Stack the title and subtitle vertically */
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    text-align: center; /* Center-align the text */
+}
+
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .hero .subtitle {
+            font-size: 1.25rem;
+            margin-top: 1rem;
+        }
+
+        .content-container {
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 2rem auto;
+            max-width: 800px;
+            opacity: 0; /* Start hidden for animation */
+        }
+
+        .content img {
+            max-width: 100%;
+            height: auto;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        .content p {
+            line-height: 1.8;
+            margin: 1rem 0;
+            color: black;
+        }
+
+        .content h2 {
+            margin-top: 2rem;
+            font-size: 1.75rem;
+        }
+
+        .back-button {
+            margin-top: 1rem;
+            display: inline-block;
+            color: white;
+            background-color: #3273dc;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            opacity: 0; /* Start hidden for animation */
+        }
+
+        .back-button:hover {
+            background-color: #275bc1;
+        }
+        </style>
+        <!-- GSAP Library -->
+        <script src="https://cdn.jsdelivr.net/npm/gsap@3.9.0/dist/gsap.min.js"></script>
+    </head>
+    <body>
+        <!-- Navigation -->
+        <!-- Nav bar -->
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="index.html">
+                    David Shonack
+                </a>
+                <a role="button" class="navbar-burger" aria-label="menu"
+                    aria-expanded="false" data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+            <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item">Blogs</a>
+                    <a class="navbar-item">Projects</a>
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">More</a>
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item">About</a>
+                            <a class="navbar-item is-selected">Jobs</a>
+                            <a class="navbar-item">Contact</a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item">Report an issue</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="navbar-end"></div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h1 class="title">My First Blog 🥳 🎉 🎉</h1>
+                <p class="subtitle">David Shonack</p>
+            </div>
+        </section>
+
+        <!-- Article Content -->
+        <div class="content-container">
+            <article class="content">
+                <h1 id="introduction" style="color:rgb(51, 153, 255)">
+                    Introduction </h1>
+                <p>
+                    <p>
+                        Hello! My name is David Shonack, and WELCOME TO MY
+                        SITE!!!
+                    </p>
+                    <p>
+                        I am a current student at the University of California
+                        Santa
+                        Cruz currently majoring in Network and Digital
+                        Technology
+                        B.A., I love to learn and experience new things! I had
+                        an
+                        interest in data analysis and machine learning/deep
+                        learning
+                        (pandas, sci-kit learn, numpy, pyplot, matpotlib,
+                        Tensorflow, PCA, data aggregation, etc....) I got a bit
+                        bored with that, so now I'm diving into the big world of
+                        cybersecurity!
+                    </p>
+                    <p>
+                        As of right now, I'm mainly focused on
+                        network security and man, it is a vast subject! I plan
+                        on
+                        writing a paper on current cybersecurity trends and how
+                        businesses can update to these new standards( Using
+                        papers
+                        like Verzison data breach, ENISA, IBM X force, etc....
+                        ). As of the time am I writing this my goals are to
+                        mainly get the security+, and continue studying
+                        offensive security.
+                    </p>
+                </p>
+                <h2 style="color:rgb(51, 153, 255)"> Networking </h2>
+                <p>
+
+                </p>
+                <h2>Networking knowledge and experience</h2>
+                <p>
+                    Here are a list of networking projects I have completed and
+                    there respective repos:
+                    <ul>
+                        <li
+                            href="https://github.com/spinklerz/Projects/tree/main/Mininet_SDN/ipv4_routing">
+                            SDN programming using mininet
+                        </li>
+                    </ul>
+                </p>
+                <p>
+                    Etiam volutpat nunc neque, vitae faucibus justo
+                    vulputate
+                    et.
+                    Suspendisse potenti. Integer a ultricies velit.
+                </p>
+            </article>
+            <a href="index.html" class="back-button">Back to Blogs</a>
+        </div>
+
+        <script>
+            // GSAP Animations
+            window.onload = function() {
+                // Animate Title with "My First Blog 🥳 🎉 🎉"
+                gsap.fromTo(
+                    ".hero h1", 
+                    { opacity: 0, y: -40 }, // Start: invisible, slight upward position
+                    { opacity: 1, y: 0, duration: 2.5, ease: "power2.out" } // End: visible, original position
+                );
+        
+                // Animate Subtitle
+                gsap.from(".hero .subtitle", {
+                    opacity: 0,     // Start fully transparent
+                    y: 20,          // Slide up slightly
+                    duration: 1,    // Animation duration
+                    ease: "power2.out",
+                    delay: 0.5      // Start after the title
+                });
+        
+                // Animate Content Section
+                gsap.to(".content-container", {
+                    opacity: 1,
+                    duration: 1.5,
+                    ease: "power2.out",
+                    delay: 1
+                });
+        
+                // Animate Back Button
+                gsap.to(".back-button", {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1.5,
+                    ease: "power2.out",
+                    delay: 1.5
+                });
+        
+                // Animate Text Paragraphs and Image in Content
+                gsap.from(".content p, .content img", {
+                    opacity: 0,
+                    y: 20,
+                    duration: 1,
+                    stagger: 0.3,
+                    ease: "power2.out",
+                    delay: 1
+                });
+            };
+        </script>
+    </body>
+</html>
