@@ -132,45 +132,86 @@
 
         <section class="hero">
             <div class="container">
-                <h1 class="title">Network Privacy and User Exploitation</h1>
+                <h1 class="title">SSH vs TLS/SSL</h1>
                 <p class="subtitle">David Shonack</p>
             </div>
         </section>
 
         <div class="content-container">
             <article class="content">
-                <h1 id="introduction" style="color:rgb(51, 153, 255)">Introduction</h1>
-                <h2>The Hidden Data Leaks Behind a Simple Web Request</h2>
-                <p>After learning about <strong>digital signatures,
-                        certificates, footprints, cookies, and session IDs</strong>,
-                    I decided to get some hands-on experience. I fired up
-                    <strong>Burp Suite</strong>, searched for my university’s
-                    website, and received some <strong>very concerning results</strong>.
-                    Here’s what happened when I made a simple request to <code>http://ucsc.edu</code>:</p>
+                <h1 id="introduction" style="color:rgb(51, 153, 255)">What is
+                    SSH?</h1>
+                <h2>SSH</h2>
+                <p><strong>Secure Shell</strong>( SSH ) is an application layer
+                    protocol that encrypts application layer data and verifies
+                    authenticity of a user. SSH is mainly used for:
+                    <ul> <li>Remotely connecting to
+                            a device that grants access to their shell.
+                        </li>
+                        <li>Secure file transfers</li>
+                    </ul>
+
+                    There are <strong>two</strong> main ways to connect to a
+                    device via SSH:
+                    <ul> <li>Remotely connecting to
+                            a device using username and password. <strong>( Not
+                                Recommended )</strong>
+                        </li>
+                        <li>Connect via public key configuration <strong>(
+                                Recommended )</strong></li>
+                    </ul>
+                    I will first explain how ssh works then we will dive into
+                    why its best practice to configure ssh via public key as
+                    opposed to username and password.
+                    <h3>SSH workflow</h3>
+                    <p>SSH typically runs over TCP, so after an intial TCP
+                        handshake then SSH will begin. First, the client will
+                        query the ssh server and they will intiate the
+                        encrpytion process exchanging public keys and values.
+                        After a shared secret is agreed upon the server will
+                        then verfiy if it has access to the server. The server
+                        does this by sending the client a payload to sign with
+                        its private key, once the client signs the message it is
+                        sent back to the server. The server then verfies this
+                        signature the public key of the alleged client. <strong>Important
+                            to note that the server will have the clients public
+                            key stored ( requires configuration ). </strong>
+                    </p>
+
+                    <code>http://ucsc.edu</code>:</p>
                 <img src="./images/burpe_suite_query.png" alt="Networking
                     Image">
 
-                <p>Looking at the results, we can see <strong>two GET requests
-                        and two POST requests</strong>. When I visit a webpage,
-                    I expect to receive the requested content—HTML, images, and
+                <p>Looking at the results, we can see <strong>two GET
+                        requests
+                        and two POST requests</strong>. When I visit a
+                    webpage,
+                    I expect to receive the requested content—HTML, images,
+                    and
                     stylesheets. But here, there are hidden
-                    requests. First, lets run through a basic overview of how
+                    requests. First, lets run through a basic overview of
+                    how
                     websites function. </p>
 
                 <h3>How Do Websites Function?</h3>
                 <p>Everything you see on a webpage is <strong>just a file</strong>.
-                    When you visit a website, your browser requests the <strong>HTML,
-                        CSS, and JavaScript</strong> files. These files are then
+                    When you visit a website, your browser requests the
+                    <strong>HTML,
+                        CSS, and JavaScript</strong> files. These files are
+                    then
                     processed locally on your machine to <strong>display the
                         webpage</strong>.</p>
 
-                <img src="./images/basic_static_app_server.png" alt="Networking
+                <img src="./images/basic_static_app_server.png"
+                    alt="Networking
                     Image">
                 <h3>The Problem: Hidden Requests and Unwanted Tracking</h3>
-                <p>So why is this a big deal? Because your machine is <strong>sending
+                <p>So why is this a big deal? Because your machine is
+                    <strong>sending
                         data to external services without your knowledge or
                         consent</strong>.</p>
-                <p>Looking at the Burp Suite example, let’s examine those extra
+                <p>Looking at the Burp Suite example, let’s examine those
+                    extra
                     requests:</p>
                 <ul>
                     <li><strong>GET request to <code>siteimproveanalytics.io</code></strong>
@@ -180,11 +221,13 @@
                     <li><strong>POST request to <code>google-analytics.com</code></strong>
                         → Another tracker collecting user behavior data.</li>
                 </ul>
-                <p>All three of these requests are to <strong>analytics services</strong>—not
+                <p>All three of these requests are to <strong>analytics
+                        services</strong>—not
                     something I explicitly agreed to interact with.</p>
 
                 <h3>How Is Your Data Being Collected?</h3>
-                <p>Remember how I said <strong>everything is a file</strong> and
+                <p>Remember how I said <strong>everything is a file</strong>
+                    and
                     how your machine compiles the webpage locally? Websites
                     embed <strong>tracking scripts</strong> that execute
                     automatically, collecting and sending data without any
@@ -192,18 +235,26 @@
                 <p>This is <strong>extremely exploitative</strong>. Many
                     websites use JavaScript to track <strong>what you click,
                         what you type, and even how you move your mouse</strong>.
-                    This data can be <strong>silently sent</strong> to analytics
-                    companies in the background—without you ever knowing. And
-                    what's worse is that this data is being sent from <strong>
+                    This data can be <strong>silently sent</strong> to
+                    analytics
+                    companies in the background—without you ever knowing.
+                    And
+                    what's worse is that this data is being sent from
+                    <strong>
                         your </strong> machine to the analytic service. </p>
                 <h3>Conclusion: The Normalization of Exploitation</h3>
-                <p>It’s disturbing how <strong>normalized</strong> this <strong>predatory
-                        behavior</strong> has become. Large corporations have
+                <p>It’s disturbing how <strong>normalized</strong> this
+                    <strong>predatory
+                        behavior</strong> has become. Large corporations
+                    have
                     <strong>manipulated and exploited</strong> consumers for
-                    years under the guise of “analytics” and “user experience
+                    years under the guise of “analytics” and “user
+                    experience
                     improvements.”</p>
-                <p>What shocks me the most is that <strong>as soon as you land
-                        on a webpage, your machine starts sending data across
+                <p>What shocks me the most is that <strong>as soon as you
+                        land
+                        on a webpage, your machine starts sending data
+                        across
                         the internet—without your explicit permission.</strong></p>
                 <p>This needs to change.</p>
                 <a href="./index.html" class="back-button">Back to Blogs</a>

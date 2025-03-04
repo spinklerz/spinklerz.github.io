@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Network Privacy and User Exploitation</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bulma/css/bulma.min.css">
+        <style>
+            
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            background-color: black;
+        }
+        /* Reset all text colors to black */
+    body, .content, strong, p, h2, h4, h5, h6, li{
+        color: #000 !important;  /* Force all text elements to black */
+    }
+
+    h3 {
+        color: rgb(43, 44, 67) !important;
+    }
+    /* If specific elements are still grey, you can target them directly */
+    .has-text-grey, .has-text-muted {
+        color: #000 !important;
+    }
+
+    /* If it's within a specific section, you can narrow the scope */
+    section, article {
+        color: #000 !important;
+    }
+
+        .hero {
+            background-color: black;
+            color: white;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .hero .subtitle {
+            font-size: 1.25rem;
+            margin-top: 1rem;
+        }
+
+        .content-container {
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 2rem auto;
+            max-width: 800px;
+            opacity: 0;
+        }
+
+        .content img {
+            max-width: 100%;
+            height: auto;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        .content h2 {
+            margin-top: 2rem;
+            font-size: 1.75rem;
+            color: rgb(51, 153, 255);
+        }
+
+        .back-button {
+            margin-top: 1rem;
+            display: inline-block;
+            color: white;
+            background-color: #3273dc;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            opacity: 0;
+        }
+
+        .back-button:hover {
+            background-color: #275bc1;
+        }
+    </style>
+        <script src="https://cdn.jsdelivr.net/npm/gsap@3.9.0/dist/gsap.min.js"></script>
+    </head>
+    <body>
+        <!-- Nav bar -->
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="./index.html">
+                    David Shonack
+                </a>
+                <a role="button" class="navbar-burger" aria-label="menu"
+                    aria-expanded="false" data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+            <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item">Blogs</a>
+                    <a class="navbar-item">Projects</a>
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">More</a>
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item">About</a>
+                            <a class="navbar-item is-selected">Jobs</a>
+                            <a class="navbar-item">Contact</a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item">Report an issue</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="navbar-end"></div>
+            </div>
+        </nav>
+
+        <section class="hero">
+            <div class="container">
+                <h1 class="title">SSH vs TLS/SSL</h1>
+                <p class="subtitle">David Shonack</p>
+            </div>
+        </section>
+
+        <div class="content-container">
+            <article class="content">
+                <h1 id="introduction" style="color:rgb(51, 153, 255)">What is
+                    SSH?</h1>
+                <h2>SSH</h2>
+                <p><strong>Secure Shell</strong>( SSH ) is an application layer
+                    protocol that encrypts application layer data and verifies
+                    authenticity of a user. SSH is mainly used for:
+                    <ul> <li>Remotely connecting to
+                            a device that grants access to their shell.
+                        </li>
+                        <li>Secure file transfers</li>
+                    </ul>
+
+                    There are <strong>two</strong> main ways to connect to a
+                    device via SSH:
+                    <ul> <li>Remotely connecting to
+                            a device using username and password. <strong>( Not
+                                Recommended )</strong>
+                        </li>
+                        <li>Connect via public key configuration <strong>(
+                                Recommended )</strong></li>
+                    </ul>
+                    I will first explain how ssh works then we will dive into
+                    why its best practice to configure ssh via public key as
+                    opposed to username and password.
+                    <h3>SSH workflow</h3>
+                    <p>SSH typically runs over TCP, so after an intial TCP
+                        handshake then SSH will begin. First, the client will
+                        query the ssh server and they will intiate the
+                        encrpytion process exchanging public keys and values.
+                        After a shared secret is agreed upon the server will
+                        then verfiy if it has access to the server. The server
+                        does this by sending the client a payload to sign with
+                        its private key, once the client signs the message it is
+                        sent back to the server. The server then verfies this
+                        signature the public key of the alleged client. <strong>Important
+                            to note that the server will have the clients public
+                            key stored ( requires configuration ). </strong>
+                    </p>
+
+                    <!-- <code>http://ucsc.edu</code>:</p> -->
+                    <img src="../images/1*OUfDvqQG2vwdj7aoxo2Xxg.png"
+                        alt="SSH Image">
+
+                    <h1 id="introduction" style="color:rgb(51, 153, 255)">What
+                        is
+                        TLS/SSL?</h1>
+                    <h2>TLS/SSL</h2>
+                    <p>Transport Layer Security (TLS) and Secure Socket Layer
+                        (SSL) </p>
+                    <h3>How Do Websites Function?</h3>
+                    <p>Everything you see on a webpage is <strong>just a file</strong>.
+                        When you visit a website, your browser requests the
+                        <strong>HTML,
+                            CSS, and JavaScript</strong> files. These files are
+                        then
+                        processed locally on your machine to <strong>display the
+                            webpage</strong>.</p>
+
+                    <img src="./images/basic_static_app_server.png"
+                        alt="Networking
+                        Image">
+                    <h3>The Problem: Hidden Requests and Unwanted Tracking</h3>
+                    <p>So why is this a big deal? Because your machine is
+                        <strong>sending
+                            data to external services without your knowledge or
+                            consent</strong>.</p>
+                    <p>Looking at the Burp Suite example, let’s examine those
+                        extra
+                        requests:</p>
+                    <ul>
+                        <li><strong>GET request to <code>siteimproveanalytics.io</code></strong>
+                            → A tracking pixel that logs your visit.</li>
+                        <li><strong>POST request to <code>plausible.io</code></strong>
+                            → Sends analytics data about your activity.</li>
+                        <li><strong>POST request to <code>google-analytics.com</code></strong>
+                            → Another tracker collecting user behavior data.</li>
+                    </ul>
+                    <p>All three of these requests are to <strong>analytics
+                            services</strong>—not
+                        something I explicitly agreed to interact with.</p>
+
+                    <h3>How Is Your Data Being Collected?</h3>
+                    <p>Remember how I said <strong>everything is a file</strong>
+                        and
+                        how your machine compiles the webpage locally? Websites
+                        embed <strong>tracking scripts</strong> that execute
+                        automatically, collecting and sending data without any
+                        visible sign.</p>
+                    <p>This is <strong>extremely exploitative</strong>. Many
+                        websites use JavaScript to track <strong>what you click,
+                            what you type, and even how you move your mouse</strong>.
+                        This data can be <strong>silently sent</strong> to
+                        analytics
+                        companies in the background—without you ever knowing.
+                        And
+                        what's worse is that this data is being sent from
+                        <strong>
+                            your </strong> machine to the analytic service. </p>
+                    <h3>Conclusion: The Normalization of Exploitation</h3>
+                    <p>It’s disturbing how <strong>normalized</strong> this
+                        <strong>predatory
+                            behavior</strong> has become. Large corporations
+                        have
+                        <strong>manipulated and exploited</strong> consumers for
+                        years under the guise of “analytics” and “user
+                        experience
+                        improvements.”</p>
+                    <p>What shocks me the most is that <strong>as soon as you
+                            land
+                            on a webpage, your machine starts sending data
+                            across
+                            the internet—without your explicit permission.</strong></p>
+                    <p>This needs to change.</p>
+                    <a href="./index.html" class="back-button">Back to Blogs</a>
+                </article>
+            </div>
+
+            <script>
+        window.onload = function () {
+            gsap.fromTo(".hero h1", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 2.5, ease: "power2.out" });
+            gsap.from(".hero .subtitle", { opacity: 0, y: 20, duration: 1, ease: "power2.out", delay: 0.5 });
+            gsap.to(".content-container", { opacity: 1, duration: 1.5, ease: "power2.out", delay: 1 });
+            gsap.to(".back-button", { opacity: 1, y: 0, duration: 1.5, ease: "power2.out", delay: 1.5 });
+            gsap.from(".content ul, .content img", { opacity: 0, y: 20, duration: 1, stagger: 0.3, ease: "power2.out", delay: 1 });
+        };
+    </script>
+        </body>
+    </html>

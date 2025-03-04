@@ -62,12 +62,38 @@
             src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.1/gsap.min.js"></script>
     </head>
     <body>
-        <nav class="navbar" role="navigation" aria-label="main navigation">
-            <div class="navbar-brand">
-                <a class="navbar-item" href="index.html">David Shonack</a>
+            <!-- Nav bar -->
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <a class="navbar-item" href="./../index.html">
+            David Shonack
+          </a>
+          <a role="button" class="navbar-burger" aria-label="menu"
+            aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+        <div id="navbarBasicExample" class="navbar-menu">
+          <div class="navbar-start">
+            <a class="navbar-item" href="./Blogs/blogs.html">Blogs</a>
+            <a class="navbar-item">Projects</a>
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link">More</a>
+              <div class="navbar-dropdown">
+                <a class="navbar-item">About</a>
+                <a class="navbar-item is-selected">Jobs</a>
+                <a class="navbar-item">Contact</a>
+                <hr class="navbar-divider">
+                <a class="navbar-item">Report an issue</a>
+              </div>
             </div>
-        </nav>
-        <div class="container">
+          </div>
+          <div class="navbar-end"></div>
+        </div>
+      </nav>
             <h2 class="title has-text-white has-text-centered"
                 style="margin-top: 20px;">My Blogs</h2>
 
@@ -89,11 +115,42 @@
                                 class="card-footer-item">Read More</a>
                         </footer>
                     </div>
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="../images/What-is-the-difference-between-SSL_TLS-and-SSH_.jpg"
+                                alt="Network
+                                Privacy Image">
+                        </div>
+                        <div class="card-content">
+                            <p class="title">SSH vs TLS/SSL</p>
+                            <p class="subtitle">What is SSH? What is TLS/SSL? When should I use each?</p>
+                        </div>
+                        <footer class="card-footer">
+                            <a href="./SSH_TLS.html"
+                                class="card-footer-item">Read More</a>
+                        </footer>
+                    </div>
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="../images/3-s2.0-B9780124158153000248-f24-01-9780124158153.jpg"
+                                alt="SOAR image">
+                        </div>
+                        <div class="card-content">
+                            <p class="title">Proposed California SIEM/SOAR Archecture Planning</p>
+                            <p class="subtitle">Using a simulation to mimic real world SIEM/SOAR applications</p>
+                        </div>
+                        <footer class="card-footer">
+                            <a href="./SIEM_SOAR_SIMULATION.html"
+                                class="card-footer-item">Read More</a>
+                        </footer>
+                    </div>
+                    <!-- Add more cards as needed -->
                 </div>
                 <div class="column is-one-third">
                     <div class="card">
                         <div class="card-image">
-                            <img src="./images/network_privacy.jpg" alt="Network
+                            <img src="../images/basic_static_app_server.png"
+                                alt="Network
                                 Privacy Image">
                         </div>
                         <div class="card-content">
@@ -106,8 +163,38 @@
                                 class="card-footer-item">Read More</a>
                         </footer>
                     </div>
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="../images/default-cropped.webp"
+                                alt="Network
+                                Privacy Image">
+                        </div>
+                        <div class="card-content">
+                            <p class="title">Local Repo Exploitation</p>
+                            <p class="subtitle">Burpe suite exercise, enumeration into credential leakage. </p>
+                        </div>
+                        <footer class="card-footer">
+                            <a href="./network_privacy.html"
+                                class="card-footer-item">Read More</a>
+                        </footer>
+                    </div>
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="../images/1730750145258.jpeg"
+                                alt="SOAR image">
+                        </div>
+                        <div class="card-content">
+                            <p class="title">SOAR/SIEM Development Framework</p>
+                            <p class="subtitle">My SOAR/SIEM deployment framework, Raspberry Pi Lab</p>
+                        </div>
+                        <footer class="card-footer">
+                            <a href="./network_privacy.html"
+                                class="card-footer-item">Read More</a>
+                        </footer>
+                    </div>
+                    <!-- Add more cards as needed -->
                 </div>
-                <!-- Add more cards as needed -->
+                
             </div>
         </div>
 
