@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Snake</title>
+</head>
+
+<body onload="main()">
+  <canvas id="webgl" width="600" height="600">
+    Please use a browser that supports "canvas"
+  </canvas>
+  
+  <div>
+    <p>Global Rotation: <span id="angleValue">0</span></p>
+    <input type="range" id="angleSlide" min="-180" max="180" value="0" step="1">
+  </div>
+  
+  <div>
+    <p>Head Angle: <span id="headAngleValue">0</span></p>
+    <input type="range" id="headAngleSlide" min="-45" max="45" value="0" step="1">
+  </div>
+  
+  <div>
+    <p>Mid Body Angle: <span id="midBodyAngleValue">0</span></p>
+    <input type="range" id="midBodyAngleSlide" min="-45" max="45" value="0" step="1">
+  </div>
+  
+  <div>
+    <p>Tail Angle: <span id="tailAngleValue">0</span></p>
+    <input type="range" id="tailAngleSlide" min="-45" max="45" value="0" step="1">
+  </div>
+  
+  <div>
+    <button id="animateOn">Start Animation</button>
+    <button id="animateOff">Stop Animation</button>
+  </div>
+  
+  <p>Performance: <span id="performance"></span></p>
+  </body>
+    <script src="./lib/webgl-utils.js"></script>
+    <script src="./lib/webgl-debug.js"></script>
+    <script src="./lib/cuon-utils.js"></script>
+    <script src="./lib/cuon-matrix.js"></script>
+    <script src="./Triangle.js"></script>
+    <script src="BlockyAnimal.js"></script>
+    <script src="Point.js"></script>
+    <script src="Circle.js"></script>
+    <script src="Cube.js"></script>
+</html>
