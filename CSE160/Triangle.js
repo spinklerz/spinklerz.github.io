@@ -16,7 +16,7 @@ class Triangle{
 
         drawTriangle([xy[0],xy[1],xy[0]+.1, xy[1], xy[0], xy[1]+.1])
     }
-}
+
     function drawTriangle(vertices) {
         var n = 3
 
@@ -62,3 +62,4 @@ class Triangle{
         gl.enableVertexAttribArray(a_Position);
         gl.drawArrays(gl.TRIANGLES, 0, n)
     }
+}
