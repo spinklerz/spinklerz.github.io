@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>David Shonack - Network Privacy and User Exploitation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.2/css/bulma.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.9.0/dist/gsap.min.js"></script>
+    <style>
+        body {
+          font-family: 'Open Sans', sans-serif;
+        }
+        .social-icons a {
+          margin: 0 10px;
+          transition: color 0.3s ease;
+        }
+        .social-icons a:hover {
+          color: #f5f5f5;
+        }
+        .button.is-link {
+          transition: background-color 0.3s ease;
+        }
+        .button.is-link:hover {
+          background-color: #2366d1;
+        }
+        .animated-underline {
+          position: relative;
+          display: inline-block;
+        }
+        .animated-underline::after {
+          content: '';
+          position: absolute;
+          width: 0;
+          height: 2px;
+          bottom: 0;
+          left: 0;
+          background-color: #3273dc;
+          transition: width 0.3s ease;
+        }
+        .animated-underline:hover::after {
+          width: 100%;
+        }
+        .blog-content {
+          line-height: 1.8;
+          color: #f5f5f5; /* Light gray for main text */
+        }
+        .blog-content p {
+          margin-bottom: 1.5rem;
+        }
+        .blog-content h2 {
+          margin-top: 2rem;
+          margin-bottom: 1rem;
+          color: rgb(51, 153, 255) !important; /* Already a light color */
+        }
+        .blog-content h3 {
+          /* Let's make these a bit lighter */
+          color: #ddd !important; /* A slightly lighter gray */
+          margin-top: 1.5rem;
+          margin-bottom: 1rem;
+        }
+        .blog-image {
+          border-radius: 8px;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+          transition: transform 0.3s ease;
+          max-width: 100%;
+          height: auto;
+          margin: 1rem 0;
+        }
+        .blog-image:hover {
+          transform: scale(1.02);
+        }
+        .author-box {
+          border-radius: 8px;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .author-box:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .related-post {
+          transition: transform 0.3s ease;
+        }
+        .related-post:hover {
+          transform: translateY(-5px);
+        }
+        .tag {
+          transition: background-color 0.3s ease;
+        }
+        .tag:hover {
+          background-color: #3273dc;
+          color: white;
+        }
+        code {
+          background-color: #f5f5f5;
+          color: #ff3860;
+          padding: 0.2em 0.4em;
+          border-radius: 3px;
+          font-size: 0.9em;
+        }
+        .content img {
+          max-width: 100%;
+          height: auto;
+          margin: 1rem 0;
+          border-radius: 8px;
+        }
+        strong {
+          /* Let's make these white or a very light gray */
+          color: white !important;
+        }
+      </style>
+  </head>
+  <body>
+    <!-- Navigation bar -->
+    <div id="navbar-container"></div>
+
+    <!-- Load the include script -->
+    <script src="./navbarBlogs.js" defer></script>
+
+    <!-- Hero Section -->
+    <section class="hero is-link is-medium">
+      <div class="hero-body">
+        <div class="container has-text-centered">
+          <p class="title is-2">
+            Network Privacy and User Exploitation
+          </p>
+          <p class="subtitle">
+            The hidden data leaks behind a simple web request
+          </p>
+          <div class="mt-4">
+            <span class="tag is-light mr-2">Privacy</span>
+            <span class="tag is-light mr-2">Security</span>
+            <span class="tag is-light">Web</span>
+          </div>
+          <p class="mt-4 is-size-6">
+            Published on May 1, 2025 by <strong>David Thomas Shonack</strong>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Social Media Banner -->
+    <div class="box has-background-black has-text-white">
+      <p class="has-text-centered">
+        <span class="tag is-primary">New</span> Feel free to drop in and check out my socials! I'd love to get to know you guys and connect!
+      </p>
+      <div class="has-text-centered mt-3 social-icons">
+        <a href="https://www.linkedin.com/in/david-shonack-29a7a4250" target="_blank" class="icon is-large has-text-white mx-2" aria-label="LinkedIn">
+          <i class="fab fa-linkedin fa-2x"></i>
+        </a>
+        <a href="https://github.com/spinklerz" target="_blank" class="icon is-large has-text-white mx-2" aria-label="GitHub">
+          <i class="fab fa-github fa-2x"></i>
+        </a>
+        <a href="mailto:dshonack@ucsc.edu" class="icon is-large has-text-white mx-2" aria-label="Email">
+          <i class="fas fa-envelope fa-2x"></i>
+        </a>
+      </div>
+    </div>
+    
+    <!-- Blog Content -->
+    <section class="section">
+      <div class="container">
+        <div class="columns">
+          <!-- Main Content -->
+          <div class="column is-8">
+            
+            <!-- Blog Text -->
+            <div class="content blog-content">
+              <h1 id="introduction" style="color:rgb(51, 153, 255)">Introduction</h1>
+              <h2>The Hidden Data Leaks Behind a Simple Web Request</h2>
+              <p>After learning about <strong>digital signatures, certificates, footprints, cookies, and session IDs</strong>, I decided to get some hands-on experience. I fired up <strong>Burp Suite</strong>, searched for my university's website, and received some <strong>very interesting results</strong>. Here's what happened when I made a simple request to <code>http://ucsc.edu</code>:</p>
+              
+              <figure class="image">
+                <img src="../images/burpe_suite_query.png" alt="Burp Suite Query Results" class="blog-image">
+                <figcaption class="has-text-centered has-text-grey is-italic mt-2">Screenshot showing multiple hidden requests when accessing ucsc.edu</figcaption>
+              </figure>
+              
+              <p>Looking at the results, we can see <strong>two GET requests and two POST requests</strong>. When I visit a webpage, I expect to receive the requested content—HTML, images, and stylesheets. But here, there are hidden requests. First, lets run through a basic overview of how websites function.</p>
+              
+              <h3>How Do Websites Function?</h3>
+              <p>Everything you see on a webpage is <strong>just a file</strong>. When you visit a website, your browser requests the <strong>HTML, CSS, and JavaScript</strong> files. These files are then processed locally on your machine to <strong>display the webpage</strong>.</p>
+              
+              <figure class="image">
+                <img src="../images/basic_static_app_server.png" alt="Basic Static App Server Diagram" class="blog-image">
+                <figcaption class="has-text-centered has-text-grey is-italic mt-2">Diagram showing how a basic static website functions</figcaption>
+              </figure>
+              
+              <h3>The Problem: Hidden Requests and Unwanted Tracking</h3>
+              <p>So why is this a big deal? Because your machine is <strong>sending data to external services without your knowledge or consent</strong>.</p>
+              
+              <p>Looking at the Burp Suite example, let's examine those extra requests:</p>
+              <ul>
+                <li><strong>GET request to <code>siteimproveanalytics.io</code></strong> → A tracking pixel that logs your visit.</li>
+                <li><strong>POST request to <code>plausible.io</code></strong> → Sends analytics data about your activity.</li>
+                <li><strong>POST request to <code>google-analytics.com</code></strong> → Another tracker collecting user behavior data.</li>
+              </ul>
+              
+              <p>All three of these requests are to <strong>analytics services</strong>—not something I explicitly agreed to interact with.</p>
+              
+              <h3>How Is Your Data Being Collected?</h3>
+              <p>Remember how I said <strong>everything is a file</strong> and how your machine compiles the webpage locally? Websites embed <strong>tracking scripts</strong> that execute automatically, collecting and sending data without any visible sign.</p>
+              
+              <p>This is <strong>extremely exploitative</strong>. Many websites use JavaScript to track <strong>what you click, what you type, and even how you move your mouse</strong>. This data can be <strong>silently sent</strong> to analytics companies in the background—without you ever knowing. And what's worse is that this data is being sent from <strong>your</strong> machine to the analytic service.</p>
+              
+              <h3>Conclusion: The Normalization of Exploitation</h3>
+              <p>It's disturbing how <strong>normalized</strong> this <strong>predatory behavior</strong> has become. Large corporations have <strong>manipulated and exploited</strong> consumers for years under the guise of "analytics" and "user experience improvements."</p>
+              
+              <p>What shocks me the most is that <strong>as soon as you land on a webpage, your machine starts sending data across the internet—without your explicit permission.</strong></p>
+              
+              <p>This needs to change.</p>
+            </div>
+            
+            <!-- Tags -->
+            <div class="tags mt-5">
+              <span class="tag is-medium">Privacy</span>
+              <span class="tag is-medium">Security</span>
+              <span class="tag is-medium">Web</span>
+              <span class="tag is-medium">Analytics</span>
+              <span class="tag is-medium">Tracking</span>
+              <span class="tag is-medium">Exploitation</span>
+            </div>
+            
+            <!-- Author Box -->
+            <div class="box author-box has-background-light mt-6">
+              <article class="media">
+                <div class="media-left">
+                  <figure class="image is-96x96">
+                    <img class="is-rounded" src="/api/placeholder/192/192" alt="Author profile picture">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <div class="content">
+                    <p>
+                      <strong class="is-size-4">David Thomas Shonack</strong> <small class="is-size-6 has-text-grey">@dweebus</small>
+                      <br>
+                      Computer science student and privacy advocate based in California. Interested in network security, software development, and digital rights.
+                    </p>
+                    <div class="buttons mt-2">
+                      <a href="https://github.com/spinklerz" class="button is-small is-link is-outlined">
+                        <span class="icon">
+                          <i class="fab fa-github"></i>
+                        </span>
+                        <span>GitHub</span>
+                      </a>
+                      <a href="mailto:dshonack@ucsc.edu" class="button is-small is-link is-outlined">
+                        <span class="icon">
+                          <i class="fas fa-envelope"></i>
+                        </span>
+                        <span>Email</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+            </div>
+          
+          <!-- Sidebar -->
+          <div class="column is-4">
+            <!-- About Widget -->
+            <div class="box mb-5">
+              <h4 class="title is-5 animated-underline">About This Blog</h4>
+              <p class="has-text-justified">
+                Welcome to my tech and privacy blog where I explore digital security, network privacy, and the ethics of modern web practices. I share insights from my experiences as a computer science student at UCSC.
+              </p>
+            </div>
+            
+            <!-- Search Widget -->
+            <div class="box mb-5">
+              <h4 class="title is-5 animated-underline">Search</h4>
+              <div class="field has-addons">
+                <div class="control is-expanded">
+                  <input class="input" type="text" placeholder="Find a post">
+                </div>
+                <div class="control">
+                  <button class="button is-link">
+                    <span class="icon">
+                      <i class="fas fa-search"></i>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Categories Widget -->
+            <div class="box mb-5">
+              <h4 class="title is-5 animated-underline">Categories</h4>
+              <div class="tags">
+                <a href="#" class="tag is-link is-medium">Security</a>
+                <a href="#" class="tag is-link is-medium">Privacy</a>
+                <a href="#" class="tag is-link is-medium">Web</a>
+                <a href="#" class="tag is-link is-medium">Tech</a>
+                <a href="#" class="tag is-link is-medium">Programming</a>
+                <a href="#" class="tag is-link is-medium">Ethics</a>
+                <a href="#" class="tag is-link is-medium">Tutorials</a>
+              </div>
+            </div>
+            </div>
+    <!-- Return to Blog Home Button -->
+    <div class="has-text-centered my-6">
+      <a href="./index.html" class="button is-link is-medium">
+        <span class="icon">
+          <i class="fas fa-arrow-left"></i>
+        </span>
+        <span>Back to Blog Home</span>
+      </a>
+    </div>
+    
+    <!-- Footer Section -->
+    <footer class="footer has-background-light">
+      <div class="content has-text-centered has-text-black">
+        <p>
+          Blog by David Shonack - © 2025
+        </p>
+        <p class="is-size-7">
+          Built with Bulma CSS Framework
+        </p>
+      </div>
+    </footer>
+    
+    <!-- Simple JS for modals and animations -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Enable any modals if needed
+        document.querySelectorAll('.modal-button').forEach(function(el) {
+          el.addEventListener('click', function() {
+            const target = document.querySelector(this.getAttribute('data-target'));
+            target.classList.add('is-active');
+          });
+        });
+        
+        document.querySelectorAll('.modal-close, .modal-background').forEach(function(el) {
+          el.addEventListener('click', function() {
+            this.closest('.modal').classList.remove('is-active');
+          });
+        });
+        
+        // GSAP animations
+        gsap.fromTo(".hero .title", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" });
+        gsap.from(".hero .subtitle", { opacity: 0, y: 20, duration: 1, ease: "power2.out", delay: 0.3 });
+        gsap.from(".blog-content", { opacity: 0, y: 20, duration: 1, ease: "power2.out", delay: 0.5 });
+        gsap.from(".blog-content img", { opacity: 0, y: 20, duration: 1, stagger: 0.3, ease: "power2.out", delay: 0.8 });
+        gsap.from(".tags", { opacity: 0, y: 10, duration: 0.8, ease: "power2.out", delay: 1 });
+        gsap.from(".author-box", { opacity: 0, y: 20, duration: 0.8, ease: "power2.out", delay: 1.2 });
+      });
+    </script>
+  </body>
+</html>

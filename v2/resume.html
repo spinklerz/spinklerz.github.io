@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>David Shonack - Resume</title>
+    <link rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
+      integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
+      crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700"
+      rel="stylesheet">
+    <!-- Bulma Version -->
+    <link rel="stylesheet"
+      href="https://unpkg.com/bulma@1.0.2/css/bulma.min.css" />
+    <script async type="text/javascript" src="../js/bulma.js"></script>
+    <style>
+      .resume-section {
+        padding: 2rem 0;
+        border-bottom: 1px solid #eee;
+      }
+      .resume-section:last-child {
+        border-bottom: none;
+      }
+      .resume-date {
+        font-size: 0.9rem;
+        color: #666;
+      }
+      .resume-item {
+        margin-bottom: 1.5rem;
+      }
+      .project-tag {
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+      .section-heading {
+        margin-bottom: 2rem;
+      }
+      .certificate-block {
+        padding: 1rem;
+        box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1);
+        border-radius: 4px;
+        margin-bottom: 1rem;
+      }
+      .skill-item {
+        margin-bottom: 0.5rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navigation bar -->
+    <div id="navbar-container"></div>
+
+    <!-- Load the include script -->
+    <script src="./js/navbar.js" defer></script>
+
+    <!-- Header -->
+    <section class="hero is-link is-medium">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title is-1">
+            Resume
+          </h1>
+          <h2 class="subtitle is-3">
+            David Shonack
+          </h2>
+          <div class="buttons mt-4">
+            <a href="#" class="button is-light is-outlined">
+              <span class="icon">
+                <i class="fas fa-download"></i>
+              </span>
+              <span>Download PDF</span>
+            </a>
+            <a href="mailto:dshonack@ucsc.edu" class="button is-light is-outlined">
+              <span class="icon">
+                <i class="fas fa-envelope"></i>
+              </span>
+              <span>Contact Me</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <!-- Summary -->
+      <section class="section resume-section">
+        <div class="section-heading">
+          <h3 class="title is-2">Professional Summary</h3>
+        </div>
+        <div class="content">
+          <p class="is-size-5">
+            Aspiring cybersecurity professional with strong knowledge in network security and vulnerability assessment. Currently 
+            pursuing a B.A. in Network and Digital Technology at UC Santa Cruz with graduation expected in Spring 2025. 
+            Experienced with a variety of security tools and techniques including network monitoring, traffic analysis, 
+            and system architecture design. Currently studying for Security+ certification and expanding my skills in 
+            penetration testing and defensive security.
+          </p>
+        </div>
+      </section>
+
+      <!-- Education -->
+      <section class="section resume-section">
+        <div class="section-heading">
+          <h3 class="title is-2">Education</h3>
+        </div>
+        <div class="resume-item">
+          <h4 class="title is-4">University of California, Santa Cruz</h4>
+          <p class="subtitle is-6">B.A. Network and Digital Technology</p>
+          <p class="resume-date"><i class="fas fa-calendar-alt"></i> 2022 - 2025 (Expected)</p>
+        </div>
+      </section>
+
+      <!-- Experience -->
+      <section class="section resume-section">
+        <div class="section-heading">
+          <h3 class="title is-2">Work Experience</h3>
+        </div>
+        <div class="resume-item">
+          <div class="columns is-vcentered">
+            <div class="column">
+              <h4 class="title is-4">Technical Assistant</h4>
+              <p class="subtitle is-6">El Camino Special Resource Center</p>
+            </div>
+            <div class="column is-narrow">
+              <p class="resume-date has-text-right"><i class="fas fa-calendar-alt"></i> 2021 - 2022</p>
+            </div>
+          </div>
+          <div class="content">
+            <ul>
+              <li>Provided technical support to students by troubleshooting software issues and resolving technical problems.</li>
+              <li>Created a welcoming and supportive environment for students to address technology concerns.</li>
+              <li>Provided students with resources, navigation assistance, and answered general questions.</li>
+              <li>Developed effective communication skills by helping students navigate college technology systems.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects -->
+      <section class="section resume-section">
+        <div class="section-heading">
+          <h3 class="title is-2">Projects</h3>
+        </div>
+        
+        <div class="resume-item box">
+          <h4 class="title is-4">Network Anomaly Detection Pipeline</h4>
+          <div class="tags">
+            <span class="tag is-link project-tag">Zeek</span>
+            <span class="tag is-link project-tag">TensorFlow</span>
+            <span class="tag is-link project-tag">scikit-learn</span>
+            <span class="tag is-link project-tag">Machine Learning</span>
+          </div>
+          <div class="content">
+            <ul>
+              <li>Developed a network anomaly detection system with Zeek, TensorFlow, and scikit-learn.</li>
+              <li>Preprocessed conn.log data, applied one-hot encoding, and trained an autoencoder model for anomaly detection.</li>
+              <li>Visualized anomalies with PCA and matplotlib, and validated results using an Isolation Forest model.</li>
+              <li>Designed for scalability to support real-time monitoring and cloud deployment for enterprise use.</li>
+            </ul>
+            <div class="buttons">
+              <a href="https://github.com/your-username/zeek-anomaly-detector" class="button is-small is-link is-light">
+                <span class="icon">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>View Source Code</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="resume-item box">
+          <h4 class="title is-4">Network Monitoring and DoS Detection</h4>
+          <div class="tags">
+            <span class="tag is-link project-tag">Prometheus</span>
+            <span class="tag is-link project-tag">Node Exporter</span>
+            <span class="tag is-link project-tag">Monitoring</span>
+            <span class="tag is-link project-tag">DoS</span>
+          </div>
+          <div class="content">
+            <ul>
+              <li>Built a monitoring lab using Prometheus and Node Exporter to detect DoS attacks on a Raspberry Pi network.</li>
+              <li>Created alert_rules.yml to monitor traffic patterns and system metrics, with real-time alerts to Slack and Email.</li>
+              <li>Tested DoS attack detection efficacy, evaluated detection latency, and analyzed performance limitations.</li>
+            </ul>
+            <div class="buttons">
+              <a href="https://github.com/your-username/network-monitoring-lab" class="button is-small is-link is-light">
+                <span class="icon">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>View Source Code</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="resume-item box">
+          <h4 class="title is-4">Network Attack Toolkit</h4>
+          <div class="tags">
+            <span class="tag is-link project-tag">Python</span>
+            <span class="tag is-link project-tag">Scapy</span>
+            <span class="tag is-link project-tag">Network Security</span>
+          </div>
+          <div class="content">
+            <ul>
+              <li>Built a modular toolkit using Scapy for ARP poisoning, DHCP exhaustion, ICMP redirect, and other L2/L3/L4 attacks.</li>
+              <li>Implemented real-time spoofing, MAC/IP scanning, and packet manipulation using Ether(), ARP(), and ICMP().</li>
+              <li>Utilized threading and sniff() for continuous packet injection and live traffic analysis.</li>
+              <li>Deepened understanding of IPv4 and IPv6 protocol vulnerabilities through hands-on exploitation.</li>
+            </ul>
+            <div class="buttons">
+              <a href="https://github.com/your-username/network-attack-toolkit" class="button is-small is-link is-light">
+                <span class="icon">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>View Source Code</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="resume-item box">
+          <h4 class="title is-4">Public Key Infrastructure (PKI) Implementation</h4>
+          <div class="tags">
+            <span class="tag is-link project-tag">OpenSSL</span>
+            <span class="tag is-link project-tag">PKI</span>
+            <span class="tag is-link project-tag">Certificates</span>
+          </div>
+          <div class="content">
+            <ul>
+              <li>Implemented a custom PKI system with SSL certificates and key management.</li>
+              <li>Generated root and intermediary certificates, configuring a virtualized Ubuntu server for certificate authority operations.</li>
+              <li>Used OpenSSL for creating private keys, CSRs, and self-signed certificates, ensuring secure communication via SCP.</li>
+              <li>Explored key revocation, certificate expiration management, and cross-signing mechanisms for CA compatibility.</li>
+            </ul>
+            <div class="buttons">
+              <a href="https://github.com/your-username/pki-implementation" class="button is-small is-link is-light">
+                <span class="icon">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>View Source Code</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Certifications -->
+      <section class="section resume-section">
+        <div class="section-heading">
+          <h3 class="title is-2">Certifications</h3>
+        </div>
+        
+        <div class="columns">
+          <div class="column is-half">
+            <div class="certificate-block">
+              <h4 class="title is-4">Security+</h4>
+              <p class="subtitle is-6">CompTIA</p>
+              <p><i class="fas fa-hourglass-half"></i> In Progress</p>
+            </div>
+          </div>
+          
+          <div class="column is-half">
+            <div class="certificate-block">
+              <h4 class="title is-4">Burp Suite Certified</h4>
+              <p class="subtitle is-6">PortSwigger</p>
+              <p><i class="fas fa-hourglass-half"></i> In Progress</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills -->
+      <section class="section resume-section">
+        <div class="section-heading">
+          <h3 class="title is-2">Technical Skills</h3>
+        </div>
+        
+        <div class="columns">
+          <div class="column">
+            <h4 class="title is-4">Languages</h4>
+            <div class="skill-item">
+              <p><strong>Python</strong></p>
+              <progress class="progress is-link" value="90" max="100"></progress>
+            </div>
+            <div class="skill-item">
+              <p><strong>C/C++</strong></p>
+              <progress class="progress is-link" value="90" max="100"></progress>
+            </div>
+            <div class="skill-item">
+              <p><strong>Shell</strong></p>
+              <progress class="progress is-link" value="75" max="100"></progress>
+            </div>
+            <div class="skill-item">
+              <p><strong>JavaScript</strong></p>
+              <progress class="progress is-link" value="60" max="100"></progress>
+            </div>
+          </div>
+          
+          <div class="column">
+            <h4 class="title is-4">Cybersecurity</h4>
+            <div class="skill-item">
+              <p><strong>Network Security</strong></p>
+              <progress class="progress is-link" value="85" max="100"></progress>
+            </div>
+            <div class="skill-item">
+              <p><strong>Vulnerability Assessment</strong></p>
+              <progress class="progress is-link" value="80" max="100"></progress>
+            </div>
+            <div class="skill-item">
+              <p><strong>Traffic Analysis</strong></p>
+              <progress class="progress is-link" value="75" max="100"></progress>
+            </div>
+            <div class="skill-item">
+              <p><strong>SIEM & Log Management</strong></p>
+              <progress class="progress is-link" value="70" max="100"></progress>
+            </div>
+          </div>
+        </div>
+        
+        <div class="box mt-5">
+          <h4 class="title is-5">Tools & Technologies</h4>
+          <div class="tags">
+            <span class="tag is-medium">Scapy</span>
+            <span class="tag is-medium">Wireshark</span>
+            <span class="tag is-medium">Nmap</span>
+            <span class="tag is-medium">Kali Linux</span>
+            <span class="tag is-medium">Burp Suite</span>
+            <span class="tag is-medium">Zeek</span>
+            <span class="tag is-medium">Git/GitHub</span>
+            <span class="tag is-medium">VS Code</span>
+            <span class="tag is-medium">UTM</span>
+            <span class="tag is-medium">VMware</span>
+            <span class="tag is-medium">Linux</span>
+            <span class="tag is-medium">Windows</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section class="section resume-section">
+        <div class="section-heading">
+          <h3 class="title is-2">Contact Information</h3>
+        </div>
+        
+        <div class="columns">
+          <div class="column is-half">
+            <div class="box">
+              <div class="content">
+                <p><i class="fas fa-envelope"></i> <strong>Email:</strong> dshonack@ucsc.edu</p>
+                <p><i class="fas fa-phone"></i> <strong>Phone:</strong> (310) 525-6535</p>
+                <p><i class="fas fa-map-marker-alt"></i> <strong>Address:</strong> 23322 Los Codona Ave</p>
+                <div class="buttons mt-3">
+                  <a href="https://github.com/spinklerz" class="button is-link">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>GitHub</span>
+                  </a>
+                  <a href="https://www.linkedin.com/in/david-shonack-29a7a4250/" class="button is-link">
+                    <span class="icon">
+                      <i class="fab fa-linkedin"></i>
+                    </span>
+                    <span>LinkedIn</span>
+                  </a>
+                  <a href="https://hackerone.com/dweebler?type=user" class="button is-link">
+                    <span class="icon">
+                      <i class="fas fa-bug"></i>
+                    </span>
+                    <span>HackerOne</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="content has-text-centered">
+          <p>
+            <strong>Resume</strong> by <a href="#">David Shonack</a>. Built with
+            <a href="https://bulma.io">Bulma</a>.
+          </p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

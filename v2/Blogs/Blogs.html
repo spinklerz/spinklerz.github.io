@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>David Shonack - Blog</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.2/css/bulma.min.css">
+    <style>
+      body {
+        font-family: 'Open Sans', sans-serif;
+      }
+      
+      .card {
+        height: 100%;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+      
+      .social-icons a {
+        margin: 0 10px;
+        transition: color 0.3s ease;
+      }
+      
+      .social-icons a:hover {
+        color: #f5f5f5;
+      }
+      
+      .button.is-link {
+        transition: background-color 0.3s ease;
+      }
+      
+      .button.is-link:hover {
+        background-color: #2366d1;
+      }
+
+      .card-image img {
+        transition: transform 0.5s ease;
+      }
+      
+      .card:hover .card-image img {
+        transform: scale(1.05);
+      }
+      
+      .animated-underline {
+        position: relative;
+        display: inline-block;
+      }
+      
+      .animated-underline::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: #3273dc;
+        transition: width 0.3s ease;
+      }
+      
+      .animated-underline:hover::after {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+        <!-- Navigation bar -->
+        <div id="navbar-container"></div>
+
+        <!-- Your page content here -->
+      
+        <!-- Load the include script -->
+        <script src="./navbarBlogs.js" defer></script>
+
+
+    <!-- Hero Section -->
+    <section class="hero is-link is-medium">
+      <div class="hero-body">
+        <div class="container has-text-centered">
+          <p class="title is-2">
+            David's Blog
+          </p>
+          <p class="subtitle">
+            By: <strong>David Thomas Shonack</strong> <span class="is-size-6">aka <em>dweebus/dweebler/spinkler</em></span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Social Media Banner -->
+    <div class="box has-background-black has-text-white">
+      <p class="has-text-centered">
+        <span class="tag is-primary">New</span> Feel free to drop in and check out my socials! I'd love to get to know you guys and connect!
+      </p>
+      <div class="has-text-centered mt-3 social-icons">
+        <a href="https://www.linkedin.com/in/david-shonack-29a7a4250" target="_blank" class="icon is-large has-text-white mx-2" aria-label="LinkedIn">
+          <i class="fab fa-linkedin fa-2x"></i>
+        </a>
+        <a href="https://github.com/spinklerz" target="_blank" class="icon is-large has-text-white mx-2" aria-label="GitHub">
+          <i class="fab fa-github fa-2x"></i>
+        </a>
+        <a href="mailto:dshonack@ucsc.edu" class="icon is-large has-text-white mx-2" aria-label="Email">
+          <i class="fas fa-envelope fa-2x"></i>
+        </a>
+      </div>
+    </div>
+    
+    <!-- Blog Posts Section -->
+    <section class="container my-5">
+      <div class="columns is-multiline">
+        <!-- Blog Post 1 -->
+        <div class="column is-4 mb-4">
+          <div class="card h-100">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="/api/placeholder/600/450" alt="Blog post image">
+              </figure>
+            </div>
+            <div class="card-content">
+              <div class="content">
+                <h4 class="title is-4 animated-underline">Crystal Clear Waters</h4>
+                <p>The pristine alpine lakes found high in the mountains offer some of the clearest waters on Earth. Their turquoise hues reflect the surrounding peaks in perfect mirror images.</p>
+                <a class="button is-link mt-3" href="./Blog1.html">Read Full Article</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Blog Post 2 -->
+        <div class="column is-4 mb-4">
+          <div class="card h-100">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="/api/placeholder/600/450" alt="Blog post image">
+              </figure>
+            </div>
+            <div class="card-content">
+              <div class="content">
+                <h4 class="title is-4 animated-underline">Forest Wanderings</h4>
+                <p>There's something magical about walking through ancient forests. The dappled sunlight filtering through the canopy creates an atmosphere of tranquility and wonder.</p>
+                <a class="button is-link mt-3" href="#forest-wanderings">Read Full Article</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Blog Post 3 -->
+        <div class="column is-4 mb-4">
+          <div class="card h-100">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="/api/placeholder/600/450" alt="Blog post image">
+              </figure>
+            </div>
+            <div class="card-content">
+              <div class="content">
+                <h4 class="title is-4 animated-underline">The Magic of Butterflies</h4>
+                <p>Monarch butterflies are known for their incredible migration patterns, traveling up to 3,000 miles from Canada and the United States to central Mexican forests.</p>
+                <a class="button is-link mt-3" href="#butterflies">Read Full Article</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Blog Post 4 -->
+        <div class="column is-4 mb-4">
+          <div class="card h-100">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="/api/placeholder/600/450" alt="Blog post image">
+              </figure>
+            </div>
+            <div class="card-content">
+              <div class="content">
+                <h4 class="title is-4 animated-underline">Mountain Vistas</h4>
+                <p>Standing at the summit after a challenging hike offers unparalleled views and a sense of accomplishment that few other experiences can match.</p>
+                <a class="button is-link mt-3" href="#mountain-vistas">Read Full Article</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Blog Post 5 -->
+        <div class="column is-4 mb-4">
+          <div class="card h-100">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="/api/placeholder/600/450" alt="Blog post image">
+              </figure>
+            </div>
+            <div class="card-content">
+              <div class="content">
+                <h4 class="title is-4 animated-underline">Desert Sunsets</h4>
+                <p>The vibrant colors that paint the sky as the sun dips below the horizon in arid landscapes create some of nature's most spectacular light shows.</p>
+                <a class="button is-link mt-3" href="#desert-sunsets">Read Full Article</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Blog Post 6 -->
+        <div class="column is-4 mb-4">
+          <div class="card h-100">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="/api/placeholder/600/450" alt="Blog post image">
+              </figure>
+            </div>
+            <div class="card-content">
+              <div class="content">
+                <h4 class="title is-4 animated-underline">Ocean Depths</h4>
+                <p>The mysterious world beneath the waves holds countless wonders and creatures that continue to surprise and fascinate marine biologists and ocean enthusiasts alike.</p>
+                <a class="button is-link mt-3" href="#ocean-depths">Read Full Article</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Footer Section -->
+    <footer class="footer has-background-light">
+      <div class="content has-text-centered has-text-black">
+        <p>
+          Blog by David Shonack - © 2025
+        </p>
+        <p class="is-size-7">
+          Built with Bulma CSS Framework
+        </p>
+      </div>
+    </footer>
+    
+    <!-- Simple JS for modals -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Enable any modals if needed in the future
+        document.querySelectorAll('.modal-button').forEach(function(el) {
+          el.addEventListener('click', function() {
+            const target = document.querySelector(this.getAttribute('data-target'));
+            target.classList.add('is-active');
+          });
+        });
+        
+        document.querySelectorAll('.modal-close, .modal-background').forEach(function(el) {
+          el.addEventListener('click', function() {
+            this.closest('.modal').classList.remove('is-active');
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
