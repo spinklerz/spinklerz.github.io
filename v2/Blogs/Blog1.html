@@ -161,9 +161,9 @@
     <!-- Blog Content -->
     <section class="section">
       <div class="container">
-        <div class="columns">
+        <div class="columns is-centered">
           <!-- Main Content -->
-          <div class="column is-8">
+          <div class="column is-8 is-flex is-justify-content-center is-flex-direction-column">        
             
             <!-- Blog Text -->
             <div class="content blog-content">
@@ -183,6 +183,7 @@
               
               <figure class="image">
                 <img src="../images/basic_static_app_server.png" alt="Basic Static App Server Diagram" class="blog-image">
+                <!-- Credit to https://www.google.com/url?sa=i&url=https%3A%2F%2Fdeveloper.mozilla.org%2Fen-US%2Fdocs%2FLearn_web_development%2FExtensions%2FServer-side%2FFirst_steps%2FIntroduction&psig=AOvVaw0nltrhm1duBn-8HH9_SGd8&ust=1746854817859000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCLD567jTlY0DFQAAAAAdAAAAABAE  for the image, -->
                 <figcaption class="has-text-centered has-text-grey is-italic mt-2">Diagram showing how a basic static website functions</figcaption>
               </figure>
               
@@ -201,14 +202,20 @@
               <h3>How Is Your Data Being Collected?</h3>
               <p>Remember how I said <strong>everything is a file</strong> and how your machine compiles the webpage locally? Websites embed <strong>tracking scripts</strong> that execute automatically, collecting and sending data without any visible sign.</p>
               
-              <p>This is <strong>extremely exploitative</strong>. Many websites use JavaScript to track <strong>what you click, what you type, and even how you move your mouse</strong>. This data can be <strong>silently sent</strong> to analytics companies in the background—without you ever knowing. And what's worse is that this data is being sent from <strong>your</strong> machine to the analytic service.</p>
+              <p>This is <strong>extremely exploitative</strong>. Many websites use JavaScript to track <strong>what you click, what you type( basically a legal keylogger ), and even how you move your mouse</strong>. This data can be <strong>silently sent</strong> to analytics companies in the background—without you ever knowing. And what's worse is that this data is being sent from <strong>your</strong> machine to the analytic service.</p>
               
+              <h3>California vs Europe</h3> 
+              <p>Now I want you to look at the difference between how Europe handles data vs California. </p>
+
+              <p>In California as stated by the CCPA, Companies who meet the requirements ( must hold 100k user data, etc) need to inform the user that there data is being collected and to give them a option to  <strong>opt-out.</strong> </p>
+
+              <p>In Europe under the GDPR, Companies cannot collect data from users by default. The user has to <strong>opt-in</strong> for the company to start collecting data.</p>
+
+              <p>California seems to priotize and incentivize data collection while Europe's approach is to protect the data of users.</p>
               <h3>Conclusion: The Normalization of Exploitation</h3>
               <p>It's disturbing how <strong>normalized</strong> this <strong>predatory behavior</strong> has become. Large corporations have <strong>manipulated and exploited</strong> consumers for years under the guise of "analytics" and "user experience improvements."</p>
               
-              <p>What shocks me the most is that <strong>as soon as you land on a webpage, your machine starts sending data across the internet—without your explicit permission.</strong></p>
-              
-              <p>This needs to change.</p>
+              <p>What shocks me the most is that you as a user are unwillingly sending over data to analytic services from <strong>your own machine</strong> by default ( This happens the moment you turn on your machine. ). Now thats not to say all data collection is bad, in fact its made a lot of things easier and can be great. I just believe that California and other states or countries should adopt similar standards to Europe putting the user's privacy first.
             </div>
             
             <!-- Tags -->
@@ -234,7 +241,7 @@
                     <p>
                       <strong class="is-size-4">David Thomas Shonack</strong> <small class="is-size-6 has-text-grey">@dweebus</small>
                       <br>
-                      Computer science student and privacy advocate based in California. Interested in network security, software development, and digital rights.
+                      Computer science student and privacy advocate based in California. Interested in security, software development, digital rights, and much more.
                     </p>
                     <div class="buttons mt-2">
                       <a href="https://github.com/spinklerz" class="button is-small is-link is-outlined">
@@ -257,67 +264,10 @@
             </div>
           
           <!-- Sidebar -->
-          <div class="column is-4">
-            <!-- About Widget -->
-            <div class="box mb-5">
-              <h4 class="title is-5 animated-underline">About This Blog</h4>
-              <p class="has-text-justified">
-                Welcome to my tech and privacy blog where I explore digital security, network privacy, and the ethics of modern web practices. I share insights from my experiences as a computer science student at UCSC.
-              </p>
-            </div>
             
-            <!-- Search Widget -->
-            <div class="box mb-5">
-              <h4 class="title is-5 animated-underline">Search</h4>
-              <div class="field has-addons">
-                <div class="control is-expanded">
-                  <input class="input" type="text" placeholder="Find a post">
-                </div>
-                <div class="control">
-                  <button class="button is-link">
-                    <span class="icon">
-                      <i class="fas fa-search"></i>
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Categories Widget -->
-            <div class="box mb-5">
-              <h4 class="title is-5 animated-underline">Categories</h4>
-              <div class="tags">
-                <a href="#" class="tag is-link is-medium">Security</a>
-                <a href="#" class="tag is-link is-medium">Privacy</a>
-                <a href="#" class="tag is-link is-medium">Web</a>
-                <a href="#" class="tag is-link is-medium">Tech</a>
-                <a href="#" class="tag is-link is-medium">Programming</a>
-                <a href="#" class="tag is-link is-medium">Ethics</a>
-                <a href="#" class="tag is-link is-medium">Tutorials</a>
-              </div>
-            </div>
-            </div>
-    <!-- Return to Blog Home Button -->
-    <div class="has-text-centered my-6">
-      <a href="./index.html" class="button is-link is-medium">
-        <span class="icon">
-          <i class="fas fa-arrow-left"></i>
-        </span>
-        <span>Back to Blog Home</span>
-      </a>
-    </div>
+          
     
     <!-- Footer Section -->
-    <footer class="footer has-background-light">
-      <div class="content has-text-centered has-text-black">
-        <p>
-          Blog by David Shonack - © 2025
-        </p>
-        <p class="is-size-7">
-          Built with Bulma CSS Framework
-        </p>
-      </div>
-    </footer>
     
     <!-- Simple JS for modals and animations -->
     <script>
