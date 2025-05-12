@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>3D WebGL World</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: black;
+      font-family: Arial, sans-serif;
+    }
+    #webgl {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+    }
+    .controls {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background-color: rgba(0,0,0,0.7);
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .slider-container {
+      margin-bottom: 10px;
+    }
+    .button-container {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    button {
+      padding: 5px 10px;
+      background-color: #444;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #666;
+    }
+    #performance {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: white;
+      background-color: rgba(0,0,0,0.5);
+      padding: 5px;
+    }
+    .status-panel {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      color: white;
+      background-color: rgba(0,0,0,0.7);
+      padding: 10px;
+      border-radius: 5px;
+      max-width: 300px;
+    }
+    #controls-help {
+      margin-top: 10px;
+      padding: 5px;
+      border-top: 1px solid #555;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+
+<body onload="main()">
+  <canvas id="webgl"></canvas>
+  
+  <div id="performance"></div>
+  
+  <div class="status-panel">
+    <div id="currentMode">Mode: Navigate</div>
+    <div id="blockType">Block Type: 1</div>
+    <div id="storyText">Press P to start your adventure!</div>
+    <div id="controls-help">
+      <p><strong>Navigation:</strong> WASD + Arrow Keys</p>
+      <p><strong>Camera:</strong> Q/E to rotate, Mouse drag to look</p>
+      <p><strong>Building:</strong> B to toggle build mode, Space to add/delete blocks</p>
+      <p>Story: Press P to advance the Story, Note: if screen is blue press any key to continue.</p>
+    </div>
+  </div>
+  
+
+    
+    <div class="button-container">
+
+      <button id="toggleBuildMode" onclick="toggleBuildMode()">Toggle Build Mode</button>
+    </div>
+  </div>
+  <script src="lib/webgl-utils.js"></script>
+  <script src="lib/webgl-debug.js"></script>
+  <script src="lib/cuon-utils.js"></script>
+  <script src="lib/cuon-matrix.js"></script>
+
+  <script src="Cube.js"></script>
+  <script src="World.js"></script>
+  
+  <script>
+    function toggleBuildMode() {
+      if (typeof g_mode !== 'undefined') {
+        g_mode = g_mode === "navigate" ? "build" : "navigate";
+        updateModeDisplay();
+      }
+    }
+  </script>
+</body>
+</html>
