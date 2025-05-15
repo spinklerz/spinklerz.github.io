@@ -169,62 +169,41 @@
             <div class="content blog-content">
               <h1 id="introduction" style="color:rgb(51, 153, 255)">Introduction</h1>
               <h2>Pac-Man Reinforcement Learning Championship</h2>
-              <p>My team and I were participating in a fun Pac-Man tournoment where we would tune our Pac-Man models to essientially defeat other students Pac-Man. We used a combination of techniques like Q-Learning to train our model. But the details don't matter too much. So the professor setup a tournoment webpage so that we could view the results of the tournoment. </p>
+              <p>My team and I were participating in a fun Pac-Man tournoment where we would tune our Pac-Man models to essientially defeat other students Pac-Man. We used a combination of techniques like Q-Learning to train our model. <br><br>So the professor setup a tournoment webpage so that we could view the results of the tournoment. I noticed a trend in webpages for example: <code>ucsc.example/20231204</code> which was the date of the tournoment results. So being impatient and wanting to know my grade I decide to try the webpage <code>ucsc.example/20231205</code> the current day to see the results. And was met with a webpage like this: </p> 
+                <figure class="image">
+                    <img src="../images/phpinfo8.3.png" alt="PHP config page" class="blog-image">
+                    <figcaption class="has-text-centered has-text-grey is-italic mt-2">Screenshot of the wepage config</figcaption>
+              <p>Granted to page above is an example, the one I received was many times longer which include a wealth of information, that I really didnt understand the grasp of. So naturally I went to go check if this webpage was only accessable to me since I was a student. I used <code>dig</code> to check if the domain was publibly accessable, and it resolved an IP address. I was very interested so I read the page to make sure I wasn't wasting their time, and found interesting technologies, directory endpoints, and much more. This is what I sent to ITS.  </p>
               
               <figure class="image">
-                <img src="../images/burpe_suite_query.png" alt="Burp Suite Query Results" class="blog-image">
-                <figcaption class="has-text-centered has-text-grey is-italic mt-2">Screenshot showing multiple hidden requests when accessing ucsc.edu</figcaption>
+                <img src="../images/ITS-MESSAGE.png" alt="ITS response" class="blog-image">
+                <figcaption class="has-text-centered has-text-grey is-italic mt-2">Screenshot showing ITS response</figcaption>
               </figure>
               
-              <p>Looking at the results, we can see <strong>two GET requests and two POST requests</strong>. When I visit a webpage, I expect to receive the requested content—HTML, images, and stylesheets. But here, there are hidden requests. First, lets run through a basic overview of how websites function.</p>
+              <p>It might be a bit hard to see but at the top is the response I received. The feeling of being able to helpout and provide value, was an invaluable experience. A few days later it was patched and I was no longer able to see the webpage! This lit a fire in me, that I wanted to do this again. Then I found Bug Bounties. </p>
               
-              <h3>How Do Websites Function?</h3>
-              <p>Everything you see on a webpage is <strong>just a file</strong>. When you visit a website, your browser requests the <strong>HTML, CSS, and JavaScript</strong> files. These files are then processed locally on your machine to <strong>display the webpage</strong>.</p>
-              
-              <figure class="image">
-                <img src="../images/basic_static_app_server.png" alt="Basic Static App Server Diagram" class="blog-image">
-                <!-- Credit to https://www.google.com/url?sa=i&url=https%3A%2F%2Fdeveloper.mozilla.org%2Fen-US%2Fdocs%2FLearn_web_development%2FExtensions%2FServer-side%2FFirst_steps%2FIntroduction&psig=AOvVaw0nltrhm1duBn-8HH9_SGd8&ust=1746854817859000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCLD567jTlY0DFQAAAAAdAAAAABAE  for the image, -->
-                <figcaption class="has-text-centered has-text-grey is-italic mt-2">Diagram showing how a basic static website functions</figcaption>
-              </figure>
-              
-              <h3>The Problem: Hidden Requests and Unwanted Tracking</h3>
-              <p>So why is this a big deal? Because your machine is <strong>sending data to external services without your knowledge or consent</strong>.</p>
-              
-              <p>Looking at the Burp Suite example, let's examine those extra requests:</p>
-              <ul>
-                <li><strong>GET request to <code>siteimproveanalytics.io</code></strong> → A tracking pixel that logs your visit.</li>
-                <li><strong>POST request to <code>plausible.io</code></strong> → Sends analytics data about your activity.</li>
-                <li><strong>POST request to <code>google-analytics.com</code></strong> → Another tracker collecting user behavior data.</li>
-              </ul>
-              
-              <p>All three of these requests are to <strong>analytics services</strong>—not something I explicitly agreed to interact with.</p>
-              
-              <h3>How Is Your Data Being Collected?</h3>
-              <p>Remember how I said <strong>everything is a file</strong> and how your machine compiles the webpage locally? Websites embed <strong>tracking scripts</strong> that execute automatically, collecting and sending data without any visible sign.</p>
-              
-              <p>This is <strong>extremely exploitative</strong>. Many websites use JavaScript to track <strong>what you click, what you type( basically a legal keylogger ), and even how you move your mouse</strong>. This data can be <strong>silently sent</strong> to analytics companies in the background—without you ever knowing. And what's worse is that this data is being sent from <strong>your</strong> machine to the analytic service.</p>
-              
-              <h3>California vs Europe</h3> 
-              <p>Now I want you to look at the difference between how Europe handles data vs California. </p>
+              <h3>The Beginning (Domain 1)</h3>
+              <p>After winter quarter I hopped right into, learn some of the basic's or burp suite and did all of their misconfig and api labs. I felt ready to go. I started with a more less known domain just to start small and work my way up. The goal was just to learn and absorb how modern web applications work. As I walkthrough each link and request with burp I noticed upon clicking on a login button I recieved 4 sentry.io responses as I stalled the request. 2 Requests were normal of content length 300~, but the next 2 were very interesting as one had content length of 200k~ and the other has around 80k~. The responses with high content lengths includes a wealth of info like js endpoints, blacklisted contries, etc... </p>
+              <p>So being kind of new I submitted this as a bug because I thought it was a significant find and possibly a misconfiguration, content length of 200k is around 160 packets if your mtu is 1500. Which I thought was significant but I recieved: <strong>Although your finding might appear to be a security vulnerability, this behavior does not really pose a concrete and exploitable risk to the platform.</strong></p>
 
-              <p>In California as stated by the CCPA, Companies who meet the requirements ( must hold 100k user data, etc) need to inform the user that there data is being collected and to give them a option to  <strong>opt-out.</strong> </p>
+              <p> So I was a bit bummed because I though i've just found my first bug and was thinking it was some huge find but it taught me that although it may be a misconfig, it didnt cause seemingly apparent risk to the platform. Which made sense. So I sharpened up my skills and moved on. Learning from a variety of bug bountiers and usign their techniques and frameworks on my next domain. </p>
 
-              <p>In Europe under the GDPR, Companies cannot collect data from users by default. The user has to <strong>opt-in</strong> for the company to start collecting data.</p>
-
-              <p>California seems to priotize and incentivize data collection while Europe's approach is to protect the data of users.</p>
-              <h3>Conclusion: The Normalization of Exploitation</h3>
-              <p>It's disturbing how <strong>normalized</strong> this <strong>predatory behavior</strong> has become. Large corporations have <strong>manipulated and exploited</strong> consumers for years under the guise of "analytics" and "user experience improvements."</p>
-              
-              <p>What shocks me the most is that you as a user are unwillingly sending over data to analytic services from <strong>your own machine</strong> by default ( This happens the moment you turn on your machine. ). Now thats not to say all data collection is bad, in fact its made a lot of things easier and can be great. I just believe that California and other states or countries should adopt similar standards to Europe putting user privacy first.
-            </div>
+              <h3>Domain 2</h3>
+              <p> I learned a bunch of new fancy tools like the importance of subdomain recon, nuclei, naabu, sqlmap, and my favorite google dorking. With these new tools I was more confident then ever ready to tackle my next bounty. This new approach was focued on enumeration, I first google dorked the target with queries like: <code>site:example.com ext:pdf</code> or things like <code>site:example.com intext:key</code></p>
+              <p>And I found something interesting, it was a file path named <code>example/akeyless-scp</code>a bash script that included functions like build_tunnel(),get_ssh_cert(), and BASTION_API definitions. By its self it just seemed like a script used to establish connected for a scp. So then I decided to see what the main directory looked like and it was a completly exposed directory path.</p>
+              <p>Now I got really excited again, so without digging any deeper I sent a report in and within hours I got another <strong>After careful review, it appears that the behavior described does not have a significant security impact on our platform. Therefore, we will be closing this report as informational.</strong></p>
+              <p>Once again back to the well, super bummed but I did get a bit further and realized I was lacking I was time. I thought for a long while about what I was lacking. I was following what the people online where doing, the tools they use, and the enumeration strategies. So what was I doing wrong? </p>
+              <h3>The Realization</h3>
+              It hit me right in the face. When I was a kid I was very successful in sports won many medals in soccer, basketball and baseball. I continued to exceel throughout highschool but wasnt good enough to play in college. Now why does this matter? Ill use an analogy, in sports we are taught to get better at the things we controls like our conditioning, our positioning, footwork, shooting, etc... A crucial piece of sports was being left out on us players. We would blindly listen to coaches and do as they say since they are coaches it wasnt really asked as to why. But this is where I lacked in, I was practicing all these fancy techniques without knowing who I was playing or fighting against. This is half the battle I was missing out on. Back to Bug Bountying its not valid or effective to randomly spray and enumerate. I have to learn who I am playing against, there strengths, there weakness, and how they operate in order to effectivly compete. Down to the server type up to the front end frameworks, i'm missing out on so much.</p>
+              <p>Therfore as of right now I've retired as I continue to learn about popular techs and document them here:  <a href="../My_Bug_Bounty_Bible/Bug_Bounty.html">Bug_Bounty</a>  </p> Where I will go into building wordpress application, sql servers, and much more to improve my play. 
+             
+             
             
             <!-- Tags -->
             <div class="tags mt-5">
               <span class="tag is-medium">Privacy</span>
               <span class="tag is-medium">Security</span>
               <span class="tag is-medium">Web</span>
-              <span class="tag is-medium">Analytics</span>
-              <span class="tag is-medium">Tracking</span>
               <span class="tag is-medium">Exploitation</span>
             </div>
             

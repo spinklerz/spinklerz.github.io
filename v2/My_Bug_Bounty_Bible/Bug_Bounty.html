@@ -254,48 +254,48 @@
         <div class="nav-category">
             <h2 class="nav-category-title">Web Vulnerabilities</h2>
             <ul class="nav-list">
-                <li class="nav-item"><a class="nav-link" onclick="showPage('xss')">XSS (Cross-Site Scripting)</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="showPage('sqli')">SQL Injection</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="showPage('csrf')">CSRF</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="showPage('ssrf')">SSRF</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="showPage('xxe')">XXE</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="showPage('accounttakeover')">Account Takeover</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="showPage('dns')">DNS</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="showPage('xss'); return false;" href="#xss">XSS (Cross-Site Scripting)</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="showPage('sqli'); return false;" href="#sqli">SQL Injection</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="showPage('csrf'); return false;" href="#csrf">CSRF</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="showPage('ssrf'); return false;" href="#ssrf">SSRF</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="showPage('xxe'); return false;" href="#xxe">XXE</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="showPage('accounttakeover'); return false;" href="#accounttakeover">Account Takeover</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="showPage('dns'); return false;" href="#dns">DNS</a></li>
             </ul>
         </div>
         
         <div class="nav-category">
             <h2 class="nav-category-title">API Testing</h2>
             <ul class="nav-list">
-                <li class="nav-item"><a class="nav-link" onclick="showPage('api-recon')">API Reconnaissance</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="showPage('api-auth')">Authentication Issues</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="showPage('api-idor')">IDORs in APIs</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="showPage('api-recon'); return false;" href="#api-recon">API Reconnaissance</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="showPage('api-auth'); return false;" href="#api-auth">Authentication Issues</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="showPage('api-idor'); return false;" href="#api-idor">IDORs in APIs</a></li>
             </ul>
         </div>
         
         <div class="nav-category">
             <h2 class="nav-category-title">Recon & Discovery</h2>
             <ul class="nav-list">
-                <li class="nav-item"><a class="nav-link" onclick="showPage('subdomain')">Subdomain Enumeration</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="showPage('port-scanning')">Port Scanning</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="showPage('content-discovery')">Content Discovery</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="showPage('subdomain'); return false;" href="#subdomain">Subdomain Enumeration</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="showPage('port-scanning'); return false;" href="#port-scanning">Port Scanning</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="showPage('content-discovery'); return false;" href="#content-discovery">Content Discovery</a></li>
             </ul>
         </div>
         
         <div class="nav-category">
             <h2 class="nav-category-title">Tools</h2>
             <ul class="nav-list">
-                <li class="nav-item"><a class="nav-link" onclick="showPage('burp')">Burp Suite</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="showPage('nuclei')">Nuclei</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="showPage('ffuf')">Ffuf</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="showPage('burp'); return false;" href="#burp">Burp Suite</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="showPage('nuclei'); return false;" href="#nuclei">Nuclei</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="showPage('ffuf'); return false;" href="#ffuf">Ffuf</a></li>
             </ul>
         </div>
 
         <div class="nav-category">
             <h2 class="nav-category-title">Important Notes</h2>
             <ul class="nav-list">
-                <li class="nav-item"><a class="nav-link" onclick="showPage('sql')">SQL</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="showPage('wordpress')">Wordpress</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="showPage('sql'); return false;" href="#sql">SQL</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="showPage('wordpress'); return false;" href="#wordpress">Wordpress</a></li>
             </ul>
         </div>
     </div>
@@ -644,23 +644,6 @@ admin'--</code></pre>
                 <h1 class="page-title">SQL Basics</h1>
                 <p class="page-description">Coming soon...</p>
             </div>
-
-            <div class="card">
-                    <h3 class="card-title">Simple queries</h3>
-                    <p>Select a column from table1</p>
-                    <code>
-                        SELECT column, another_column FROM table1;
-                    </code><br>
-                    This will return something like:
-                    <pre>
-                        column | another_column
-                        ----------------------
-                        value1 | value2
-                        value3 | value4
-                        value5 | value6
-                    </pre>
-                </div>
-
         </div>
         
         <div id="wordpress" class="page">
@@ -672,11 +655,7 @@ admin'--</code></pre>
     </div>
     
     <script>
-        // When the page loads, set the default active page to XSS
-        document.addEventListener('DOMContentLoaded', function() {
-            showPage('xss');
-        });
-        
+        // Function to show a specific page
         function showPage(pageId) {
             // Hide all pages
             const pages = document.querySelectorAll('.page');
@@ -688,9 +667,12 @@ admin'--</code></pre>
             const selectedPage = document.getElementById(pageId);
             if (selectedPage) {
                 selectedPage.classList.add('active');
+                // Update URL hash without triggering page reload
+                history.pushState(null, null, '#' + pageId);
             } else {
                 // If page doesn't exist, show XSS page as default
                 document.getElementById('xss').classList.add('active');
+                history.pushState(null, null, '#xss');
             }
             
             // Update navigation highlights
@@ -702,6 +684,29 @@ admin'--</code></pre>
                 }
             });
         }
+        
+        // When the page loads, check hash or load default
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get page from URL hash if available
+            let pageId = window.location.hash.substring(1); // Remove the # character
+            
+            // If no hash or invalid page, default to XSS
+            if (!pageId || !document.getElementById(pageId)) {
+                pageId = 'xss';
+            }
+            
+            // Show the page
+            showPage(pageId);
+        });
+        
+        // Handle browser back/forward navigation
+        window.addEventListener('popstate', function() {
+            let pageId = window.location.hash.substring(1);
+            if (!pageId || !document.getElementById(pageId)) {
+                pageId = 'xss';
+            }
+            showPage(pageId);
+        });
     </script>
 </body>
 </html>
