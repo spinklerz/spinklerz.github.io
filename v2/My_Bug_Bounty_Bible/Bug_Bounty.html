@@ -672,6 +672,7 @@ value5  | value6
 SELECT title FROM movies WHERE year BETWEEN 2000 AND 2010; # Matches movies released between 2000 and 2010
 SELECT Title FROM movies WHERE id >= 1 AND id <=5; # Matches movies with id between 1 and 5
 SELECT Title FROM movies WHERE Title LIKE "Toy%"; # Matches movies with title starting with "Toy"
+SELECT Title FROM movies WHERE Title LIKE "WALL%"; # Matches movies with title starting with "WALL*"
                 </pre>
                 <code>
                     SELECT column1, column2,<br>
