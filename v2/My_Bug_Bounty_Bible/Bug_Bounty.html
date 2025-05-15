@@ -641,8 +641,51 @@ admin'--</code></pre>
         
         <div id="sql" class="page">
             <div class="page-header">
-                <h1 class="page-title">SQL Basics</h1>
-                <p class="page-description">Coming soon...</p>
+                <h1 class="page-title">SQL BASICS</h1>
+                <p class="page-description"></p>
+            </div>
+            <div class="card">
+                <h3 class="card-title">SELECT/FROM</h3>
+                <p>Output the columns of a table(table1):</p>
+                <code>
+                    SELECT column1, column2,<br>
+                    FROM table1;
+                </code>
+                Output:
+                <pre>
+column1 | column2
+---------+---------
+value1  | value2
+value3  | value4
+value5  | value6
+                </pre>
+                In simple terms, select a column from a table.
+            </div>
+            <div class="card">
+                <h3 class="card-title">WHERE/AND/OR</h3>
+                <p>Here are just some expressions so we dont have to memorize:</p><br>
+                <img src="../images/Screenshot 2025-05-15 at 1.31.46 PM.png" alt="SQL WHERE/AND/OR" width="700">
+                <img src="../images/Screenshot 2025-05-15 at 1.45.27 PM.png" alt="SQL WHERE/AND/OR" width="700">
+                <br><br>
+                <p>Some syntax examples look like:</p>
+                <pre>
+SELECT title FROM movies WHERE year BETWEEN 2000 AND 2010; # Matches movies released between 2000 and 2010
+SELECT Title FROM movies WHERE id >= 1 AND id <=5; # Matches movies with id between 1 and 5
+SELECT Title FROM movies WHERE Title LIKE "Toy%"; # Matches movies with title starting with "Toy"
+                </pre>
+                <code>
+                    SELECT column1, column2,<br>
+                    FROM table1;
+                </code>
+                Output:
+                <pre>
+column1 | column2
+---------+---------
+value1  | value2
+value3  | value4
+value5  | value6
+                </pre>
+                In simple terms, select a column from a table.
             </div>
         </div>
         
