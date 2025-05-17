@@ -695,6 +695,44 @@ value5  | value6
                 <h1 class="page-title">WordPress</h1>
                 <p class="page-description">Coming soon...</p>
             </div>
+            <div class="card">
+                <h3>Chapter 1.) Fundamentals</h3>
+                <p> <h4>Important enpoints:</h4> </p>
+                <ul class="indented-list">
+                    <li><strong>wp-load.php</strong>: Loads the WordPress environment and configuration</li>
+                        <li><strong>wp-config.php</strong>: Contains critical configuration information</li>
+                        <li><strong>wp-settings.php</strong>: Initializes core WordPress functionality</li>
+                        <li><strong>wp-includes/wp-db.php</strong>: manages all database interactions:</li>
+                        <li><strong>Functions and Classes</strong>: Loads core functions through files in wp-includes</li>
+                </ul>
+                <p> Here is a full list of wordpress default endpoints I mapped out -> <a href="./misc/clean_wordpress_endpoints.txt">endpoints.txt</a></p>
+                <p><h4>Common Archtecture</h4></p>
+                <ul class="indented-list">
+                    <li><strong>wp-admin/</strong>: Administration interface files
+                      <ul class="indented-list">
+                        <li><strong>includes/</strong>: Admin-specific functions</li>
+                        <li><strong>css/, js/</strong>: Admin styling and scripts</li>
+                        <li><strong>network/</strong>: Multisite administration</li>
+                      </ul>
+                    </li>
+                    <li><strong>wp-includes/</strong>: Core functionality
+                      <ul class="indented-list">
+                        <li><strong>js/</strong>: Core JavaScript files</li>
+                        <li><strong>theme-compat/</strong>: Legacy theme templates</li>
+                        <li><strong>blocks/</strong>: Gutenberg block functionality</li>
+                        <li><strong>REST-API/</strong>: API endpoint implementations</li>
+                      </ul>
+                    </li>
+                    <li><strong>wp-content/</strong>: User-modifiable content (not part of core)
+                      <ul class="indented-list">
+                        <li><strong>plugins/</strong>: Plugin files</li>
+                        <li><strong>themes/</strong>: Theme files</li>
+                        <li><strong>uploads/</strong>: Uploaded media files</li>
+                      </ul>
+                    </li>
+                  </ul>
+                  
+            </div>
         </div>
     </div>
     
