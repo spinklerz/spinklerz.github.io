@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>David Shonack - How my Bug Bounty Journey Started</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.2/css/bulma.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.9.0/dist/gsap.min.js"></script>
+    <style>
+        body {
+          font-family: 'Open Sans', sans-serif;
+        }
+        .social-icons a {
+          margin: 0 10px;
+          transition: color 0.3s ease;
+        }
+        .social-icons a:hover {
+          color: #f5f5f5;
+        }
+        .button.is-link {
+          transition: background-color 0.3s ease;
+        }
+        .button.is-link:hover {
+          background-color: #2366d1;
+        }
+        .animated-underline {
+          position: relative;
+          display: inline-block;
+        }
+        .animated-underline::after {
+          content: '';
+          position: absolute;
+          width: 0;
+          height: 2px;
+          bottom: 0;
+          left: 0;
+          background-color: #3273dc;
+          transition: width 0.3s ease;
+        }
+        .animated-underline:hover::after {
+          width: 100%;
+        }
+        .blog-content {
+          line-height: 1.8;
+          color: #f5f5f5; /* Light gray for main text */
+        }
+        .blog-content p {
+          margin-bottom: 1.5rem;
+        }
+        .blog-content h2 {
+          margin-top: 2rem;
+          margin-bottom: 1rem;
+          color: rgb(51, 153, 255) !important; /* Already a light color */
+        }
+        .blog-content h3 {
+          /* Let's make these a bit lighter */
+          color: #ddd !important; /* A slightly lighter gray */
+          margin-top: 1.5rem;
+          margin-bottom: 1rem;
+        }
+        .blog-image {
+          border-radius: 8px;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+          transition: transform 0.3s ease;
+          max-width: 100%;
+          height: auto;
+          margin: 1rem 0;
+        }
+        .blog-image:hover {
+          transform: scale(1.02);
+        }
+        .author-box {
+          border-radius: 8px;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .author-box:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .related-post {
+          transition: transform 0.3s ease;
+        }
+        .related-post:hover {
+          transform: translateY(-5px);
+        }
+        .tag {
+          transition: background-color 0.3s ease;
+        }
+        .tag:hover {
+          background-color: #3273dc;
+          color: white;
+        }
+        code {
+          background-color: #f5f5f5;
+          color: #ff3860;
+          padding: 0.2em 0.4em;
+          border-radius: 3px;
+          font-size: 0.9em;
+        }
+        .content img {
+          max-width: 100%;
+          height: auto;
+          margin: 1rem 0;
+          border-radius: 8px;
+        }
+        strong {
+          /* Let's make these white or a very light gray */
+          color: white !important;
+        }
+      </style>
+  </head>
+  <body>
+    <!-- Navigation bar -->
+    <div id="navbar-container"></div>
+
+    <!-- Load the include script -->
+    <script src="./navbarBlogs.js" defer></script>
+
+    <!-- Hero Section -->
+    <section class="hero is-link is-medium">
+      <div class="hero-body">
+        <div class="container has-text-centered">
+          <p class="title is-2">
+            How my Bug Bounty Journey Started
+          </p>
+          <p class="subtitle">
+            How it all started
+          </p>
+          <div class="mt-4">
+            <span class="tag  mr-2">Privacy</span>
+            <span class="tag  mr-2">Security</span>
+            <span class="tag ">Web</span>
+          </div>
+          <p class="mt-4 is-size-6">
+            Published on May 14, 2025 by <strong>David Thomas Shonack</strong>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Social Media Banner -->
+    <div class="box has-background-black has-text-white">
+      <p class="has-text-centered">
+        <span class="tag is-primary">New</span> Feel free to drop in and check out my socials! I'd love to get to know you guys and connect!
+      </p>
+      <div class="has-text-centered mt-3 social-icons">
+        <a href="https://www.linkedin.com/in/david-shonack-29a7a4250" target="_blank" class="icon is-large has-text-white mx-2" aria-label="LinkedIn">
+          <i class="fab fa-linkedin fa-2x"></i>
+        </a>
+        <a href="https://github.com/spinklerz" target="_blank" class="icon is-large has-text-white mx-2" aria-label="GitHub">
+          <i class="fab fa-github fa-2x"></i>
+        </a>
+        <a href="mailto:dshonack@ucsc.edu" class="icon is-large has-text-white mx-2" aria-label="Email">
+          <i class="fas fa-envelope fa-2x"></i>
+        </a>
+      </div>
+    </div>
+    
+    <!-- Blog Content -->
+    <section class="section">
+      <div class="container">
+        <div class="columns is-centered">
+          <!-- Main Content -->
+          <div class="column is-8 is-flex is-justify-content-center is-flex-direction-column">        
+            
+            <!-- Blog Text -->
+            <div class="content blog-content">
+              <h1 id="introduction" style="color:rgb(51, 153, 255)">Introduction</h1>
+              <h2>Day 1</h2>
+              <p>Day 1 I spent a lot of time learning sql since I didn't know too much, as I completed the previous labs fairly easily I was feeling pretty good. </p>
+              <p>The first issue I faced was trying to understand what I was doing. Up until this point ive just worked on running everything through burp suite but this was different. The form I was suppose to inject was not being run through the proxy. It took me a little bit to figure out that inside the form to request for stock, contains an endpoint. So what I did was fire up burp suite look at the current webpage, reload it, send it to the repeater, modify the host headers and path to POST. </p>
+              <p>Then after I got correct endpoint to POST, how was I suppose to structure the xml. I did some research and found out there is no universal standard to implement xml. This was an unfortunate find as it didnt really give me any help. I decided to look at the source code once again and found an intersting endpoint, that was a js script detailing how xml is formed, so I analyzed it and starting sending post's and eventually I got the correct format! Then I sent some common payload like <code>' OR 1=1</code> and got a "Attack detected" and called it a day.
+                <h2>Day 2</h2>
+                <p>Day 2 I started to learn about encoding since the encoding method being used was not url encoding. Here is where I learned a lot, so xml files decode encoded text on the server side so we can use this to bypass the WAF. The encoding method was very intersting where <code>&</code> was used to symbolize html encoding <code>#</code> to indicate a number and <code>x</code>to indicate a hex value, then I would look up a ASCII table and manually encode each character by its hex value. For example I was using SELECT a lot and its encoding would look like: <code>&#x53;&#x45;&#x4c;&#x45;&#x43;&#x54;</code>. After I understood the encoding, I went right into it spamming random sqli's, it didn't take long to understand that I was getting no where constantly getting a stock of 0. I didn't understand what this meant, after spending a large portion of time messing around with commands i took a piece of paper out and decided to stop hitting my head against a keyboard. So what I knew was that we had two values at least the product ID and the store ID. My first formula came up with something like <code>SELECT stock FROM sometable WHERE storeId=userStoreId AND productId=userProductId;</code></p>
+                <p>I finally out of prue luck finally ran a command like <code>OR 1=1</code> next to the store ID, sent the request and got a list of stock quantities. Before moving on further I spent a large amount of time trying to understand why I recieved this output. When i ran the same command next to the product ID why didn't I get a similar response? I made a crucial mistake, when checking for sqli I've always been told and seen people say use <code>'</code> or <code>"</code>. What I failed to see was in both these cases it only considers senarios where the user input is being passed as some string. I would never check to see if user input was being passed as any other data type then a string. The reason the query worked with the <code>'</code> or <code>"</code> was because the backend was processing the query without using them and taking there values in directly so I came up with another forumla. <code>SELECT stock FROM sometable WHERE storeId=num(userStoreId) AND productId=num(userProductId)</code>. Naturally this looks very similar to </p>
+            </p>
+                <img src="../images/ITS-MESSAGE.png" alt="ITS response" class="blog-image">
+                <figcaption class="has-text-centered has-text-grey is-italic mt-2">Screenshot showing ITS response</figcaption>
+              </figure>
+              
+              <p>It might be a bit hard to see, but at the top is the response I received. The feeling of being able to help out and provide value was an invaluable experience. A few days later it was patched, and I was no longer able to see the webpage! This lit a fire in me; I wanted to do this again. Then I stumbled across Bug Bounties. </p>
+
+              
+
+<h3>The Beginning (Domain 1)</h3>
+
+<p>After winter quarter I hopped right into learning some of the basics and Burp Suite. Did all of their misconfig and API labs. I felt ready to go. I started with a lesser-known domain just to start small and work my way up. The goal was just to learn and absorb how modern web applications work. As I walked through each link and request with Burp, I noticed upon clicking on a login button I received 4 sentry.io responses as I stalled the request. 2 requests were normal, with content length of 300~, but the next 2 were very interesting, as one had a content length of 200k~ and the other had around 80k~. The responses with high content lengths included a lot of info like js endpoints, blacklisted countries, etc. </p>
+
+<p>So being kind of new I submitted this as a bug because I thought it was a significant find and possibly a misconfiguration. A response with a content length of 200k is around 160 packets if your MTU is 1500. Which I thought was significant, but I received: <strong>Although your finding might appear to be a security vulnerability, this behavior does not really pose a concrete and exploitable risk to the platform.</strong></p>
+
+
+
+
+<p> So I was a bit bummed because I thought I'd just found my first bug and was thinking it was some huge find, but it taught me that although it may be a misconfiguration, it didn't cause seemingly apparent risk to the platform. Which made sense. So I sharpened up my skills and moved on. Learning from a variety of bug bounty bountiers and using their techniques and frameworks on my next domain. </p>
+
+
+
+
+<h3>Domain 2</h3>
+
+<p> I learned a bunch of new fancy tools like the importance of subdomain recon, nuclei, naabu, sqlmap, and my favorite Google dorking. With these new tools, I was more confident than ever and ready to tackle my next bounty. This new approach was focused on enumeration. I first Google dorked the target with queries like: <code>site:example.com ext:pdf</code> or things like <code>site:example.com intext:key</code></p>
+
+<p>And I found something interesting, it was a file path named <code>example/company-scp</code>a bash script that included functions like build_tunnel(),get_ssh_cert(), and BASTION_API definitions. By its self it just seemed like a script used to establish connection for scp. So then I decided to see what the main directory looked like and it was a completly exposed directory path.</p>
+
+<p>Now I got really excited again, so without digging any deeper I sent a report in and within hours I got another <strong>After careful review, it appears that the behavior described does not have a significant security impact on our platform. Therefore, we will be closing this report as informational.</strong></p>
+
+<p>Once again back to the well, super bummed, but I did get a bit further and realized I was lacking big time. I was following what the people online were doing, the tools they used, and the enumeration strategies. So what was I doing wrong? </p>
+
+<h3>The Realization</h3>
+
+              It hit me right in the face. When I was a kid, I was very successful in sports and won many medals in soccer, basketball, and baseball. I continued to excel throughout high highschool but wasn't good enough to play in college. Now why does this matter? I'll use an analogy: in sports we are taught to get better at the things we control, like our conditioning, our positioning, footwork, shooting, etc. A crucial piece of sports was being left out on us players. We would blindly listen to coaches and do as they say since they are coaches; it wasn't really asked as to why. But this is where I lacked in, I was practicing all these fancy techniques without knowing who I was playing or fighting against. This is half the battle I was missing out on. It's not valid or effective to randomly spray and enumerate. I have to learn who I am playing against, their strengths, their weaknesses, and how they operate in order to effectively compete. Down to the server type up to the front-end frameworks, I'm missing out on so much.</p>
+
+<p>Therfore as of right now, I've retired as I continue to learn about popular techs and document them here:  <a href="../My_Bug_Bounty_Bible/Bug_Bounty.html">Bug_Bounty</a>  </p> Where I will go into labbing wordpress application, sql servers, rce's, and much more to improve my play. 
+             
+            
+            <!-- Tags -->
+            <div class="tags mt-5">
+              <span class="tag is-medium">Privacy</span>
+              <span class="tag is-medium">Security</span>
+              <span class="tag is-medium">Web</span>
+              <span class="tag is-medium">Exploitation</span>
+            </div>
+            
+            <!-- Author Box -->
+            <div class="box author-box has-background-light mt-6">
+              <article class="media">
+                <div class="media-left">
+                  <figure class="image is-96x96">
+                    <img class="is-rounded" src="/api/placeholder/192/192" alt="Author profile picture">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <div class="content">
+                    <p>
+                      <strong class="is-size-4">David Thomas Shonack</strong> <small class="is-size-6 has-text-grey">@dweebus</small>
+                      <br>
+                      Computer science student and privacy advocate based in California. Interested in security, software development, digital rights, and much more.
+                    </p>
+                    <div class="buttons mt-2">
+                      <a href="https://github.com/spinklerz" class="button is-small is-link is-outlined">
+                        <span class="icon">
+                          <i class="fab fa-github"></i>
+                        </span>
+                        <span>GitHub</span>
+                      </a>
+                      <a href="mailto:dshonack@ucsc.edu" class="button is-small is-link is-outlined">
+                        <span class="icon">
+                          <i class="fas fa-envelope"></i>
+                        </span>
+                        <span>Email</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+            </div>
+          
+          <!-- Sidebar -->
+            
+          
+    
+    <!-- Footer Section -->
+    
+    <!-- Simple JS for modals and animations -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Enable any modals if needed
+        document.querySelectorAll('.modal-button').forEach(function(el) {
+          el.addEventListener('click', function() {
+            const target = document.querySelector(this.getAttribute('data-target'));
+            target.classList.add('is-active');
+          });
+        });
+        
+        document.querySelectorAll('.modal-close, .modal-background').forEach(function(el) {
+          el.addEventListener('click', function() {
+            this.closest('.modal').classList.remove('is-active');
+          });
+        });
+        
+        gsap.fromTo(".hero .title", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" });
+        gsap.from(".hero .subtitle", { opacity: 0, y: 20, duration: 1, ease: "power2.out", delay: 0.3 });
+        gsap.from(".blog-content", { opacity: 0, y: 20, duration: 1, ease: "power2.out", delay: 0.5 });
+        gsap.from(".blog-content img", { opacity: 0, y: 20, duration: 1, stagger: 0.3, ease: "power2.out", delay: 0.8 });
+        gsap.from(".tags", { opacity: 0, y: 10, duration: 0.8, ease: "power2.out", delay: 1 });
+        gsap.from(".author-box", { opacity: 0, y: 20, duration: 0.8, ease: "power2.out", delay: 1.2 });
+      });
+    </script>
+  </body>
+</html>
