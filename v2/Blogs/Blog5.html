@@ -123,10 +123,10 @@
       <div class="hero-body">
         <div class="container has-text-centered">
           <p class="title is-2">
-            How my Bug Bounty Journey Started
+            CSRF And OAuth
           </p>
           <p class="subtitle">
-            How it all started
+            OAuth, CSRF, state paramaters and more!
           </p>
           <div class="mt-4">
             <span class="tag  mr-2">Privacy</span>
@@ -134,7 +134,7 @@
             <span class="tag ">Web</span>
           </div>
           <p class="mt-4 is-size-6">
-            Published on May 14, 2025 by <strong>David Thomas Shonack</strong>
+            Published on May 24, 2025 by <strong>David Thomas Shonack</strong>
           </p>
         </div>
       </div>
@@ -168,8 +168,7 @@
             <!-- Blog Text -->
             <div class="content blog-content">
               <h1 id="introduction" style="color:rgb(51, 153, 255)">Introduction</h1>
-              <h2>Day 1</h2>
-              <p>Day 1 I spent a lot of time learning sql since I didn't know too much, as I completed the previous labs fairly easily I was feeling pretty good. </p>
+              <p>Feel free to grab a drink, some snacks, and get comfortable this is gonna be a long one.</p>
               <p>The first issue I faced was trying to understand what I was doing. Up until this point ive just worked on running everything through burp suite but this was different. The form I was suppose to inject was not being run through the proxy. It took me a little bit to figure out that inside the form to request for stock, contains an endpoint. So what I did was fire up burp suite look at the current webpage, reload it, send it to the repeater, modify the host headers and path to POST. </p>
               <p>Then after I got correct endpoint to POST, how was I suppose to structure the xml. I did some research and found out there is no universal standard to implement xml. This was an unfortunate find as it didnt really give me any help. I decided to look at the source code once again and found an intersting endpoint, that was a js script detailing how xml is formed, so I analyzed it and starting sending post's and eventually I got the correct format! Then I sent some common payload like <code>' OR 1=1</code> and got a "Attack detected" and called it a day.
                 <h2>Day 2</h2>
@@ -227,7 +226,7 @@
                         <span class="icon">
                           <i class="fas fa-envelope"></i>
                         </span>
-                        <span>Email</span>
+                        <span>Emai</span>
                       </a>
                     </div>
                   </div>
