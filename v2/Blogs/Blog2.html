@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>David Shonack - How my Bug Bounty Journey Started</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.2/css/bulma.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.9.0/dist/gsap.min.js"></script>
+    <style>
+        body {
+          font-family: 'Open Sans', sans-serif;
+        }
+        .social-icons a {
+          margin: 0 10px;
+          transition: color 0.3s ease;
+        }
+        .social-icons a:hover {
+          color: #f5f5f5;
+        }
+        .button.is-link {
+          transition: background-color 0.3s ease;
+        }
+        .button.is-link:hover {
+          background-color: #2366d1;
+        }
+        .animated-underline {
+          position: relative;
+          display: inline-block;
+        }
+        .animated-underline::after {
+          content: '';
+          position: absolute;
+          width: 0;
+          height: 2px;
+          bottom: 0;
+          left: 0;
+          background-color: #3273dc;
+          transition: width 0.3s ease;
+        }
+        .animated-underline:hover::after {
+          width: 100%;
+        }
+        .blog-content {
+          line-height: 1.8;
+          color: #f5f5f5; /* Light gray for main text */
+        }
+        .blog-content p {
+          margin-bottom: 1.5rem;
+        }
+        .blog-content h2 {
+          margin-top: 2rem;
+          margin-bottom: 1rem;
+          color: rgb(51, 153, 255) !important; /* Already a light color */
+        }
+        .blog-content h3 {
+          /* Let's make these a bit lighter */
+          color: #ddd !important; /* A slightly lighter gray */
+          margin-top: 1.5rem;
+          margin-bottom: 1rem;
+        }
+        .blog-image {
+          border-radius: 8px;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+          transition: transform 0.3s ease;
+          max-width: 100%;
+          height: auto;
+          margin: 1rem 0;
+        }
+        .blog-image:hover {
+          transform: scale(1.02);
+        }
+        .author-box {
+          border-radius: 8px;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .author-box:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .related-post {
+          transition: transform 0.3s ease;
+        }
+        .related-post:hover {
+          transform: translateY(-5px);
+        }
+        .tag {
+          transition: background-color 0.3s ease;
+        }
+        .tag:hover {
+          background-color: #3273dc;
+          color: white;
+        }
+        code {
+          background-color: #f5f5f5;
+          color: #ff3860;
+          padding: 0.2em 0.4em;
+          border-radius: 3px;
+          font-size: 0.9em;
+        }
+        .content img {
+          max-width: 100%;
+          height: auto;
+          margin: 1rem 0;
+          border-radius: 8px;
+        }
+        strong {
+          /* Let's make these white or a very light gray */
+          color: white !important;
+        }
+      </style>
+  </head>
+  <body>
+    <!-- Navigation bar -->
+    <div id="navbar-container"></div>
+
+    <!-- Load the include script -->
+    <script src="./navbarBlogs.js" defer></script>
+
+    <!-- Hero Section -->
+    <section class="hero is-link is-medium">
+      <div class="hero-body">
+        <div class="container has-text-centered">
+          <p class="title is-2">
+            CSRF And OAuth
+          </p>
+          <p class="subtitle">
+            OAuth, CSRF, state paramaters and more!
+          </p>
+          <div class="mt-4">
+            <span class="tag  mr-2">Privacy</span>
+            <span class="tag  mr-2">Security</span>
+            <span class="tag ">Web</span>
+          </div>
+          <p class="mt-4 is-size-6">
+            Published on May 24, 2025 by <strong>David Thomas Shonack</strong>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Social Media Banner -->
+    <div class="box has-background-black has-text-white">
+      <p class="has-text-centered">
+        <span class="tag is-primary">New</span> Feel free to drop in and check out my socials! I'd love to get to know you guys and connect!
+      </p>
+      <div class="has-text-centered mt-3 social-icons">
+        <a href="https://www.linkedin.com/in/david-shonack-29a7a4250" target="_blank" class="icon is-large has-text-white mx-2" aria-label="LinkedIn">
+          <i class="fab fa-linkedin fa-2x"></i>
+        </a>
+        <a href="https://github.com/spinklerz" target="_blank" class="icon is-large has-text-white mx-2" aria-label="GitHub">
+          <i class="fab fa-github fa-2x"></i>
+        </a>
+        <a href="mailto:dshonack@ucsc.edu" class="icon is-large has-text-white mx-2" aria-label="Email">
+          <i class="fas fa-envelope fa-2x"></i>
+        </a>
+      </div>
+    </div>
+    
+    <!-- Blog Content -->
+    <section class="section">
+      <div class="container">
+        <div class="columns is-centered">
+          <!-- Main Content -->
+          <div class="column is-8 is-flex is-justify-content-center is-flex-direction-column">        
+            
+            <!-- Blog Text -->
+            <div class="content blog-content">
+              <h1 id="introduction" style="color:rgb(51, 153, 255)">Introduction</h1>
+              <p>I was reading the thehackernews like most mornings. Where these chinese hackers exploited two vulnerabilites on ivanti CVE-2025-4427 (an auth bypass) and CVE-2025-4428 (an RCE). I didn't know a lot about RCE's so I dove in and it led me down the rabit whole of ASLR.</p>
+              <h2>ASLR</h2>
+              <p>OAuth is a process that happens during federation where a user will authenticate themselves using a third party service. For example im sure you've seen the option to log into a website via google or via github. That is the start of OAuth.</p>
+              <p>To give you a better picture ill walk through the process of OAuth's workflow. Lets say the origin domain is todomaster.com and it wants to access our calender, profile, and email. </p>
+              <ul>
+                <li>First the user would click on google's auth link to login in:
+                  <pre>
+https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?gsiwebsdk=3&
+client_id=1its_random_dont_try_to_look_it_up_-.-6eb3fevouidh9.apps.googleusercontent.com&
+redirect_uri=https://todomaster.com/oauth2callback&
+response_type=code
+&state=state_parameter_passthrough_value
+scope=openid%20profile%20email%20calendar</pre>
+                  <ul>
+                    <li>Client_id is the unique identifier for the application requesting access. in this case todomaster.com.</li> 
+                    <li>The scope is the permissions being requested, such as access to the user's profile, email, and calendar.</li> 
+                    <li>The redirect_uri is where the user will be sent after they authenticate with Google.</li> 
+                    <li>The response_type is set to "code" which means that after authentication, Google will send a code back to todomaster.com that can be exchanged for an access token. We will go more into detail about this below. </li>
+                  <li>The State paramerter is used to protect users against CSRF well explain more below. </li>
+                  </ul> </li>
+                  <li>After the user is authenticated then google generates a code and redirects the authenticated user with the code in the url.</li>
+                <li>Then the user is redirected to the redirect_uri with the code and state parameter.</li>
+                <li>Its important to note that the code given to the client by google is temporary and last's around 15 mintues. </li>
+                <li>The code is temporary because while the user is temporarly authenticated, todomaster and google are communicating to create a token/key. </li>
+                <li>todomaster exchanges the code it just received from the client's uri, and then queries google's token endpoint to exchange that code for a token/key. </li>
+                <li>When this key is generated and is kept server side.</li>
+                <li>The server then keeps the token server side and issues the corresponding cookie to the user. </li>
+                <li>Now the user can access their profile, email, and calendar on todomaster.com.</li>
+              </ul>
+                <h2>CSRF</h2>
+                <p>Cross-site request forgery is an attack that leverage active user cookie sessions. Here's a classic example: <pre>https://bank.com/my-account/transfer?send=1000&to=attack_account</pre> Now this only works if the user is authenticated. If they do have a open cookie session then this attack could be possible and would send 1000 from the user to an attacker account. Now in modern applicatoins this is tough since there are many mechanisms to stop CSRF like origin header checks, state tokens, same site cookie attribute, and much more. So lets put these two things together.</p>
+                <h2>OAuth & CSRF </h2>
+                <p>So now lets say we have a OAuth flow that is vulnerable to CSRF meaning it is missing the state parameter. The attacker could sign into the application and once they finish entering there password they could use a proxy like burp suite to intercept the uri request with the code and stall the communication between the google and the application. Now what happens is the attacker has a small window until the code expires to get another authenticated user to click on the redirect with the attackers code. Now if a user was to click on the attacker's uri, and they were authentictaed it would automatically link their google account to the users account.  
+                </p>
+                <p>Now the attacker has access to the users profile, email, and calendar. This is a very simple example of how OAuth can be exploited with CSRF. </p>
+                <h2>State parameter</h2>
+                <p>How the original attack works is that it doesnt attach the session ID of the user who made the original OAuth to the one with the code. Thus resulting in this odd attachment from session to redirect uri. </p>
+                <p>The state parameter is a cryptographically generated value that is tied to the session of the user who made the OAuth query. So when the attacker goes to login, and completes the interaction, captures the redirect uri with the code and state parameter. When a user clicks on the attackers redirect uri, todomaster.com checks if the state is mapped to the users session ID. Since the state parameter is mapped to the attackers session ID, todomaster will reject the linking of accounts or ask the user to log in again with there corresponding state parameter. </p>
+                <h1>Conclusion</h1>
+                <p>As the adoption of OAuth continues to increase so does the risk of its exploitation. To my knowledge third parties like google rely on the origin domain to enforce strict security controls. The state parameter is a serverside solution and there isnt any policy to enforce on the end of third parties. The necessity in implementing solutions like a state parameter or PKCE is vital to the privacy and secuirty of users as it can lead to account takeovers. </p>
+              
+             
+            
+            <!-- Tags -->
+            <div class="tags mt-5">
+              <span class="tag is-medium">Privacy</span>
+              <span class="tag is-medium">Security</span>
+              <span class="tag is-medium">Web</span>
+              <span class="tag is-medium">Exploitation</span>
+            </div>
+            
+            <!-- Author Box -->
+            <div class="box author-box has-background-light mt-6">
+              <article class="media">
+                <div class="media-left">
+                  <figure class="image is-96x96">
+                    <img class="is-rounded" src="/api/placeholder/192/192" alt="Author profile picture">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <div class="content">
+                    <p>
+                      <strong class="is-size-4">David Thomas Shonack</strong> <small class="is-size-6 has-text-grey">@dweebus</small>
+                      <br>
+                      Computer science student and privacy advocate based in California. Interested in security, software development, digital rights, and much more.
+                    </p>
+                    <div class="buttons mt-2">
+                      <a href="https://github.com/spinklerz" class="button is-small is-link is-outlined">
+                        <span class="icon">
+                          <i class="fab fa-github"></i>
+                        </span>
+                        <span>GitHub</span>
+                      </a>
+                      <a href="mailto:dshonack@ucsc.edu" class="button is-small is-link is-outlined">
+                        <span class="icon">
+                          <i class="fas fa-envelope"></i>
+                        </span>
+                        <span>Email</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+            </div>
+          
+          <!-- Sidebar -->
+            
+          
+    
+    <!-- Footer Section -->
+    
+    <!-- Simple JS for modals and animations -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Enable any modals if needed
+        document.querySelectorAll('.modal-button').forEach(function(el) {
+          el.addEventListener('click', function() {
+            const target = document.querySelector(this.getAttribute('data-target'));
+            target.classList.add('is-active');
+          });
+        });
+        
+        document.querySelectorAll('.modal-close, .modal-background').forEach(function(el) {
+          el.addEventListener('click', function() {
+            this.closest('.modal').classList.remove('is-active');
+          });
+        });
+        
+        gsap.fromTo(".hero .title", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" });
+        gsap.from(".hero .subtitle", { opacity: 0, y: 20, duration: 1, ease: "power2.out", delay: 0.3 });
+        gsap.from(".blog-content", { opacity: 0, y: 20, duration: 1, ease: "power2.out", delay: 0.5 });
+        gsap.from(".blog-content img", { opacity: 0, y: 20, duration: 1, stagger: 0.3, ease: "power2.out", delay: 0.8 });
+        gsap.from(".tags", { opacity: 0, y: 10, duration: 0.8, ease: "power2.out", delay: 1 });
+        gsap.from(".author-box", { opacity: 0, y: 20, duration: 0.8, ease: "power2.out", delay: 1.2 });
+      });
+    </script>
+  </body>
+</html>

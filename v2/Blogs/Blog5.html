@@ -201,14 +201,13 @@ scope=openid%20profile%20email%20calendar</pre>
                 <p>Cross-site request forgery is an attack that leverage active user cookie sessions. Here's a classic example: <pre>https://bank.com/my-account/transfer?send=1000&to=attack_account</pre> Now this only works if the user is authenticated. If they do have a open cookie session then this attack could be possible and would send 1000 from the user to an attacker account. Now in modern applicatoins this is tough since there are many mechanisms to stop CSRF like origin header checks, state tokens, same site cookie attribute, and much more. So lets put these two things together.</p>
                 <h2>OAuth & CSRF </h2>
                 <p>So now lets say we have a OAuth flow that is vulnerable to CSRF meaning it is missing the state parameter. The attacker could sign into the application and once they finish entering there password they could use a proxy like burp suite to intercept the uri request with the code and stall the communication between the google and the application. Now what happens is the attacker has a small window until the code expires to get another authenticated user to click on the redirect with the attackers code. Now if a user was to click on the attacker's uri, and they were authentictaed it would automatically link their google account to the users account.  
-                <h2>What I Learned</h2>
-                <p>It may not of been super clear but let me lay it out.</p>
-                <ul class="indented-list">
-                    <li>File acceptance types can be a attack vector( In this case xml ) and can be leverage to avoid WAF's</li>
-                    <li>SQLi's can be very dynamic, taking it slow having a metholdogy and make sure you document progress is vital</li>
-                    <li>Learned a lot about xml and how it decodes html encodings on the server side </li>
-                    <li>Also this site was a lifesaver for encoding the sqli: <a href="http://www.mynikko.com/tools/tool_htmlencoding.html"> Link </a></li>
-                </ul>
+                </p>
+                <p>Now the attacker has access to the users profile, email, and calendar. This is a very simple example of how OAuth can be exploited with CSRF. </p>
+                <h2>State parameter</h2>
+                <p>How the original attack works is that it doesnt attach the session ID of the user who made the original OAuth to the one with the code. Thus resulting in this odd attachment from session to redirect uri. </p>
+                <p>The state parameter is a cryptographically generated value that is tied to the session of the user who made the OAuth query. So when the attacker goes to login, and completes the interaction, captures the redirect uri with the code and state parameter. When a user clicks on the attackers redirect uri, todomaster.com checks if the state is mapped to the users session ID. Since the state parameter is mapped to the attackers session ID, todomaster will reject the linking of accounts or ask the user to log in again with there corresponding state parameter. </p>
+                <h1>Conclusion</h1>
+                <p>As the adoption of OAuth continues to increase so does the risk of its exploitation. To my knowledge third parties like google rely on the origin domain to enforce strict security controls. The state parameter is a serverside solution and there isnt any policy to enforce on the end of third parties. The necessity in implementing solutions like a state parameter or PKCE is vital to the privacy and secuirty of users as it can lead to account takeovers. </p>
               
              
             
