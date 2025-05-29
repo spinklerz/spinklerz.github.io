@@ -169,8 +169,34 @@
             <div class="content blog-content">
               <h1 id="introduction" style="color:rgb(51, 153, 255)">Introduction</h1>
               <p>Feel free to grab a drink, some snacks, and get comfortable this is gonna be a long one.</p>
-              <p>The first issue I faced was trying to understand what I was doing. Up until this point ive just worked on running everything through burp suite but this was different. The form I was suppose to inject was not being run through the proxy. It took me a little bit to figure out that inside the form to request for stock, contains an endpoint. So what I did was fire up burp suite look at the current webpage, reload it, send it to the repeater, modify the host headers and path to POST. </p>
-              <p>Then after I got correct endpoint to POST, how was I suppose to structure the xml. I did some research and found out there is no universal standard to implement xml. This was an unfortunate find as it didnt really give me any help. I decided to look at the source code once again and found an intersting endpoint, that was a js script detailing how xml is formed, so I analyzed it and starting sending post's and eventually I got the correct format! Then I sent some common payload like <code>' OR 1=1</code> and got a "Attack detected" and called it a day.
+              <h2> OAuth </h2>
+              <p>OAuth is a process that happens during federation where a user will authenticate themselves using a third party service. For example im sure you've seen the option to log into a website via google or via github. That is the start of OAuth.</p>
+              <p>To give you a better picture ill walk through the process of OAuth's workflow. Lets say the origin domain is todomaster.com and it wants to access our calender, profile, and email. </p>
+              <ul>
+                <li>First the user would click on google's auth link to login in:
+                  <pre>
+https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?gsiwebsdk=3&
+client_id=1its_random_dont_try_to_look_it_up_-.-6eb3fevouidh9.apps.googleusercontent.com&
+redirect_uri=https://todomaster.com/oauth2callback&
+response_type=code
+&state=state_parameter_passthrough_value
+scope=openid%20profile%20email%20calendar</pre>
+                  <ul>
+                    <li>Client_id is the unique identifier for the application requesting access. in this case todomaster.com.</li> 
+                    <li>The scope is the permissions being requested, such as access to the user's profile, email, and calendar.</li> 
+                    <li>The redirect_uri is where the user will be sent after they authenticate with Google.</li> 
+                    <li>The response_type is set to "code" which means that after authentication, Google will send a code back to todomaster.com that can be exchanged for an access token. We will go more into detail about this below. </li>
+                  <li>The State paramerter is used to protect users against CSRF well explain more below. </li>
+                  </ul> </li>
+                  <li>After the user is authenticated then google generates a code and redirects the authenticated user with the code in the url.</li>
+                <li>Then the user is redirected to the redirect_uri with the code and state parameter.</li>
+                <li>Its important to note that the code given to the client by google is temporary and last's around 15 mintues. </li>
+                <li>The code is temporary because while the user is temporarly authenticated, todomaster and google are communicating to create a token/key. </li>
+                <li>todomaster exchanges the code it just received from the client's uri, and then queries google's token endpoint to exchange that code for a token/key. </li>
+                <li>When this key is generated and is kept server side.</li>
+                <li>The server then keeps the token server side and issues the corresponding cookie to the user. </li>
+                <li>Now the user can access their profile, email, and calendar on todomaster.com.</li>
+              </ul>
                 <h2>Day 2</h2>
                 <p>Day 2 I started to learn about encoding since the encoding method being used was not url encoding. Here is where I learned a lot, so xml files decode encoded text on the server side so we can use this to bypass the WAF. The encoding method was very intersting where <code>&</code> was used to symbolize html encoding <code>#</code> to indicate a number and <code>x</code>to indicate a hex value, then I would look up a ASCII table and manually encode each character by its hex value. For example I was using SELECT a lot and its encoding would look like: <code>&#x53;&#x45;&#x4c;&#x45;&#x43;&#x54;</code>. After I understood the encoding, I went right into it spamming random sqli's, it didn't take long to understand that I was getting no where constantly getting a stock of 0. I didn't understand what this meant, after spending a large portion of time messing around with commands i took a piece of paper out and decided to stop hitting my head against a keyboard. So what I knew was that we had two values at least the product ID and the store ID. My first formula came up with something like <code>SELECT stock FROM sometable WHERE storeId=userStoreId AND productId=userProductId;</code></p>
                 <p>I finally out of prue luck finally ran a command like <code>OR 1=1</code> next to the store ID, sent the request and got a list of stock quantities. Before moving on further I spent a large amount of time trying to understand why I recieved this output. When i ran the same command next to the product ID why didn't I get a similar response? I made a crucial mistake, when checking for sqli I've always been told and seen people say use <code>'</code> or <code>"</code>. What I failed to see was in both these cases it only considers senarios where the user input is being passed as some string. I would never check to see if user input was being passed as any other data type then a string. The reason the query worked with the <code>'</code> or <code>"</code> was because the backend was processing the query without using them and taking there values in directly so I came up with another forumla. <code>SELECT stock FROM sometable WHERE storeId=num(userStoreId) AND productId=num(userProductId)</code>. Naturally this looks very similar to the first formula with a distinct difference, in that the user input was a number. That big clue then let me to my next query which was the encoded <code>UNION SELECT username FROM users--</code> which output all the users! I did the same thing with passwords and got the same result!: </p>
@@ -226,7 +252,7 @@
                         <span class="icon">
                           <i class="fas fa-envelope"></i>
                         </span>
-                        <span>Emai</span>
+                        <span>Email</span>
                       </a>
                     </div>
                   </div>
