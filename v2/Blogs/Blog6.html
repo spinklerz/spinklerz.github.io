@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>David Shonack - How my Bug Bounty Journey Started</title>
+    <title>David Shonack - CloudFlare</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.2/css/bulma.min.css">
@@ -123,10 +123,9 @@
       <div class="hero-body">
         <div class="container has-text-centered">
           <p class="title is-2">
-            CSRF And OAuth
+            How CloudFlare acts as a Shield for Malicous Websites
           </p>
           <p class="subtitle">
-            OAuth, CSRF, state paramaters and more!
           </p>
           <div class="mt-4">
             <span class="tag  mr-2">Privacy</span>
@@ -134,7 +133,7 @@
             <span class="tag ">Web</span>
           </div>
           <p class="mt-4 is-size-6">
-            Published on May 24, 2025 by <strong>David Thomas Shonack</strong>
+            Published on May 30, 2025 by <strong>David Thomas Shonack</strong>
           </p>
         </div>
       </div>
@@ -168,20 +167,47 @@
             <!-- Blog Text -->
             <div class="content blog-content">
               <h1 id="introduction" style="color:rgb(51, 153, 255)">Introduction</h1>
-              <p>I was reading the thehackernews like most mornings. Where these chinese hackers exploited two vulnerabilites on ivanti CVE-2025-4427 (an auth bypass) and CVE-2025-4428 (an RCE). I didn't know a lot about RCE's so I dove in and it led me down the rabit whole of ASLR.</p>
-              <h2>High Level Overview of Processes and Memory</h2>
-                <p>Lets go over the workflow of a process. If we have a python script that said <pre>print("Hello, World")</pre> and ran <code>python3 helloWorld.py</code>. The operating system would then create a new process, as might you imagine there are many processes running on a computer. There are many different algorithm's that determine when each process gets executed. For simplicity lets say our algorithm operates on stack( FIFO ). When our process gets popped for execution there are 3 stages a CPU goes through. The CPU receives the process as a batch instruction, it fecthes the instruction, decodes it, then executes the instruction.  Its very important to note, these three stages are happening concurrently meaning there is an instruction at each phase in the process at the same time. Before a process is executed it is assigned something called virtual memory. You can think of virtual memory as fake memory, memory that hasn't been allocated <strong>yet</strong>.When a process is ready to execute there is a data structure called a page table that translates virtual memory into actual memory. Virtual memory is usually many times larger then the actual space available in memory. Memory works like a cache where it keeps commonly used address spaces and those who arent used that much get pushed to the disk. A common algorithm is Least Frequently Used (LFU). Where is ASLR in all this?   </p>
-                <h2>ASLR</h2>
-                <p>Address Space Layout Randomization is what it sounds like, the randomization of address spaces. When a process is executed it is given a range called ASLR window. Disk and memory are usually partitioned in things called pages. Which are just slices of memory usually around 4KB. Now for example lets say our ASLR window is around 512 we multiply that by the page size 4KB and get 512*4KB = 2MB. So the process can start anywhere within that 2MB range. The important part is the stack can only start at 512 positions. Which makes injection very predicatble. Here is how is likely went: 
-                    <ul>
-                        <li>Attacker did some static analysis on source code, and found a vulnerability</li>
-                        <li>Without ASLR the attacker predicted or mapped out how far away from the stack the address location of the vulnerability is. </li>
-                    <li>In our example there are 512 position the stack could start, so they attacker would guess and injection the malicous payload at n locations of the window</li></ul> </p>
-                    <p>Thats a basic run through but lets move onto what happened with Ivanti</p>
-
-                <h2>Ivanti</h2>
-                <p>To be Continued....</p>
-            
+              <p>Feel free to grab a drink, some snacks, and get comfortable this is gonna be a long one.</p>
+              <h2> OAuth </h2>
+              <p>OAuth is a process that happens during federation where a user will authenticate themselves using a third party service. For example im sure you've seen the option to log into a website via google or via github. That is the start of OAuth.</p>
+              <p>To give you a better picture ill walk through the process of OAuth's workflow. Lets say the origin domain is todomaster.com and it wants to access our calender, profile, and email. </p>
+              <ul>
+                <li>First the user would click on google's auth link to login in:
+                  <pre>
+https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?gsiwebsdk=3&
+client_id=1its_random_dont_try_to_look_it_up_-.-6eb3fevouidh9.apps.googleusercontent.com&
+redirect_uri=https://todomaster.com/oauth2callback&
+response_type=code
+&state=state_parameter_passthrough_value
+scope=openid%20profile%20email%20calendar</pre>
+                  <ul>
+                    <li>Client_id is the unique identifier for the application requesting access. in this case todomaster.com.</li> 
+                    <li>The scope is the permissions being requested, such as access to the user's profile, email, and calendar.</li> 
+                    <li>The redirect_uri is where the user will be sent after they authenticate with Google.</li> 
+                    <li>The response_type is set to "code" which means that after authentication, Google will send a code back to todomaster.com that can be exchanged for an access token. We will go more into detail about this below. </li>
+                  <li>The State paramerter is used to protect users against CSRF well explain more below. </li>
+                  </ul> </li>
+                  <li>After the user is authenticated then google generates a code and redirects the authenticated user with the code in the url.</li>
+                <li>Then the user is redirected to the redirect_uri with the code and state parameter.</li>
+                <li>Its important to note that the code given to the client by google is temporary and last's around 15 mintues. </li>
+                <li>The code is temporary because while the user is temporarly authenticated, todomaster and google are communicating to create a token/key. </li>
+                <li>todomaster exchanges the code it just received from the client's uri, and then queries google's token endpoint to exchange that code for a token/key. </li>
+                <li>When this key is generated and is kept server side.</li>
+                <li>The server then keeps the token server side and issues the corresponding cookie to the user. </li>
+                <li>Now the user can access their profile, email, and calendar on todomaster.com.</li>
+              </ul>
+                <h2>CSRF</h2>
+                <p>Cross-site request forgery is an attack that leverage active user cookie sessions. Here's a classic example: <pre>https://bank.com/my-account/transfer?send=1000&to=attack_account</pre> Now this only works if the user is authenticated. If they do have a open cookie session then this attack could be possible and would send 1000 from the user to an attacker account. Now in modern applicatoins this is tough since there are many mechanisms to stop CSRF like origin header checks, state tokens, same site cookie attribute, and much more. So lets put these two things together.</p>
+                <h2>OAuth & CSRF </h2>
+                <p>So now lets say we have a OAuth flow that is vulnerable to CSRF meaning it is missing the state parameter. The attacker could sign into the application and once they finish entering there password they could use a proxy like burp suite to intercept the uri request with the code and stall the communication between the google and the application. Now what happens is the attacker has a small window until the code expires to get another authenticated user to click on the redirect with the attackers code. Now if a user was to click on the attacker's uri, and they were authentictaed it would automatically link their google account to the users account.  
+                </p>
+                <p>Now the attacker has access to the users profile, email, and calendar. This is a very simple example of how OAuth can be exploited with CSRF. </p>
+                <h2>State parameter</h2>
+                <p>How the original attack works is that it doesnt attach the session ID of the user who made the original OAuth to the one with the code. Thus resulting in this odd attachment from session to redirect uri. </p>
+                <p>The state parameter is a cryptographically generated value that is tied to the session of the user who made the OAuth query. So when the attacker goes to login, and completes the interaction, captures the redirect uri with the code and state parameter. When a user clicks on the attackers redirect uri, todomaster.com checks if the state is mapped to the users session ID. Since the state parameter is mapped to the attackers session ID, todomaster will reject the linking of accounts or ask the user to log in again with there corresponding state parameter. </p>
+                <h1>Conclusion</h1>
+                <p>As the adoption of OAuth continues to increase so does the risk of its exploitation. To my knowledge third parties like google rely on the origin domain to enforce strict security controls. The state parameter is a serverside solution and there isnt any policy to enforce on the end of third parties. The necessity in implementing solutions like a state parameter or PKCE is vital to the privacy and secuirty of users as it can lead to account takeovers. </p>
+              
              
             
             <!-- Tags -->
