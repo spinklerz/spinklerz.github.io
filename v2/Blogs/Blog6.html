@@ -198,50 +198,19 @@
             <li>Next once recieved it is then decoded, and gives a success: true</li>
             <li>Finally the data is sent to the c2 server from the applications web server.</li>
         </ul>
-            <li></li>
         </ul>
-    <h2> OAuth </h2>
-              <p>OAuth is a process that happens during federation where a user will authenticate themselves using a third party service. For example im sure you've seen the option to log into a website via google or via github. That is the start of OAuth.</p>
-              <p>To give you a better picture ill walk through the process of OAuth's workflow. Lets say the origin domain is todomaster.com and it wants to access our calender, profile, and email. </p>
-              <ul>
-                <li>First the user would click on google's auth link to login in:
-                  <pre>
-https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?gsiwebsdk=3&
-client_id=1its_random_dont_try_to_look_it_up_-.-6eb3fevouidh9.apps.googleusercontent.com&
-redirect_uri=https://todomaster.com/oauth2callback&
-response_type=code
-&state=state_parameter_passthrough_value
-scope=openid%20profile%20email%20calendar</pre>
-                  <ul>
-                    <li>Client_id is the unique identifier for the application requesting access. in this case todomaster.com.</li> 
-                    <li>The scope is the permissions being requested, such as access to the user's profile, email, and calendar.</li> 
-                    <li>The redirect_uri is where the user will be sent after they authenticate with Google.</li> 
-                    <li>The response_type is set to "code" which means that after authentication, Google will send a code back to todomaster.com that can be exchanged for an access token. We will go more into detail about this below. </li>
-                  <li>The State paramerter is used to protect users against CSRF well explain more below. </li>
-                  </ul> </li>
-                  <li>After the user is authenticated then google generates a code and redirects the authenticated user with the code in the url.</li>
-                <li>Then the user is redirected to the redirect_uri with the code and state parameter.</li>
-                <li>Its important to note that the code given to the client by google is temporary and last's around 15 mintues. </li>
-                <li>The code is temporary because while the user is temporarly authenticated, todomaster and google are communicating to create a token/key. </li>
-                <li>todomaster exchanges the code it just received from the client's uri, and then queries google's token endpoint to exchange that code for a token/key. </li>
-                <li>When this key is generated and is kept server side.</li>
-                <li>The server then keeps the token server side and issues the corresponding cookie to the user. </li>
-                <li>Now the user can access their profile, email, and calendar on todomaster.com.</li>
-              </ul>
-                <h2>CSRF</h2>
-                <p>Cross-site request forgery is an attack that leverage active user cookie sessions. Here's a classic example: <pre>https://bank.com/my-account/transfer?send=1000&to=attack_account</pre> Now this only works if the user is authenticated. If they do have a open cookie session then this attack could be possible and would send 1000 from the user to an attacker account. Now in modern applicatoins this is tough since there are many mechanisms to stop CSRF like origin header checks, state tokens, same site cookie attribute, and much more. So lets put these two things together.</p>
-                <h2>OAuth & CSRF </h2>
-                <p>So now lets say we have a OAuth flow that is vulnerable to CSRF meaning it is missing the state parameter. The attacker could sign into the application and once they finish entering there password they could use a proxy like burp suite to intercept the uri request with the code and stall the communication between the google and the application. Now what happens is the attacker has a small window until the code expires to get another authenticated user to click on the redirect with the attackers code. Now if a user was to click on the attacker's uri, and they were authentictaed it would automatically link their google account to the users account.  
-                </p>
-                <p>Now the attacker has access to the users profile, email, and calendar. This is a very simple example of how OAuth can be exploited with CSRF. </p>
-                <h2>State parameter</h2>
-                <p>How the original attack works is that it doesnt attach the session ID of the user who made the original OAuth to the one with the code. Thus resulting in this odd attachment from session to redirect uri. </p>
-                <p>The state parameter is a cryptographically generated value that is tied to the session of the user who made the OAuth query. So when the attacker goes to login, and completes the interaction, captures the redirect uri with the code and state parameter. When a user clicks on the attackers redirect uri, todomaster.com checks if the state is mapped to the users session ID. Since the state parameter is mapped to the attackers session ID, todomaster will reject the linking of accounts or ask the user to log in again with there corresponding state parameter. </p>
-                <h1>Conclusion</h1>
-                <p>As the adoption of OAuth continues to increase so does the risk of its exploitation. To my knowledge third parties like google rely on the origin domain to enforce strict security controls. The state parameter is a serverside solution and there isnt any policy to enforce on the end of third parties. The necessity in implementing solutions like a state parameter or PKCE is vital to the privacy and secuirty of users as it can lead to account takeovers. </p>
-              
-             
-            
+        <p>This left kind of a bitter taste in my mouth since I feel like I was put in a position to do something good but I just couldn't take the next step. And I also wish I could've saved the js scripts to peek at how they encrypted the data. So what does this have to do with CloudFlare? </p>
+        <h2>CloudFlare</h2>
+        <p>CloudFlare did an awesome job of hiding the attackers web server ip. On whois the domain was created the day of and resolved to 4 ipv4's and 4 ipv6's with if I remember cloudflare nameservers. Which is already fun but what really made me confused as to why there report abuse page makes it mandatory to notify the host of the website? Check it out: </p>
+   <img src="../images/CloudFlare.png" alt="CloudFlare Abuse Report" class="image is-4by3">
+   <p>While I understand that CloudFlare does not have the ability to take down domains, its response time is abismal. Many hours after the websites interface was or shutdown by some law enforcement CloudFlare was still serving the domain. Now I dont know too much about CloudFlare and maybe the domain was still cached but why is it so easy for attackers to hide themselves behide reputable sources, and why is it so difficult to strip websites of this shielding? Cloudflare made this invesitgation many times more difficult. </p>
+   <p><ul>
+    <li>Just a Pipe - Cloudflare is just a pipe and is not responsile as to what flows through it</li>
+    <li>Section 230 - Protects these companies from any sort of prosecution due to them not being liable to the content being produced under "free speech"</li>
+   </ul> </p><p>Similar to how banks are being held liable for money landering, so does these companies. The data that passes through them is significant. </p>
+
+   <h2>Conclusion</h2>
+   <p>CloudFlare is huge and scalable providing many benifits to website hosts and its users. But when something becomes to easy to access other will begin to abuse it. We need to hold these companies accountable, they are far from pipes. In my case Cloudflare was the middleman in protecting this malicous attacker syphioning money away from innocent people. With the power this infrastrcure has it needs to be more regulated. </p>
             <!-- Tags -->
             <div class="tags mt-5">
               <span class="tag is-medium">Privacy</span>
