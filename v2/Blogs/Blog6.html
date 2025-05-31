@@ -167,8 +167,40 @@
             <!-- Blog Text -->
             <div class="content blog-content">
               <h1 id="introduction" style="color:rgb(51, 153, 255)">Introduction</h1>
-              <p>Feel free to grab a drink, some snacks, and get comfortable this is gonna be a long one.</p>
-              <h2> OAuth </h2>
+              <p>CloudFlare is an industry leader in providing high quailty security , content delivery, and performance optimizations. For legitmate web services and websites, it does a very good job, and even offers free tier security making deployment simple and seemless. This blog isnt to bash Cloudflare but to bring to attention the role it has when malicous actors use Cloudflare to hide its infrastructure. </p>
+              <h2>Investigation</h2>
+              <p>Friday morning I got up from bed and the first thing I see is an imessage saying the following: 
+    <pre>
+    California State Department of Motor Vehicles (DMV) Final Notice: Enforcement Penalties Begin on May 31.
+    Our records show that as of today, you still have an outstanding traffic ticket. In accordance with California State Administrative Code 15C-16.003, if you do not complete payment by May 31, 2025, we will take the following actions:
+    
+    1. Report to the DMV violation database
+    2. Suspend your vehicle registration starting May 31
+    3. Suspend driving privileges for 30 days
+    4. Transfer to a toll booth and charge a 35% service fee
+    5. You may be prosecuted and your credit score will be affected
+    Pay Now:https://example_malicous_site.com
+    
+    
+    Please pay immediately before enforcement to avoid license suspension and further legal disputes.
+    (Reply Y and re-open this message to click the link, or copy it to your browser.)</pre></p>
+    <p>I read this and I thought man I would not only have my vechile registration suspeneded by but also my driving privelages. Not to mention the fact my credit score will be affected and ill have to pay a 35% fee. I started to think what kind of cruel world we live in, when I was reminded that I did not own a car. In all seriousness I love getting these types of messages because it opens the door for investigatoins! I fired up kali linux and burp and dove right in.</p>
+    <h2>Analysis</h2>
+        <p>First thing I did was run curl to see what im dealing with <code>curl -vv example_malicous_site.com</code>. And I recieved a 404. I've noticed a trend with phishing campaigns and its that they target specfic user agents like moblie users. So I looked up valid user agents for moblie iphones and ran the curl again. <code>curl -vv -A "Mozilla/5.0 (iPhone; CPU iPhone OS 18_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.3 Mobile/15E148 Safari/604.1" example_malicous_site.com</code> And I got results! Now intially it looked like California DMV's website with a little form that would prompt you to put in information like your name, email, and address things like that. And when I filled it out with sample responses the connection hung. Now I don't know if there was an error on my part, i was walking through the site connection by connection and I did not see a POST with this form data and I did not track it via web network inspector. What I did notice is that there endpoints like <code>/front/init?token=jwt_token</code> and <code>/front/any</code> which is what was being posted. It seemed like the user was being activley fingerprinted. What i did notice is I managed to find an insecure endpoint which I believe was the <code>/front/config</code> page that gave me a bit more insight on what was going on.</p>
+        <img src="../images/threat_hunt.png" alt="Threat Hunt" class="image is-4by3">
+        <p>Theres a couple of interesting things that standout first off the cloudflare is being annoying, but if we look at the response we get some more info on what im guessing is the communication between the web server and the c2. I also noticed a success, 200 and another success message. Before I try to put everything together let me give you another piece of important context, check this request out. <pre>Dfxd2ytJZhHeN2H/XuZWIdx4VzpYoFq19XdDX4H7wXkUWuJWfJq57rIU6eGj3PLM4nU3FW2RRf6BdaguBLEercXlpPNZgCz40VphpFKPIx2ATDz7OfzgWWiU04XPaNKbfgC1tmIfqLX6G6grYagwVzbZRYCUm4VmA9/StPweKPY/QslPklvAU8BL/RGdkiRdMsZ4HxSr3zOrZ5ib43mzLyLcfvYV91h55Ptlua9v729EfrUNK0omojZCyNPqjQzWdkTrDIoZZ+b0dx1hWjFGYlB8lzzCGqM3SIHR35IflQSKbEoFCz+rbX4c4X9+oEYXEQFtX1S7sqQ/FzLQCCIJ0FDUgbD1vfHj0DyzQAY4GKVjiUOGnOZklRkrXB5IJ4k2TRPfc+Uh9Db669PBxcHNrjP7lej50Aas1YSFDc9Iszr9bfZ+Ho7Pg2GVXiRTWidaaZznPRW3YEHOJ2HEhI58ujo=</pre>While I dont have the full GET and POST requests, encrypted or encoded data was being sent from my machine to the malicous site. So a POST would have encoded data like that, weirdly enough even GET request, it would persist without a content length or paramter the payload would still appear under the headers. Gathering everything heres what I think was happening: </p>
+        <ul>
+            <li>First the front/init?token=jwt_tokwn was attempting to fingerprint users and would assign them a cookie</li>
+            <li>Next the user would traverse the page and constantly send POSTS to front/any</li>
+            <li>The local js files were encrypting the payload and the data being sent to front/any</li>
+            <li>Taking a look at the image, we see 3 notifications of success, I believe a 3 stage process is happening</li>
+            <ul><li>First when the application recieves the data that is warrented a success or 200</li>
+            <li>Next once recieved it is then decoded, and gives a success: true</li>
+            <li>Finally the data is sent to the c2 server from the applications web server.</li>
+        </ul>
+            <li></li>
+        </ul>
+    <h2> OAuth </h2>
               <p>OAuth is a process that happens during federation where a user will authenticate themselves using a third party service. For example im sure you've seen the option to log into a website via google or via github. That is the start of OAuth.</p>
               <p>To give you a better picture ill walk through the process of OAuth's workflow. Lets say the origin domain is todomaster.com and it wants to access our calender, profile, and email. </p>
               <ul>
