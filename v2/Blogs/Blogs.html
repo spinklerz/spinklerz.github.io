@@ -68,17 +68,44 @@
       .animated-underline:hover::after {
         width: 100%;
       }
+
+      .pagination-wrapper {
+        display: flex;
+        justify-content: center;
+        margin: 2rem 0;
+      }
+
+      .blog-page {
+        display: none;
+      }
+
+      .blog-page.is-active {
+        display: block;
+      }
+
+      .page-info {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .pagination .pagination-link.is-current {
+        background-color: #3273dc;
+        border-color: #3273dc;
+        color: #fff;
+      }
+
+      .pagination .pagination-link:hover {
+        border-color: #3273dc;
+        color: #3273dc;
+      }
     </style>
   </head>
   <body>
-        <!-- Navigation bar -->
-        <div id="navbar-container"></div>
+    <!-- Navigation bar -->
+    <div id="navbar-container"></div>
 
-        <!-- Your page content here -->
-      
-        <!-- Load the include script -->
-        <script src="./navbarBlogs.js" defer></script>
-
+    <!-- Load the include script -->
+    <script src="./navbarBlogs.js" defer></script>
 
     <!-- Hero Section -->
     <section class="hero is-link is-medium">
@@ -112,121 +139,257 @@
       </div>
     </div>
     
+    <!-- Page Info -->
+    <div class="container">
+      <div class="page-info">
+        <p class="is-size-5 has-text-grey">
+          Showing page <span id="current-page-number">1</span> of <span id="total-pages">2</span>
+        </p>
+      </div>
+    </div>
+
     <!-- Blog Posts Section -->
     <section class="container my-5">
-      <div class="columns is-multiline">
-        <!-- Blog Post 1 -->
-        <div class="column is-4 mb-4">
-          <div class="card h-100">
-            <div class="card-image">
-              <figure class="image is-4by3">
-                <img src="../images/network-privacy-thumbnail.jpg" alt="Blog post image">
-                <!-- Credit to https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.gettyimages.com%2Fvideos%2Fdata-privacy-background&psig=AOvVaw37b_pQP4Wglhi2Hw4wu2zc&ust=1746854677704000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCOi8zfjSlY0DFQAAAAAdAAAAABAE for the image-->
-              </figure>
+      <!-- Page 1 -->
+      <div id="page-1" class="blog-page is-active">
+        <div class="columns is-multiline">
+          <!-- Blog Post 1 -->
+          <div class="column is-4 mb-4">
+            <div class="card h-100">
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <img src="../images/network-privacy-thumbnail.jpg" alt="Blog post image">
+                </figure>
+              </div>
+              <div class="card-content">
+                <div class="content">
+                  <h4 class="title is-4 animated-underline">The Predatory Nature Of Data Collection</h4>
+                  <p>Discover the surprising ways websites silently track your every move – from hidden analytics requests to legal "keylogging" – and why it's more invasive than you imagine.</p>
+                  <a class="button is-link mt-3" href="./Blog1.html">Read Full Article</a>
+                </div>
+              </div>
             </div>
-            <div class="card-content">
-              <div class="content">
-                <h4 class="title is-4 animated-underline">The Predatory Nature Of Data Collection</h4>
-                <p>Discover the surprising ways websites silently track your every move – from hidden analytics requests to legal "keylogging" – and why it's more invasive than you imagine. </p>
-                <a class="button is-link mt-3" href="./Blog1.html">Read Full Article</a>
+          </div>
+          
+          <!-- Blog Post 2 -->
+          <div class="column is-4 mb-4">
+            <div class="card h-100">
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <img src="../images/blog2.png" alt="Blog post image">
+                </figure>
+              </div>
+              <div class="card-content">
+                <div class="content">
+                  <h4 class="title is-4 animated-underline">Memory Code Injections and ASLR</h4>
+                  <p>What are Memory Code Injections, and how is ASLR used to protect against it?</p>
+                  <a class="button is-link mt-3" href="../images/phpinfo8.3.png">Read Full Article</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Blog Post 3 -->
+          <div class="column is-4 mb-4">
+            <div class="card h-100">
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <img src="../images/phpinfo8.3.png" alt="Blog post image">
+                </figure>
+              </div>
+              <div class="card-content">
+                <div class="content">
+                  <h4 class="title is-4 animated-underline">How my Bug Bounty Journey Started</h4>
+                  <p>How a simple university page misconfiguration led me down the rabbit hole of bounty hunting.</p>
+                  <a class="button is-link mt-3" href="./Blog3.html">Read Full Article</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Blog Post 4 -->
+          <div class="column is-4 mb-4">
+            <div class="card h-100">
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <img src="../images/not_ai_gen.png" alt="Blog post image">
+                </figure>
+              </div>
+              <div class="card-content">
+                <div class="content">
+                  <h4 class="title is-4 animated-underline">SQL injection with filter bypass via XML encoding</h4>
+                  <p>This was one of the most insightful labs I've ever done, it took me several days, follow me on my journey through it.</p>
+                  <a class="button is-link mt-3" href="./Blog4.html">Read Full Article</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Blog Post 5 -->
+          <div class="column is-4 mb-4">
+            <div class="card h-100">
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <img src="../images/BLOG5.png" alt="Blog post image">
+                </figure>
+              </div>
+              <div class="card-content">
+                <div class="content">
+                  <h4 class="title is-4 animated-underline">CSRF And OAuth</h4>
+                  <p>Learn about the complex nature of the OAuth process and its security mechanisms.</p>
+                  <a class="button is-link mt-3" href="./Blog5.html">Read Full Article</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Blog Post 6 -->
+          <div class="column is-4 mb-4">
+            <div class="card h-100">
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <img src="../images/CloudFlare_Blog.png" alt="Blog post image">
+                </figure>
+              </div>
+              <div class="card-content">
+                <div class="content">
+                  <h4 class="title is-4 animated-underline">CloudFlare Security Deep Dive</h4>
+                  <p>Exploring CloudFlare's security features and how they protect against modern web threats.</p>
+                  <a class="button is-link mt-3" href="./Blog6.html">Read Full Article</a>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        
-        <!-- Blog Post 2 -->
-        <div class="column is-4 mb-4">
-          <div class="card h-100">
-            <div class="card-image">
-              <figure class="image is-4by3">
-                <img src="../images/blog2.png" alt="Blog post image">
-              </figure>
-            </div>
-            <div class="card-content">
-              <div class="content">
-                <h4 class="title is-4 animated-underline">Memory Code Injections and ASLR</h4>
-                <p>What are Memory Code Injections, and how is ASLR used to protect against it?</p>
-                <a class="button is-link mt-3" href="../images/phpinfo8.3.png">Read Full Article</a>
-                <!-- Not Confidentially Sensitive got image from: https://spinupwp.com/hosting-wordpress-yourself-nginx-php-mysql/-->
+      </div>
+
+      <!-- Page 2 -->
+      <div id="page-2" class="blog-page">
+        <div class="columns is-multiline">
+          <!-- Blog Post 7 -->
+          <div class="column is-4 mb-4">
+            <div class="card h-100">
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <img src="../images/blog7-placeholder.jpg" alt="Blog post image">
+                </figure>
+              </div>
+              <div class="card-content">
+                <div class="content">
+                  <h4 class="title is-4 animated-underline">Advanced XSS Techniques</h4>
+                  <p>Diving deep into sophisticated Cross-Site Scripting attack vectors and modern defense mechanisms.</p>
+                  <a class="button is-link mt-3" href="./Blog7.html">Read Full Article</a>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        
-        <!-- Blog Post 3 -->
-        <div class="column is-4 mb-4">
-          <div class="card h-100">
-            <div class="card-image">
-              <figure class="image is-4by3">
-                <img src="../images/phpinfo8.3.png" alt="Blog post image">
-              </figure>
-            </div>
-            <div class="card-content">
-              <div class="content">
-                <h4 class="title is-4 animated-underline">How my Bug Bounty Journey Started</h4>
-                <p>How a simple university page misconfiguration led me down the rabbit hole of bountying hunting.</p>
-                <a class="button is-link mt-3" href="./Blog3.html">Read Full Article</a>
+
+          <!-- Blog Post 8 -->
+          <div class="column is-4 mb-4">
+            <div class="card h-100">
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <img src="../images/blog8-placeholder.jpg" alt="Blog post image">
+                </figure>
+              </div>
+              <div class="card-content">
+                <div class="content">
+                  <h4 class="title is-4 animated-underline">Web Application Firewalls</h4>
+                  <p>Understanding how WAFs work and techniques for bypassing common security filters.</p>
+                  <a class="button is-link mt-3" href="./Blog8.html">Read Full Article</a>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        
-        <!-- Blog Post 4 -->
-        <div class="column is-4 mb-4">
-          <div class="card h-100">
-            <div class="card-image">
-              <figure class="image is-4by3">
-                <img src="../images/not_ai_gen.png" alt="Blog post image">
-              </figure>
-            </div>
-            <div class="card-content">
-              <div class="content">
-                <h4 class="title is-4 animated-underline">SQL injection with filter bypass via XML encoding
-                </h4>
-                <p>This was one of the most insightful labs ive ever done, it took my several days, follow me on my journey through it.</p>
-                <a class="button is-link mt-3" href="./Blog4.html">Read Full Article</a>
+
+          <!-- Blog Post 9 -->
+          <div class="column is-4 mb-4">
+            <div class="card h-100">
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <img src="../images/blog9-placeholder.jpg" alt="Blog post image">
+                </figure>
+              </div>
+              <div class="card-content">
+                <div class="content">
+                  <h4 class="title is-4 animated-underline">API Security Testing</h4>
+                  <p>A comprehensive guide to finding vulnerabilities in REST and GraphQL APIs.</p>
+                  <a class="button is-link mt-3" href="./Blog9.html">Read Full Article</a>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        
-        <!-- Blog Post 5 -->
-        <div class="column is-4 mb-4">
-          <div class="card h-100">
-            <div class="card-image">
-              <figure class="image is-4by3">
-                <img src="../images/BLOG5.png" alt="Blog post image">
-              </figure>
-            </div>
-            <div class="card-content">
-              <div class="content">
-                <h4 class="title is-4 animated-underline">CSRF And OAuth</h4>
-                <p>Learn about the complex nature of the OAuth process and its security mechanisms. </p>
-                <a class="button is-link mt-3" href="./Blog5.html">Read Full Article</a>
+
+          <!-- Blog Post 10 -->
+          <div class="column is-4 mb-4">
+            <div class="card h-100">
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <img src="../images/blog10-placeholder.jpg" alt="Blog post image">
+                </figure>
+              </div>
+              <div class="card-content">
+                <div class="content">
+                  <h4 class="title is-4 animated-underline">Mobile App Security</h4>
+                  <p>Exploring security testing methodologies for iOS and Android applications.</p>
+                  <a class="button is-link mt-3" href="./Blog10.html">Read Full Article</a>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        
-        <!-- Blog Post 6 -->
-        <div class="column is-4 mb-4">
-          <div class="card h-100">
-            <div class="card-image">
-              <figure class="image is-4by3">
-                <img src="../images/CloudFlare_Blog.png" alt="Blog post image">
-              </figure>
+
+          <!-- Blog Post 11 -->
+          <div class="column is-4 mb-4">
+            <div class="card h-100">
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <img src="../images/blog11-placeholder.jpg" alt="Blog post image">
+                </figure>
+              </div>
+              <div class="card-content">
+                <div class="content">
+                  <h4 class="title is-4 animated-underline">Container Security</h4>
+                  <p>Docker and Kubernetes security best practices and common misconfigurations.</p>
+                  <a class="button is-link mt-3" href="./Blog11.html">Read Full Article</a>
+                </div>
+              </div>
             </div>
-            <div class="card-content">
-              <div class="content">
-                <h4 class="title is-4 animated-underline">Ocean Depths</h4>
-                <p>The mysterious world beneath the waves holds countless wonders and creatures that continue to surprise and fascinate marine biologists and ocean enthusiasts alike.</p>
-                <a class="button is-link mt-3" href="#ocean-depths">Read Full Article</a>
+          </div>
+
+          <!-- Blog Post 12 -->
+          <div class="column is-4 mb-4">
+            <div class="card h-100">
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <img src="../images/blog12-placeholder.jpg" alt="Blog post image">
+                </figure>
+              </div>
+              <div class="card-content">
+                <div class="content">
+                  <h4 class="title is-4 animated-underline">Cloud Security Fundamentals</h4>
+                  <p>Essential security considerations when deploying applications to AWS, Azure, and GCP.</p>
+                  <a class="button is-link mt-3" href="./Blog12.html">Read Full Article</a>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </section>
+
+    <!-- Pagination -->
+    <div class="container">
+      <div class="pagination-wrapper">
+        <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+          <a class="pagination-previous" id="prev-btn" disabled>Previous</a>
+          <a class="pagination-next" id="next-btn">Next page</a>
+          <ul class="pagination-list">
+            <li><a class="pagination-link is-current" data-page="1" href="#" aria-label="Page 1" aria-current="page">1</a></li>
+            <li><a class="pagination-link" data-page="2" href="#" aria-label="Goto page 2">2</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
     
     <!-- Footer Section -->
     <footer class="footer has-background-light">
@@ -240,9 +403,87 @@
       </div>
     </footer>
     
-    <!-- Simple JS for modals -->
+    <!-- Pagination JavaScript -->
     <script>
       document.addEventListener('DOMContentLoaded', function() {
+        let currentPage = 1;
+        const totalPages = 2;
+        
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const pageLinks = document.querySelectorAll('.pagination-link');
+        const currentPageSpan = document.getElementById('current-page-number');
+        
+        function showPage(pageNum) {
+          // Hide all pages
+          document.querySelectorAll('.blog-page').forEach(page => {
+            page.classList.remove('is-active');
+          });
+          
+          // Show selected page
+          document.getElementById(`page-${pageNum}`).classList.add('is-active');
+          
+          // Update current page indicator
+          currentPageSpan.textContent = pageNum;
+          
+          // Update pagination buttons
+          prevBtn.disabled = pageNum === 1;
+          nextBtn.disabled = pageNum === totalPages;
+          
+          if (pageNum === 1) {
+            prevBtn.classList.add('is-disabled');
+          } else {
+            prevBtn.classList.remove('is-disabled');
+          }
+          
+          if (pageNum === totalPages) {
+            nextBtn.classList.add('is-disabled');
+          } else {
+            nextBtn.classList.remove('is-disabled');
+          }
+          
+          // Update page link styles
+          pageLinks.forEach(link => {
+            link.classList.remove('is-current');
+            if (parseInt(link.dataset.page) === pageNum) {
+              link.classList.add('is-current');
+            }
+          });
+          
+          // Scroll to top
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Previous button
+        prevBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (currentPage > 1) {
+            currentPage--;
+            showPage(currentPage);
+          }
+        });
+        
+        // Next button
+        nextBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (currentPage < totalPages) {
+            currentPage++;
+            showPage(currentPage);
+          }
+        });
+        
+        // Page number links
+        pageLinks.forEach(link => {
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            currentPage = parseInt(this.dataset.page);
+            showPage(currentPage);
+          });
+        });
+        
+        // Initialize first page
+        showPage(1);
+        
         // Enable any modals if needed in the future
         document.querySelectorAll('.modal-button').forEach(function(el) {
           el.addEventListener('click', function() {
