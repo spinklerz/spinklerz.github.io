@@ -123,10 +123,10 @@
       <div class="hero-body">
         <div class="container has-text-centered">
           <p class="title is-2">
-            CSRF And OAuth
+            ASLR and Static Analysis
           </p>
           <p class="subtitle">
-            OAuth, CSRF, state paramaters and more!
+            
           </p>
           <div class="mt-4">
             <span class="tag  mr-2">Privacy</span>
@@ -168,20 +168,21 @@
             <!-- Blog Text -->
             <div class="content blog-content">
               <h1 id="introduction" style="color:rgb(51, 153, 255)">Introduction</h1>
-              <p>I was reading the thehackernews like most mornings. Where these chinese hackers exploited two vulnerabilites on ivanti CVE-2025-4427 (an auth bypass) and CVE-2025-4428 (an RCE). I didn't know a lot about RCE's so I dove in and it led me down the rabit whole of ASLR.</p>
+              <p>I was reading the thehackernews like most mornings. Where these chinese hackers exploited two vulnerabilites on ivanti CVE-2025-4427 (an auth bypass) and CVE-2025-4428 (an RCE). I didn't know a lot about RCE's so I dove in and it led me down the rabbit whole of ASLR.</p>
               <h2>High Level Overview of Processes and Memory</h2>
-                <p>Lets go over the workflow of a process. If we have a python script that said <pre>print("Hello, World")</pre> and ran <code>python3 helloWorld.py</code>. The operating system would then create a new process, as might you imagine there are many processes running on a computer. There are many different algorithm's that determine when each process gets executed. For simplicity lets say our algorithm operates on stack( FIFO ). When our process gets popped for execution there are 3 stages a CPU goes through. The CPU receives the process as a batch instruction, it fecthes the instruction, decodes it, then executes the instruction.  Its very important to note, these three stages are happening concurrently meaning there is an instruction at each phase in the process at the same time. Before a process is executed it is assigned something called virtual memory. You can think of virtual memory as fake memory, memory that hasn't been allocated <strong>yet</strong>.When a process is ready to execute there is a data structure called a page table that translates virtual memory into actual memory. Virtual memory is usually many times larger then the actual space available in memory. Memory works like a cache where it keeps commonly used address spaces and those who arent used that much get pushed to the disk. A common algorithm is Least Frequently Used (LFU). Where is ASLR in all this?   </p>
+                <p>Lets go over the workflow of a process. If we have a python script named <code>HelloWorld.py</code>that has the code <pre>print("Hello, World")</pre> and we ran it with <code>python3 HelloWorld.py</code>. The operating system would then create a new process, as might you imagine there are many processes running on a computer. There are many different algorithm's that determine when each process gets executed. For simplicity lets say our algorithm operates on queue( FIFO ) and the process is named <code>p1</code>. When our process gets popped for execution there are 3 stages a CPU goes through to process <code>p1</code>. The CPU receives <code>p1</code> as a batch instruction, it fetches the instruction, decodes it, then executes it.  Its very important to note, these three stages are happening concurrently meaning there is an instruction at each phase in the process at the same time. Before a process is executed it is assigned something call virtual memory. You can think of virtual memory as fake memory, memory that hasn't been allocated <strong>yet</strong>. When a process is ready to execute there is a data structure called a page table that translates virtual memory into actual memory. Virtual memory is usually many times larger then the actual space available in memory. Memory works like a cache where it keeps commonly used address spaces and those who arent used that much get pushed to the disk. A common algorithm is Least Frequently Used (LFU). Where is ASLR in all this?   </p>
                 <h2>ASLR</h2>
-                <p>Address Space Layout Randomization is what it sounds like, the randomization of address spaces. When a process is executed it is given a range called ASLR window. Disk and memory are usually partitioned in things called pages. Which are just slices of memory usually around 4KB. Now for example lets say our ASLR window is around 512 we multiply that by the page size 4KB and get 512*4KB = 2MB. So the process can start anywhere within that 2MB range. The important part is the stack can only start at 512 positions. Which makes injection very predicatble. Here is how is likely went: 
+                <p>Address Space Layout Randomization is what it sounds like, the randomization of address spaces. When a process is executed it is given a range called ASLR window. Disk and memory are usually partitioned in things called pages. Which are just slices of memory usually around 4KB. Now for example lets say our ASLR window is around 512 we multiply that by the page size 4KB and get 512*4KB = 2MB. So the process can start anywhere within that 2MB range. The important part is the stack can only start at 512 positions. Which makes injection very predicatble. Here is how this likely went: 
                     <ul>
                         <li>Attacker did some static analysis on source code, and found a vulnerability</li>
                         <li>Without ASLR the attacker predicted or mapped out how far away from the stack the address location of the vulnerability is. </li>
                     <li>In our example there are 512 position the stack could start, so they attacker would guess and injection the malicous payload at n locations of the window</li></ul> </p>
-                    <p>Thats a basic run through but lets move onto what happened with Ivanti</p>
-
-                <h2>Ivanti</h2>
-                <p>To be Continued....</p>
-            
+                    <p>How an attacker would typically perform this attack is by examining the code, identifying potential memory leaks or buffer overflows, and then by understanding the address space positions they can inject malicous to redirect the program flow back to there mailous script/program etc...</p>
+                    <p>Thats a basic run through but lets move onto what happened with Ivanti</p>            
+                    <h2>Ivanti</h2>
+                    <p>After reading the PoC provided by watchTowr(Check it out: <a href='https://github.com/watchtowrlabs/watchTowr-vs-Ivanti-EPMM-CVE-2025-4427-CVE-2025-4428/blob/main/watchTowr-vs-Ivanti-EPMM-CVE-2025-4427-CVE-2025-4428.py'>Link</a>) it is actually quite simple. The attackers chained two vulnerabilities together, one that gave unauthed directory traversal to sensitive materials, and the other that led to a RCE. Analyzing the PoC it was just a GET request with an encoded java payload to the format paramter. To save you guys time here is the decoded payload <pre>
+format=${"".getClass().forName('java.lang.Runtime').getMethod('getRuntime').invoke(null).exec('id')}'
+                    </pre> It's very interesting to learn new things even if it outside a domain that I currently know. This taught me a new possible indicators of compromise, which could be when a system crashes because often times injecting code into ASLR memory locations if successful or failure will cause the program to crash. </p>
              
             
             <!-- Tags -->
