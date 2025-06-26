@@ -123,7 +123,7 @@
       <div class="hero-body">
         <div class="container has-text-centered">
           <p class="title is-2">
-            Malicous subdomain investigation
+            Malicious subdomain investigation
           </p>
           <p class="subtitle">
           </p>
@@ -167,19 +167,22 @@
             <!-- Blog Text -->
             <div class="content blog-content">
               <h1 id="introduction" style="color:rgb(51, 153, 255)">Introduction</h1>
-                <p>I've been tracking a subdomain takeover that I found via subdomain hijacking. How this happened is I saw odd activity being indexed by google on a companies subdomain. So I decided to check the dns records and saw a dangling cname that pointed externally. I reported the site to CISA and the company SOC. As of right now the cname connection has not been severed so it is still vulnerable to my knowledge. Although this connection is still intact I believe the malicous actors have "moved on". </p>
+              <p>I've been tracking a subdomain takeover that I found via subdomain hijacking. How this happened is that I saw odd activity being indexed by Google on a retail company's subdomain. So I decided to check the DNS records and saw a dangling CNAME that pointed externally. The dangling CNAME led me through a trail across this criminal's infrastructure and inner workings. Just to preface, I reported the site to CISA and to the companies' SOCs. As of right now, the CNAME connection has not been severed, so it is still vulnerable to my knowledge. Although this connection is still intact, I believe the malicious actors have "moved on" from that exposed CNAME domain. Also, I've taken the liberty to redact any information to protect myself as well as the currently exposed retail store.</p>
                 <h2>The Hunt</h2>
-                <p>Now using dnsdumpster, dig, nslookup and some other online dns recon tools(most commonly used) I wanted more information. Let's say the malicous subdomain was <code>agent.special.com</code> I decided to check out special.com and found out some interesting stuff. What jumped out to me was the fact the subdomain server was held in Spain while having the name servers in the United States. I believe subdomain and origin were hosted on a web hosting service due to the fact the default host name resolved as <code>malicous_domain.ruttearful.store</code> Now the server is accpeting http and https but I get sent to auto:blank. Then I found out that the cn provided was named <code>malicous_site_2.com</code>. Malicous site 2 was actually resolvable at first and looked like a legitmate chinese website although none of its webpages worked and the api calls were weird to say the least.... But anyways it was obviously a front.  </p>
-                <h2>South Africa</h2>
-                <p>Now what was interesting about this site is that originally maybe like a couple week ago ( end May ) the server was hosted in South Africa on a seemingly disposable 1.8.0 nginx server. As of today that has changed and are now based on San Jose apart of PEG-SV and are using there cloud services as of today to host a chinese website that uses masked coding techniques to hide commands like document.write() and iframe injection to evade browser detection to deilver malware and adware to the user. </p>
-                <h2>Updates</h2>
-                <p>So the <code>malicous_domain2</code> landed in San Jose and was hosted by the provider raksmart. Amazingly enough I reported it to the isp that owned that ip range PEG SV and they were able to take that domain down!</p>
-                <img src="../images/raksmart.png">
-                Now this is where things get more interesting. From the San Jose based server/vps/etc, they moved back to South Africa. But here I noticed on one of the malicous php scripts they included <code>_paq.push(["setCookieDomain", *.malicous_domain3_dga.com</code>. Now im not exactly sure what this does but if I had to guess it looks like it attempts to fingerprint the user or set a cookie using this malicous domain. Interestingly enough this new domain was a replica of <code>malicous_domain2</code>. But what I noticed is the constant direct references to <code>malicous_domain4</code>. Now upon looking at malicous domain 4 nothing stands out and originally I thought nothing of it as it seemed like a legitmate analytics login page. If we dive deeper the login page is dsyfunctional, the password reset feature literally only gives the option to enter username, then create new password. And at the top is a logo to a web service called matomo. Matomo is a web based analytics platform. As of now <code>malicous_domain3</code>, 4, and 2 are still functional. In domains 3 and 4 what happens is they call malicous domain 4 to get malware/deceptive content/etc then use things like <code>eval("do" + "cu" + "ment.wr" + "ite('" + ss + "');");</code>to inject malicous code into the webpage. 
-                <h2>Learning</h2>
-                <p>It feels weird to say but I really should thank this group for making it so easy to track them. Its crazy how many times you can pivot and still use the same domain name thinking you wont be tracked. Anyways they have really taught me a lot even the dns history is very interesting in that its common to pivot and change name servers frequently. Also some things that didn't make sense in the SOA records many times the refresh and retry time would be longer then the expire time. What I believes happens in this case is when dns query fails it automatically fails and the secondary dns server stops serving that record. Which is odd to me, maybe it was just caught in the dns history that way.  </p>
-            <!-- Tags -->
-            <div class="tags mt-5">
+                <p>It all started on Google looking for hiking boots, until I found weird search results from a popular retail store. The indexed result on Google was a subdomain that contained results that described movies, books, and quizzes. Using public sources like dnsdumpster, dig, nslookup, and some other online DNS recon tools most commonly used, I wanted more information. Let's say the legitimate subdomain <code>subdomain.legit_retailer.com</code> and its externally pointed CNAME is <code>subdomain.malicious1.com</code> I decided to check out malicious1.com and found out some interesting stuff. What jumped out to me was the fact the subdomain server was held in Spain while having the name servers in the United States. The SPF records contained domains that were flagged by VirusTotal and typosquats. I believe the subdomain and origin were hosted on a web hosting service due to the fact the default host name resolved as <code>malicious_domain.ruttearful.store</code>. I tried to resolve the server as it is accepting HTTP and HTTPS, but I get sent to auto:blank. Then I found out that the CN provided was named <code>malicious_site_2.com</code>. Malicious site 2 was actually resolvable! At first it looked like a legitimate Chinese website, although none of its webpages worked. And the API calls were weird, to say the least.... But anyways, it was obviously a front. What did this website do?  
+                  <h2>South Africa</h2>
+                  <p>Now what was interesting about this site is that it originally was hosted in South Africa on a seemingly disposable 1.8.0 nginx server. As of today, that has changed, and they are now based in San Jose as part of an ISP and are using their cloud services as of today to host a website that uses masked coding techniques to hide commands like document.write() and iframe injections to evade browser detection to deliver malware and adware to the user. The code is quite simple; the script basically queries what I'm pretty sure is the C2 and injects the response from the C2 into the webpage.</p>
+  <h2>Updates</h2>
+                  <p>So <code>malicious_domain2</code> landed in San Jose. Amazingly enough, I reported it to the ISP that owned that IP range, and they were able to take that domain down! If you're wondering why I went to the ISP, it's because the hosting provider was not made obvious via DNS records.</p>
+                  <img src="../images/host.png">
+  Now this is where things get more interesting. From the San Jose-based server/VPS/etc., they moved back to South Africa. But here I noticed one of the malicious PHP scripts they included <code>_paq.push(["setCookieDomain", *.malicious_domain3_dga.com</code>. Now I'm not exactly sure what this does, but if I had to guess, it looks like it attempts to fingerprint the user or set a cookie using this malicious domain. Interestingly enough, this new domain was a replica of <code>malicious_domain2</code>. But what I noticed is the constant direct references/calls to <code>malicious_domain4</code>. Now upon looking at malicious domain 4, nothing stands out, and originally I thought nothing of it as it seemed like a legitimate analytics login page. If we dive deeper, the login page is dysfunctional; the password reset feature literally only gives the option to enter a username and then create a new password. And at the top is a logo for a web service called Matomo. Matomo is a web-based open-source analytics platform. As of now <code>malicious_domain3</code>, 4 and 2 are still functional. In domains 3 and 4, what happens is they call malicious domain 4 to get malware/deceptive content/etc, to then inject the response to overwrite the webpage content. </p><!-- Tags -->
+  <h2>Learning</h2>
+  <p>It feels weird to say, but I really should thank this group for making it so easy to track them. It's crazy how many times you can pivot and still use the same domain name, thinking you won't be tracked. Anyway, they have really taught me a lot. Even the DNS history is very interesting in that it's common to pivot and change name servers frequently. Also, some things that didn't make sense in the SOA records were that many times the refresh and retry time would be longer than the expire time. What I believe happens in this case is when a DNS query fails, the secondary DNS server stops serving that record so that it is only available on the master server. Which is odd to me; maybe it was just caught in the DNS history that way. </p>
+
+  
+
+
+  <div class="tags mt-5">
               <span class="tag is-medium">Privacy</span>
               <span class="tag is-medium">Security</span>
               <span class="tag is-medium">Web</span>
@@ -187,39 +190,6 @@
             </div>
             
             <!-- Author Box -->
-            <div class="box author-box has-background-light mt-6">
-              <article class="media">
-                <div class="media-left">
-                  <figure class="image is-96x96">
-                    <img class="is-rounded" src="/api/placeholder/192/192" alt="Author profile picture">
-                  </figure>
-                </div>
-                <div class="media-content">
-                  <div class="content">
-                    <p>
-                      <strong class="is-size-4">David Thomas Shonack</strong> <small class="is-size-6 has-text-grey">@dweebus</small>
-                      <br>
-                      Computer science student and privacy advocate based in California. Interested in security, software development, digital rights, and much more.
-                    </p>
-                    <div class="buttons mt-2">
-                      <a href="https://github.com/spinklerz" class="button is-small is-link is-outlined">
-                        <span class="icon">
-                          <i class="fab fa-github"></i>
-                        </span>
-                        <span>GitHub</span>
-                      </a>
-                      <a href="mailto:dshonack@ucsc.edu" class="button is-small is-link is-outlined">
-                        <span class="icon">
-                          <i class="fas fa-envelope"></i>
-                        </span>
-                        <span>Email</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </article>
-            </div>
-            </div>
           
           <!-- Sidebar -->
             

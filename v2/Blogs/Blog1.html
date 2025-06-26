@@ -169,17 +169,17 @@
             <div class="content blog-content">
               <h1 id="introduction" style="color:rgb(51, 153, 255)">Introduction</h1>
               <h2>The Hidden Data Leaks Behind a Simple Web Request</h2>
-              <p>After learning about <strong>digital signatures, certificates, footprints, cookies, and session IDs</strong>, I decided to get some hands-on experience. I fired up <strong>Burp Suite</strong>, searched for my university's website, and received some <strong>very interesting results</strong>. Here's what happened when I made a simple request to <code>http://ucsc.edu</code>:</p>
+              <p>After learning about digital signatures, certificates, footprints, cookies, and session IDs, I decided to get some hands-on experience. I fired up Burp Suite, searched for my university's website, and received some very interesting results. Here's what happened when I made a simple request to <code>http://ucsc.edu</code>:</p>
               
               <figure class="image">
                 <img src="../images/burpe_suite_query.png" alt="Burp Suite Query Results" class="blog-image">
                 <figcaption class="has-text-centered has-text-grey is-italic mt-2">Screenshot showing multiple hidden requests when accessing ucsc.edu</figcaption>
               </figure>
               
-              <p>Looking at the results, we can see <strong>two GET requests and two POST requests</strong>. When I visit a webpage, I expect to receive the requested content—HTML, images, and stylesheets. But here, there are hidden requests. First, lets run through a basic overview of how websites function.</p>
+              <p>Looking at the results, we can see two GET requests and two POST requests. When I visit a webpage, I expect to receive the requested content—HTML, images, and stylesheets. But here, there are hidden requests. First, let's run through a basic overview of how websites function.</p>
               
               <h3>How Do Websites Function?</h3>
-              <p>Everything you see on a webpage is <strong>just a file</strong>. When you visit a website, your browser requests the <strong>HTML, CSS, and JavaScript</strong> files. These files are then processed locally on your machine to <strong>display the webpage</strong>.</p>
+              <p>Everything you see on a webpage is just a file. When you visit a website, your browser requests the <strong>HTML, CSS, and JavaScript</strong> files. These files are then processed locally on your machine to <strong>display the webpage</strong>.</p>
               
               <figure class="image">
                 <img src="../images/basic_static_app_server.png" alt="Basic Static App Server Diagram" class="blog-image">
@@ -188,7 +188,7 @@
               </figure>
               
               <h3>The Problem: Hidden Requests and Unwanted Tracking</h3>
-              <p>So why is this a big deal? Because your machine is <strong>sending data to external services without your knowledge or consent</strong>.</p>
+              <p>So why is this a big deal? Because your machine is sending data to external services without your knowledge or consent.</p>
               
               <p>Looking at the Burp Suite example, let's examine those extra requests:</p>
               <ul>
@@ -200,22 +200,19 @@
               <p>All three of these requests are to <strong>analytics services</strong>—not something I explicitly agreed to interact with.</p>
               
               <h3>How Is Your Data Being Collected?</h3>
-              <p>Remember how I said <strong>everything is a file</strong> and how your machine compiles the webpage locally? Websites embed <strong>tracking scripts</strong> that execute automatically, collecting and sending data without any visible sign.</p>
+              <p> Websites embed tracking scripts that execute automatically, collecting and sending data without any visible sign.</p>
               
-              <p>This is <strong>extremely exploitative</strong>. Many websites use JavaScript to track <strong>what you click, what you type( basically a legal keylogger ), and even how you move your mouse</strong>. This data can be <strong>silently sent</strong> to analytics companies in the background—without you ever knowing. And what's worse is that this data is being sent from <strong>your</strong> machine to the analytic service.</p>
+              <p>This is <strong>exploitative</strong>. Many websites use JavaScript to track <strong>what you click, keystrokes, and how you traverse the website</strong>. This data is silently sent to analytics companies in the background—without you ever knowing. And what's worse is that this data is being sent from <strong>your</strong> machine to the analytic service.</p>
               
               <h3>California vs Europe</h3> 
-              <p>Now I want you to look at the difference between how Europe handles data vs California. </p>
-
-              <p>In California as stated by the CCPA, Companies who meet the requirements ( must hold 100k user data, etc) need to inform the user that there data is being collected and to give them a option to  <strong>opt-out.</strong> </p>
-
-              <p>In Europe under the GDPR, Companies cannot collect data from users by default. The user has to <strong>opt-in</strong> for the company to start collecting data.</p>
-
-              <p>California seems to priotize and incentivize data collection while Europe's approach is to protect the data of users.</p>
+              <p>Now I want you to look at the difference between how Europe handles data vs California. <br/> <br />
+                In California as stated by the CCPA, companies who meet the requirements (must hold 100k user data, etc.) need to inform the user that their data is being collected and to give them an option to opt-out. <br /><br />
+                In Europe, under the GDPR, companies cannot collect data from users by default. The user has to opt in for the company to start collecting data.<br /> <br />
+                California seems to prioritize and incentivize data collection, while Europe's approach is to protect the data of users.</p>
               <h3>Conclusion: The Normalization of Exploitation</h3>
-              <p>It's disturbing how <strong>normalized</strong> this <strong>predatory behavior</strong> has become. Large corporations have <strong>manipulated and exploited</strong> consumers for years under the guise of "analytics" and "user experience improvements."</p>
+              <p>It's concerning how normalized this behavior has become. Now <code>ucsc.edu</code> is rather conservative in its data collection efforts. I perform bug bounties or attempt to at least and many times when walking through the website ill see many more then <code>ucsc.edu</code>. As an example i'd typically see around 10ish analytics requests. </p>
               
-              <p>What shocks me the most is that you as a user are unwillingly sending over data to analytic services from <strong>your own machine</strong> by default ( This happens the moment you turn on your machine. ). Now thats not to say all data collection is bad, in fact its made a lot of things easier and can be great. I just believe that California and other states or countries should adopt similar standards to Europe putting user privacy first.
+              <p>What shocks me the most is that you as a user are unwillingly sending over data to analytic services from <strong>"your own machine"</strong> by default ( This happens the moment you boot up your machine. ). Now that's not to say all data collection is bad, in fact its made a lot of things easier and can be great. I just believe that California and other states or countries should adopt similar standards to Europe putting user privacy first.
             </div>
             
             <!-- Tags -->
@@ -228,40 +225,7 @@
               <span class="tag is-medium">Exploitation</span>
             </div>
             
-            <!-- Author Box -->
-            <div class="box author-box has-background-light mt-6">
-              <article class="media">
-                <div class="media-left">
-                  <figure class="image is-96x96">
-                    <img class="is-rounded" src="/api/placeholder/192/192" alt="Author profile picture">
-                  </figure>
-                </div>
-                <div class="media-content">
-                  <div class="content">
-                    <p>
-                      <strong class="is-size-4">David Thomas Shonack</strong> <small class="is-size-6 has-text-grey">@dweebus</small>
-                      <br>
-                      Computer science student and privacy advocate based in California. Interested in security, software development, digital rights, and much more.
-                    </p>
-                    <div class="buttons mt-2">
-                      <a href="https://github.com/spinklerz" class="button is-small is-link is-outlined">
-                        <span class="icon">
-                          <i class="fab fa-github"></i>
-                        </span>
-                        <span>GitHub</span>
-                      </a>
-                      <a href="mailto:dshonack@ucsc.edu" class="button is-small is-link is-outlined">
-                        <span class="icon">
-                          <i class="fas fa-envelope"></i>
-                        </span>
-                        <span>Email</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </article>
-            </div>
-            </div>
+
           
           <!-- Sidebar -->
             
