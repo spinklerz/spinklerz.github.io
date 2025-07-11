@@ -56,7 +56,7 @@
         }
         .blog-content h3 {
           /* Let's make these a bit lighter */
-          color: #ddd !important; /* A slightly lighter gray */
+          color: rgb(59, 200, 247) !important; /* A slightly lighter gray */
           margin-top: 1.5rem;
           margin-bottom: 1rem;
         }
@@ -169,8 +169,8 @@
             <div class="content blog-content">
               <h1 id="introduction" style="color:rgb(51, 153, 255)">Introduction</h1>
               <h2>Pac-Man Reinforcement Learning Championship</h2>
-              <p>My team and I were participating in a fun Pac-Man tournament where we would tune our Pac-Man models to essentially defeat other students' Pac-Man. We used a combination of techniques like Q-learning to train our model. <br><br>So the professor set up a tournament webpage so that we could view the results of the tournament. I noticed a trend in webpages, for example:<code>ucsc.example/20231204</code> which was the date of the tournament results. So, being impatient and wanting to know my grade, I decide to try the webpage <code>ucsc.example/20231205</code> the current day to see the results. And was met with a webpage like this:</p> <figure class="image">
-                    <img src="../images/phpinfo8.3.png" alt="PHP config page" class="blog-image">
+
+              My team and I were participating in a fun Pac-Man tournament where we would tune our Pac-Man models to essentially defeat other students' Pac-Man. We used a combination of techniques like Q-learning to train our model. <br><br>So the professor set up a tournament webpage so that we could view the results of the tournament. I noticed a trend in webpages, for example:<code>ucsc.example/20231204</code> which was the date of the tournament results. So, being impatient and wanting to know my grade, I decide to try the webpage <code>ucsc.example/20231205</code> the current day to see the results. And was met with a webpage like this:</p> <figure class="image"><img src="../images/phpinfo8.3.png" alt="PHP config page" class="blog-image">
                     <figcaption class="has-text-centered has-text-grey is-italic mt-2">Screenshot of the webpage config</figcaption>
               <p>Granted the page above is an example, the one I received was many times longer, which included a wealth of information that I really didn't understand the grasp of. So I decided to go check if this webpage was only accessible to me since I was a student. I used <code>dig</code> to check if the domain was publicly accessible, and it resolved an IP address. I was very interested, so I read the page to make sure I wasn't wasting their time and found interesting technologies, directory endpoints, and much more. This is what I sent to ITS.</p>   
               <figure class="image">
@@ -180,41 +180,75 @@
               
               <p>It might be a bit hard to see, but at the top is the response I received. The feeling of being able to help out and provide value was an invaluable experience. A few days later it was patched, and I was no longer able to see the webpage! This lit a fire in me; I wanted to do this again. Then I stumbled across Bug Bounties. </p>
 
-              
+
+
+
+
+
 
 <h3>The Beginning (Domain 1)</h3>
 
-<p>After winter quarter I hopped right into learning some of the basics and Burp Suite. Did all of their misconfig and API labs. I felt ready to go. I started with a lesser-known domain just to start small and work my way up. The goal was just to learn and absorb how modern web applications work. As I walked through each link and request with Burp, I noticed upon clicking on a login button I received 4 sentry.io responses as I stalled the request. 2 requests were normal, with content length of 300~, but the next 2 were very interesting, as one had a content length of 200k~ and the other had around 80k~. The responses with high content lengths included a lot of info like js endpoints, blacklisted countries, etc. </p>
-
-<p>So being kind of new I submitted this as a bug because I thought it was a significant find and possibly a misconfiguration. A response with a content length of 200k is around 160 packets if your MTU is 1500. Which I thought was significant, but I received: <strong>Although your finding might appear to be a security vulnerability, this behavior does not really pose a concrete and exploitable risk to the platform.</strong></p>
 
 
 
+<p>After winter quarter I hopped right into learning some of the basics and Burp Suite. Did all of their misconfiguration and API labs. I felt ready to go. I started with a lesser-known domain just to start small and work my way up. The goal was just to learn and absorb how modern web applications work. As I walked through each link and request with Burp, I noticed upon clicking on a login button I received 4 sentry.io responses as I stalled the request. 2 requests were normal, with a content length of 300~, but the next 2 were very interesting, as one had a content length of 200k~ and the other had around 80k~. The responses with high content lengths included a lot of info like JS endpoints, blacklisted countries, etc. </p>
 
-<p> So I was a bit bummed because I thought I'd just found my first bug and was thinking it was some huge find, but it taught me that although it may be a misconfiguration, it didn't cause seemingly apparent risk to the platform. Which made sense. So I sharpened up my skills and moved on. Learning from a variety of bug bounty bountiers and using their techniques and frameworks on my next domain. </p>
+
+
+
+<p>So being kind of new I submitted this as a bug because I thought it was a significant find and possibly a misconfiguration. A response with a content length of 200k is around 160 packets if your MTU is 1500. Which I thought was significant, but I received <strong>Although your finding might appear to be a security vulnerability, this behavior does not really pose a concrete and exploitable risk to the platform.</strong></p>
+
+
+
+
+
+
+
+<p> I was a bit bummed because I thought I'd just found my first bug and was thinking it was some huge find, but it taught me that although it may be a misconfiguration, it didn't cause seemingly apparent risk to the platform. Which made sense. So I sharpened up my skills and moved on. Learning from a variety of bug bounty hunters and using their techniques and frameworks on my next domain. </p>
+
+
 
 
 
 
 <h3>Domain 2</h3>
 
-<p> I learned a bunch of new fancy tools like the importance of subdomain recon, nuclei, naabu, sqlmap, and my favorite Google dorking. With these new tools, I was more confident than ever and ready to tackle my next bounty. This new approach was focused on enumeration. I first Google dorked the target with queries like: <code>site:example.com ext:pdf</code> or things like <code>site:example.com intext:key</code></p>
 
-<p>And I found something interesting, it was a file path named <code>example/company-scp</code>a bash script that included functions like build_tunnel(),get_ssh_cert(), and BASTION_API definitions. By its self it just seemed like a script used to establish connection for scp. So then I decided to see what the main directory looked like and it was a completly exposed directory path.</p>
 
-<p>Now I got really excited again, so without digging any deeper I sent a report in and within hours I got another <strong>After careful review, it appears that the behavior described does not have a significant security impact on our platform. Therefore, we will be closing this report as informational.</strong></p>
 
-<p>Once again back to the well, super bummed, but I did get a bit further and realized I was lacking big time. I was following what the people online were doing, the tools they used, and the enumeration strategies. So what was I doing wrong? </p>
+<p> I learned a bunch of new fancy tools like the importance of subdomain recon, nuclei, naabu, sqlmap, and my favorite, Google dorking. With these new tools, I was more confident than ever and ready to tackle my next bounty. This new approach was focused on enumeration. I first Google dorked the target with queries like: <code>site:example.com intext:key</code></p>
 
+
+
+
+<p> And I found something interesting: it was a file path named <code>example/company-scp</code> a bash script that included functions like build_tunnel(), build_tunnel(),get_ssh_cert(), and BASTION_API definitions. By itselfit just seemed like a script used to establish connection for SCP. So then I decided to see what the main directory looked like, and it was a completely exposed directory path. </p>
+
+
+
+
+<p> Now I got really excited again, so without digging any deeper, I sent a report in, and within hours I got another <strong> After careful review, it appears that the behavior described does not have a significant security impact on our platform. Therefore, we will be closing this report as informational. </strong></p>
+
+
+
+
+<p> Once again back to the well, super bummed, but I did get a bit further and realized I was lacking big time. I was following what the people online were doing, the tools they used, and the enumeration strategies. So what was I doing wrong? </p>
 <h3> Domain 3 </h3>
-<p>Taking my losses, I decided to keep on learning even more escpially from conferences. The odd thing usually those conference youtube videos with the fewest views have the best information. So learning many more tricks like dns histroy WAF bypass, or learning how to detect vhosts while also using subdomains list to brute force 200's, to learning to use waybackmachine, fofa, and more tools to increase the attack surface. I decided to run it back with another domain.</p>
-<p>I ran my favorite sudomain recon tools, as well as things like virustotal, crt.sh,url_scan, waybackmachine, and ended up with around 40k domains. Now its important to note there were many many duplicates so I had to do lots of data cleaning. Got the unqiue subdomains and concated that with my subfinder domains. Next I probed each site with httpx to get an idea of the subdomains we found. Next I would go into looking at any interesing responses and go with burp to inspect deeper. Found a webpage reading 404, interesting thing here was a recieved a 404 with a content length of decent size. Usually when recieving a 404 you'd get header info and maybe an error response, so decent sized content length is interesting. Here in the source code or the response, was a weird kind of access token generation if the windows.host was <code>ExampleSite.com</code>. So intuitivelty I ran the request again with the host header as <code>ExampleSite.com</code> and boom 200. Now it was a half finished webpage, and looking at the source it was obvious that it was for an event in October of 2025. It was a bit odd since now matter what page I traversed I got the same output. There were also IBM instana keys located within the webpage. So I submitted my report and once again, I recieved a duplicate on my 404 bypass.  </p>
+
+<p>Taking my losses, I decided to keep on learning even more, especially from conferences. The odd thing is usually those conference YouTube videos with the fewest views have the best information. So learning many more tricks like DNS history, WAF bypass, or learning how to detect vhosts while also using subdomain lists to brute force 200s, to learning to use Wayback Machine, FOFA, and more tools to increase the attack surface. I decided to run it back with another domain.</p>
+
+<p>I ran my favorite subdomain recon tools, as well as things like VirusTotal, crt.sh, url_scan, and waybackmachine, and ended up with around 40k domains. Now it's important to note there were many, many duplicates, so I had to do lots of data cleaning. Got the unique subdomains and concatenated that with my subfinder domains. Next, I probed each site with httpx to get an idea of the subdomains we found. Next I would go into looking at any interesting responses and go with Burp to inspect deeper. Found a webpage reading 404. The interesting thing here was I received a 404 with a content length of a decent size. Usually when receiving a 404, you'd get header info and maybe an error response, so a decent-sized content length is interesting. Here in the source code, or the response was a weird kind of access token generation if the windows.host was <code>ExampleSite.com</code>. So intuitively I ran the request again with the host header, <code>ExampleSite.com</code> and boom, 200. Now it was a half-finished webpage, and looking at the source, it was obvious that it was for an event in October of 2025. It was a bit odd since no matter what page I traversed, I got the same output. There were also IBM Instana keys located within the webpage. So I submitted my report, and once again, I received a duplicate on my 404 bypass.  </p>
+
 <h3>The Realization</h3>
 
-              It hit me right in the face. When I was a kid, I was very successful in sports and won many medals in soccer, basketball, and baseball. I continued to excel throughout high highschool but wasn't good enough to play in college. Now why does this matter? I'll use an analogy: in sports we are taught to get better at the things we control, like our conditioning, our positioning, footwork, shooting, etc. A crucial piece of sports was being left out on us players. We would blindly listen to coaches and do as they say since they are coaches; it wasn't really asked as to why. But this is where I lacked in, I was practicing all these fancy techniques without knowing who I was playing or fighting against. This is half the battle I was missing out on. It's not valid or effective to randomly spray and enumerate. I have to learn who I am playing against, their strengths, their weaknesses, and how they operate in order to effectively compete. Down to the server type up to the front-end frameworks, I'm missing out on so much.</p>
 
-<p>Therfore as of right now, I've retired as I continue to learn about popular techs and document them here:  <a href="../Bug_Bounty/Bug_Bounty.html">Bug_Bounty</a>  </p> Where I will go into labbing wordpress application, sql servers, rce's, and much more to improve my play. 
-             
+
+
+              It hit me right in the face. When I was a kid, I was very successful in sports and won many medals in soccer, basketball, and baseball. I continued to excel throughout high school but wasn't good enough to play in college. Now why does this matter? I'll use an analogy: in sports we are taught to get better at the things we control, like our conditioning, our positioning, footwork, shooting, etc. A crucial piece of sports was being left out on us players. We would blindly listen to coaches and do as they say since they are coaches; it wasn't really asked as to why. But this is where I lacked: I was practicing all these fancy techniques without knowing who I was playing or fighting against. This is half the battle I was missing out on. It's not valid or effective to randomly spray and enumerate. I have to learn who I am playing against, their strengths, their weaknesses, and how they operate in order to effectively compete. Down to the server type up to the front-end frameworks, I'm missing out on so much.</p>
+
+
+
+
+<p>Therfore as of right now, I've retired as I continue to learn about popular techs and document them here:  <a href="../Bug_Bounty/Bug_Bounty.html">Bug_Bounty</a>  </p> Where I will go into labbing WordPress applications, SQL servers, and much more to improve my play.         
             
             <!-- Tags -->
             <div class="tags mt-5">
@@ -224,40 +258,6 @@
               <span class="tag is-medium">Exploitation</span>
             </div>
             
-            <!-- Author Box -->
-            <div class="box author-box has-background-light mt-6">
-              <article class="media">
-                <div class="media-left">
-                  <figure class="image is-96x96">
-                    <img class="is-rounded" src="/api/placeholder/192/192" alt="Author profile picture">
-                  </figure>
-                </div>
-                <div class="media-content">
-                  <div class="content">
-                    <p>
-                      <strong class="is-size-4">David Thomas Shonack</strong> <small class="is-size-6 has-text-grey">@dweebus</small>
-                      <br>
-                      Computer science student and privacy advocate based in California. Interested in security, software development, digital rights, and much more.
-                    </p>
-                    <div class="buttons mt-2">
-                      <a href="https://github.com/spinklerz" class="button is-small is-link is-outlined">
-                        <span class="icon">
-                          <i class="fab fa-github"></i>
-                        </span>
-                        <span>GitHub</span>
-                      </a>
-                      <a href="mailto:dshonack@ucsc.edu" class="button is-small is-link is-outlined">
-                        <span class="icon">
-                          <i class="fas fa-envelope"></i>
-                        </span>
-                        <span>Email</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </article>
-            </div>
-            </div>
           
           <!-- Sidebar -->
             
