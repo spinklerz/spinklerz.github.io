@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog Post Title — David Shonack</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0a0a0a;
+      --bg-2:     #111111;
+      --bg-3:     #141414;
+      --border:   #1f1f1f;
+      --border-2: #2a2a2a;
+      --border-h: #444444;
+      --text:     #e8e8e8;
+      --muted:    #777777;
+      --dim:      #555555;
+      --dimmer:   #333333;
+      --green:    #28c840;
+      --mint:     #5fd4a8;
+      --mint-dim: #2a5c4e;
+      --font:     'JetBrains Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--bg-3);
+      border-bottom: 1px solid var(--border);
+    }
+    .dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+    .dot.r { background: #ff5f57; }
+    .dot.y { background: #febc2e; }
+    .dot.g { background: var(--green); }
+    .tab {
+      margin-left: 10px;
+      font-size: 12px;
+      color: var(--dim);
+      padding: 3px 14px;
+      border: 1px solid var(--border-2);
+      border-radius: 4px;
+      cursor: default;
+    }
+    .tab.active { color: var(--text); border-color: #444; background: #1e1e1e; }
+    .nav {
+      margin-left: auto;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+    .nav a {
+      font-size: 11px;
+      color: var(--dim);
+      text-decoration: none;
+      letter-spacing: 1px;
+      transition: color 0.2s;
+    }
+    .nav a:hover { color: var(--mint); }
+    .nav a.back {
+      color: var(--mint-dim);
+      border: 1px solid var(--border-2);
+      padding: 3px 12px;
+      border-radius: 4px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .nav a.back:hover { color: var(--mint); border-color: var(--mint); }
+    .nav a.back::before { content: '← '; }
+
+    /* ── LAYOUT ── */
+    .page { max-width: 720px; margin: 0 auto; padding: 48px 28px 100px; }
+
+    /* ── PROMPT ── */
+    .prompt {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 14px;
+      user-select: none;
+    }
+    .ps1 { font-size: 12px; color: var(--dim); white-space: nowrap; flex-shrink: 0; }
+    .ps1 .host { color: #888; }
+    .ps1 .dir  { color: #bbb; }
+    .cmd { font-size: 13px; color: var(--text); }
+
+    /* ── POST HEADER ── */
+    .post-header { margin-bottom: 40px; }
+
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .post-date {
+      font-size: 11px;
+      color: #3a3a3a;
+    }
+    .post-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .post-tag {
+      font-size: 10px;
+      color: var(--mint-dim);
+      border: 1px solid var(--mint-dim);
+      padding: 2px 8px;
+      letter-spacing: 0.5px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .post-tag:hover { color: var(--mint); border-color: var(--mint); }
+
+    .post-title {
+      font-size: clamp(20px, 4vw, 30px);
+      font-weight: 700;
+      letter-spacing: -1px;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 14px;
+    }
+    .post-subtitle {
+      font-size: 13px;
+      color: var(--mint-dim);
+      line-height: 1.7;
+      max-width: 580px;
+    }
+
+    .post-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 28px 0;
+    }
+
+    /* ── BODY CONTENT ── */
+    .post-body { font-size: 13px; color: #aaa; line-height: 1.95; }
+
+    .post-body h2 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin: 36px 0 12px;
+      letter-spacing: -0.5px;
+    }
+    .post-body h2::before {
+      content: '## ';
+      color: var(--mint-dim);
+      font-weight: 400;
+    }
+
+    .post-body h3 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #e8e8e8;
+      margin: 28px 0 10px;
+    }
+    .post-body h3::before {
+      content: '### ';
+      color: var(--dimmer);
+      font-weight: 400;
+    }
+
+    .post-body p { margin-bottom: 18px; }
+
+    .post-body a {
+      color: var(--mint);
+      text-decoration: none;
+      border-bottom: 1px solid var(--mint-dim);
+      transition: border-color 0.2s;
+    }
+    .post-body a:hover { border-color: var(--mint); }
+
+    .post-body strong { color: #e8e8e8; font-weight: 700; }
+
+    .post-body ul, .post-body ol {
+      margin: 0 0 18px 0;
+      padding-left: 0;
+      list-style: none;
+    }
+    .post-body ul li::before { content: '- '; color: var(--mint-dim); }
+    .post-body ol { counter-reset: list; }
+    .post-body ol li { counter-increment: list; }
+    .post-body ol li::before { content: counter(list) '. '; color: var(--mint-dim); }
+    .post-body li { margin-bottom: 6px; padding-left: 16px; text-indent: -16px; }
+
+    /* ── CODE BLOCKS ── */
+    .post-body pre {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--mint-dim);
+      padding: 18px 20px;
+      overflow-x: auto;
+      margin: 0 0 22px;
+      position: relative;
+    }
+    .post-body pre code {
+      font-family: var(--font);
+      font-size: 12px;
+      color: #ccc;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+    .code-label {
+      font-size: 10px;
+      color: var(--mint-dim);
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    /* inline code */
+    .post-body code {
+      font-family: var(--font);
+      font-size: 12px;
+      color: var(--mint);
+      background: #131313;
+      border: 1px solid var(--border);
+      padding: 1px 6px;
+    }
+
+    /* ── IMAGE ── */
+    .post-image {
+      margin: 28px 0;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .post-image img {
+      width: 100%;
+      display: block;
+      filter: brightness(0.92);
+      transition: filter 0.3s;
+    }
+    .post-image:hover img { filter: brightness(1); }
+    .post-image figcaption {
+      font-size: 11px;
+      color: #3a3a3a;
+      padding: 8px 12px;
+      border-top: 1px solid var(--border);
+      background: var(--bg-2);
+    }
+
+    /* ── CALLOUT / NOTE ── */
+    .callout {
+      border-left: 2px solid var(--mint-dim);
+      background: #0e1a16;
+      padding: 14px 18px;
+      margin: 0 0 22px;
+      font-size: 12px;
+      color: var(--mint-dim);
+      line-height: 1.8;
+    }
+    .callout::before {
+      content: '> note: ';
+      color: var(--mint);
+      font-weight: 700;
+    }
+
+    /* ── FOOTER ── */
+    .post-footer {
+      margin-top: 64px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .post-footer-left { font-size: 11px; color: #2e2e2e; }
+    .post-footer-right a {
+      font-size: 11px;
+      color: var(--mint-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .post-footer-right a:hover { color: var(--mint); }
+    .post-footer-right a::after { content: ' →'; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .page { padding: 28px 16px 60px; }
+      .nav .back-label { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── TOPBAR ── -->
+  <div class="topbar">
+    <div class="dot r"></div>
+    <div class="dot y"></div>
+    <div class="dot g"></div>
+    <div class="tab">bash</div>
+    <div class="tab active">~/blog/post</div>
+    <nav class="nav">
+      <a href="/index.html" class="back"><span class="back-label">portfolio</span></a>
+    </nav>
+  </div>
+
+  <main class="page">
+
+    <!-- ── PROMPT ── -->
+    <div class="prompt">
+      <div class="ps1">
+        <span class="host">dweebler</span><span style="color:#d5d5d5">@</span><span class="host">github</span>
+        <span class="dir">~/blog</span> $
+      </div>
+      <!-- ✏️ Update the filename to match your post slug -->
+      <div class="cmd">cat predatory-data-collection.md</div>
+    </div>
+
+    <!-- ── POST HEADER ── -->
+    <div class="post-header">
+      <div class="post-meta">
+        <span class="post-date">January 2025</span>
+        <!-- ✏️ Add/remove tags as needed -->
+        <div class="post-tags">
+          <span class="post-tag">privacy</span>
+          <span class="post-tag">web</span>
+          <span class="post-tag">data</span>
+        </div>
+      </div>
+
+      <!-- ✏️ Your post title -->
+      <div class="post-title">The Predatory Nature Of Data Collection</div>
+
+      <!-- ✏️ Your post subtitle / description -->
+      <div class="post-subtitle">
+        A look at how platforms quietly collect data behind the promises of better user experience.
+      </div>
+    </div>
+
+    <hr class="post-divider" />
+
+    <!-- ── POST BODY ── -->
+    <div class="post-body">
+
+      <!-- ✏️ Write your post content below. Remove example sections as needed. -->
+
+      <p>
+        After learning about digital signatures, certificates, footprints, cookies, and session IDs, I decided to get some hands-on experience. I fired up Burp Suite, searched for my university's website, and received some very interesting results. Here's what happened when I made a simple request to <code>http://ucsc.edu</code>:
+     </p>
+     <figure class="post-image">
+        <img src="./images/burpe_suite_query.png"  />
+      </figure>
+      <p>Looking at the results, we can see two GET requests and two POST requests. When I visit a webpage, I expect to receive the requested content—HTML, images, and stylesheets. But here, there are hidden requests. First, let's run through a basic overview of how websites function.</p>
+
+      <h2>How Do Websites Function?</h2>
+
+      <p>Everything you see on a webpage is just a file. When you visit a website, your browser requests the <strong>HTML, CSS, and JavaScript</strong> files. These files are then processed locally on your machine to <strong>display the webpage</strong>.</p>
+              
+
+      <!-- CALLOUT — use for notes, warnings, tips -->
+      <figure class="post-image">
+        <img src="./images/basic_static_app_server.png"  />
+      </figure>
+      <div class="callout">
+        Dark patterns are UI choices deliberately designed to trick users into actions
+        they wouldn't otherwise take.
+      </div>
+
+      <h2>What Actually Gets Collected</h2>
+
+      <p>
+        Beyond the obvious — name, email, location — platforms build detailed behavioral
+        profiles from things you'd never think to protect.
+      </p>
+
+      <ul>
+        <li>Mouse movement and scroll depth</li>
+        <li>Time spent on individual UI elements</li>
+        <li>Device fingerprints across sessions</li>
+        <li>Inferred demographics from browsing patterns</li>
+      </ul>
+
+      <!-- IMAGE — replace src with your actual image path -->
+      <figure class="post-image">
+        <img src="https://placehold.co/680x340/111111/2a5c4e?text=your+image+here&font=monospace" alt="Data collection diagram" />
+        <figcaption>✏️ Replace with your own image — update src and alt text</figcaption>
+      </figure>
+
+      <h2>A Practical Example</h2>
+
+      <p>
+        Here's a simplified version of what a third-party tracker injected into a page
+        might look like. This runs silently on thousands of sites.
+      </p>
+
+      <!-- CODE BLOCK -->
+      <div class="code-label">javascript</div>
+      <pre><code>// Third-party tracker fingerprinting example
+const fingerprint = {
+  screen:    `${screen.width}x${screen.height}`,
+  timezone:  Intl.DateTimeFormat().resolvedOptions().timeZone,
+  language:  navigator.language,
+  platform:  navigator.platform,
+  plugins:   [...navigator.plugins].map(p => p.name),
+  canvas:    getCanvasHash(), // unique per device
+};
+
+// Silently exfiltrated to a remote server
+navigator.sendBeacon('https://tracker.example.com/collect',
+  JSON.stringify(fingerprint)
+);</code></pre>
+
+      <p>
+        None of this requires cookies. It runs in the background, requires no permissions,
+        and is almost impossible to detect without inspecting network traffic.
+      </p>
+
+      <h2>What You Can Do</h2>
+
+      <ol>
+        <li>Use a DNS-level blocker like Pi-hole or NextDNS</li>
+        <li>Inspect network requests with browser devtools</li>
+        <li>Prefer services with open privacy policies and audited codebases</li>
+        <li>Treat "free" services as a data exchange, not a gift</li>
+      </ol>
+
+      <!-- SECOND IMAGE EXAMPLE -->
+      <!-- 
+      <figure class="post-image">
+        <img src="path/to/your/image.png" alt="Description" />
+        <figcaption>Your caption here</figcaption>
+      </figure>
+      -->
+
+    </div>
+
+    <!-- ── POST FOOTER ── -->
+    <div class="post-footer">
+      <span class="post-footer-left">© 2025 David Shonack</span>
+      <div class="post-footer-right">
+        <!-- ✏️ Link to next post or back to blog index -->
+        <a href="/index.html#blog">back to posts</a>
+      </div>
+    </div>
+
+  </main>
+
+</body>
+</html>

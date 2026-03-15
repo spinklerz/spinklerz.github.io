@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>David Shonack — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0a0a;
+      --bg-2:      #111111;
+      --bg-3:      #141414;
+      --border:    #1f1f1f;
+      --border-2:  #2a2a2a;
+      --border-h:  #444444;
+      --text:      #e8e8e8;
+      --muted:     #777777;
+      --dim:       #555555;
+      --dimmer:    #333333;
+      --green:     #28c840;
+      --mint:      #5fd4a8;
+      --font:      'JetBrains Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    
+    .blog-description {
+    font-size: 11px;
+    color: #2a5c4e;
+    margin-top: 3px;
+    line-height: 1.6;
+    flex-basis: 100%;
+    }
+    /* ── TOPBAR ── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--bg-3);
+      border-bottom: 1px solid var(--border);
+    }
+    .dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+    .dot.r { background: #ff5f57; }
+    .dot.y { background: #febc2e; }
+    .dot.g { background: var(--green); }
+    .tab {
+      margin-left: 10px;
+      font-size: 12px;
+      color: var(--dim);
+      padding: 3px 14px;
+      border: 1px solid var(--border-2);
+      border-radius: 4px;
+      cursor: default;
+    }
+    .tab.active { color: var(--text); border-color: #444; background: #1e1e1e; }
+    .nav {
+      margin-left: auto;
+      display: flex;
+      gap: 18px;
+    }
+    .nav a {
+      font-size: 11px;
+      color: var(--dim);
+      text-decoration: none;
+      letter-spacing: 1px;
+      transition: color 0.2s;
+    }
+    .nav a:hover { color: var(--text); }
+
+    /* ── LAYOUT ── */
+    .page { max-width: 860px; margin: 0 auto; padding: 40px 28px 80px; }
+
+    /* ── PROMPT ── */
+    .prompt {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 14px;
+      user-select: none;
+    }
+    .ps1 { font-size: 12px; color: var(--dim); white-space: nowrap; flex-shrink: 0; }
+    .ps1 .host { color: #888; }
+    .ps1 .dir  { color: #bbb; }
+    .cmd { font-size: 13px; color: var(--text); }
+
+    /* ── OUTPUT BLOCK ── */
+    .output { margin-bottom: 48px; }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #3a3a3a;
+      border-bottom: 1px solid #181818;
+      padding-bottom: 8px;
+      margin-bottom: 18px;
+    }
+
+    /* ── HERO ── */
+    .hero-name {
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 700;
+      letter-spacing: -1.5px;
+      color: #fff;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .hero-role {
+      font-size: 11px;
+      color: var(--dim);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+    .hero-desc {
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.8;
+    }
+    .blink {
+      display: inline-block;
+      width: 9px;
+      height: 15px;
+      background: var(--text);
+      animation: blink 1s step-end infinite;
+      vertical-align: middle;
+      margin-left: 2px;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .avail {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+      font-size: 11px;
+      color: var(--dim);
+    }
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+
+    /* ── PROJECTS GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 12px;
+    }
+    .card {
+      border: 1px solid var(--border);
+      padding: 18px;
+      background: var(--bg-2);
+      transition: border-color 0.2s, background 0.2s;
+      cursor: default;
+      text-decoration: none;
+      display: block;
+      color: inherit;
+    }
+
+    
+    .card:hover { border-color: #5fd4a8; background: #161616; }
+    .card-title  { font-size: 13px; color: #ffffff; margin-bottom: 5px; }
+    .card-meta  { font-size: 11px; color: #3d3d3d; margin-bottom: 10px; }
+    .card-desc   { font-size: 11px; color: #2a5c4e; line-height: 1.7; }
+    .tags       { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 5px; }
+    .tag {
+      font-size: 10px;
+      color: var(--dimmer);
+      border: 1px solid var(--border-2);
+      padding: 2px 8px;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── BLOG ── */
+    .blog-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;          /* add this */
+      gap: 4px 16px; 
+      padding: 13px 0;
+      border-bottom: 1px solid #141414;
+      text-decoration: none;
+      color: inherit;
+      transition: color 0.2s;
+    }
+    .blog-row:last-child { border-bottom: none; }
+    .blog-row:hover .blog-title { color: #5fd4a8; }
+    blog-title  { font-size: 13px; color: #ffffff; }
+    .blog-date  { font-size: 11px; color: #3a3a3a; white-space: nowrap; flex-shrink: 0; }
+
+    /* ── SKILLS LIST ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 8px;
+    }
+    .skill-item {
+    font-size: 12px;
+    color: var(--dim);
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-2);
+    transition: color 0.2s, border-color 0.2s;
+    cursor: default;
+    }
+
+    .skill-item:hover {
+    color: #5fd4a8;
+    border-color: #5fd4a8;
+    }
+    .skill-item::before { content: '$ '; color: var(--dimmer); }
+
+    /* ── CONTACT LINKS ── */
+    .contact-links { display: flex; flex-wrap: wrap; gap: 20px; }
+    .contact-link {
+      font-size: 12px;
+      color: var(--dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .contact-link::before { content: '> '; color: var(--dimmer); }
+    .contact-link:hover { color: var(--text); }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-top: 60px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: #2e2e2e;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .nav a:hover { color: #5fd4a8; }
+      .page { padding: 28px 16px 60px; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── TOPBAR ── -->
+  <div class="topbar">
+    <div class="dot r"></div>
+    <div class="dot y"></div>
+    <div class="dot g"></div>
+    <div class="tab">bash</div>
+    <div class="tab active">~/portfolio</div>
+    <nav class="nav">
+      <a href="#projects">projects</a>
+      <a href="#blog">blog</a>
+      <a href="#skills">skills</a>
+      <a href="#contact">contact</a>
+    </nav>
+  </div>
+
+  <main class="page">
+
+    <!-- ── WHOAMI ── -->
+    <div class="prompt">
+      <div class="ps1"><span class="host">dweebler</span><span style="color:#d5d5d5">@</span><span class="host">github</span> <span class="dir">~/portfolio</span> $</div>
+      <div class="cmd">whoami</div>
+    </div>
+    <div class="output">
+      <!-- ✏️ Replace with your name, role, and bio -->
+      <div class="hero-name">David Shonack</div>
+      <div class="hero-role">Cybersecurity · Networking · Infrastructure</div>
+      <div class="hero-desc">
+        Just a cyber guy trying to do cyber things. <span class="blink"></span>
+      </div>
+      <!-- ✏️ Remove the .avail line if you're not open to work -->
+      <div class="avail">
+        <div class="status-dot"></div>
+        <a style="color: #28c840;">available for work</a>
+      </div>
+    </div>
+
+    <!-- ── PROJECTS ── -->
+    <div id="projects">
+      <div class="prompt">
+        <div class="ps1"><span class="host">dweebler</span><span style="color:#d5d5d5">@</span><span class="host">github</span> <span class="dir">~/portfolio</span> $</div>
+        <div class="cmd">ls ./projects</div>
+      </div>
+      <div class="output">
+        <div class="section-label">projects</div>
+        <div class="grid">
+
+          <!-- Project cards -->
+
+          <!-- ── Card 1 ── -->
+
+          <a class="card" href="https://github.com/spinklerz/Active-Directory-and-Azure-Lab" target="_blank" rel="noopener">
+            <div class="card-title">Active Directory and Azure Lab</div>
+            <div class="card-meta">2026 · Networking </div>
+            <div class="card-desc">Created a hybrid network infrastructure with a tunnel between Azure and my LAN. </div>
+            <div class="tags">
+              <span class="tag">AD</span>
+              <span class="tag">Networking</span>
+              <span class="tag">Azure</span>
+            </div>
+          </a>
+
+          <!-- ── Card 2 ── -->
+
+          <a class="card" href="https://github.com/spinklerz/SIEM-Wazuh-Lab" target="_blank" rel="noopener">
+            <div class="card-title">SIEM Wazuh Lab</div>
+            <div class="card-meta">2026 · Wazuh/Metasploit</div>
+            <div class="card-desc">Created a gap analysis lab, simulating initial access, execution, persistence, privilege escalation, and lateral movement.</div>
+            <div class="tags">
+              <span class="tag">Wazuh</span>
+              <span class="tag">Metasploit</span>
+              <span class="tag">C</span>
+            </div>
+          </a>
+
+          <!-- ── Card 3 ── -->
+
+
+          <a class="card" href="https://github.com/spinklerz/Network-IDS" target="_blank" rel="noopener">
+            <div class="card-title">Network IDS</div>
+            <div class="card-meta">2025 · Various</div>
+            <div class="card-desc">Recorded around 1.2 million packets from my local machine to then created an autoencoded model to detect anomalous traffic.</div>
+            <div class="tags">
+              <span class="tag">Python</span>
+              <span class="tag">SQLite3</span>
+              <span class="tag">Matplotlib</span>
+            </div>
+          </a>
+
+          <!-- ── Card 4 ── -->
+
+          <a class="card" href="https://github.com/spinklerz/Network-Attack-Toolkit" target="_blank" rel="noopener">
+            <div class="card-title">Network Attack Toolkit</div>
+            <div class="card-meta">2025 · Networking</div>
+            <div class="card-desc">Built a network stressing toolkit including ARP poisons, SLAAC spoofs, SYN port scanning, DoS, and DHCP exhaustion.</div>
+            <div class="tags">
+              <span class="tag">Python</span>
+              <span class="tag">Scapy</span>
+              <span class="tag">Wireshark</span>
+            </div>
+          </a>
+
+            <!-- ── Card 5 ── -->
+          <a class="card" href="https://github.com/spinklerz/Mininet-routing" target="_blank" rel="noopener">
+            <div class="card-title">Mininet Routing</div>
+            <div class="card-meta">2025 · Networking</div>
+            <div class="card-desc">Built a software-defined network, implemented flow rules, and troubleshooted network issues using ping/iperf and more.</div>
+            <div class="tags">
+              <span class="tag">Python</span>
+              <span class="tag">SDN</span>
+              <span class="tag">POX</span>
+            </div>
+          </a>
+
+            <!-- ── Card 6 ── -->
+            <a class="card" href="https://github.com/spinklerz/Network-Monitoring" target="_blank" rel="noopener">
+                <div class="card-title">Network Monitoring</div>
+                <div class="card-meta">2025 · Networking</div>
+                <div class="card-desc">Configured a machine to be monitored by Prometheus, stress tested that machine, and created alerts and rules to prevent denial-of-service floods.</div>
+                <div class="tags">
+                  <span class="tag">Node Exporter</span>
+                  <span class="tag">Prometheus</span>
+                  <span class="tag">Alerting</span>
+                </div>
+              </a>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ── BLOG ── -->
+    <div id="blog">
+      <div class="prompt">
+        <div class="ps1"><span class="host">dweebler</span><span style="color:#d5d5d5">@</span><span class="host">github</span> <span class="dir">~/portfolio</span> $</div>
+        <div class="cmd">cat ./blog/recent.log</div>
+      </div>
+      <div class="output">
+        <div class="section-label">recent posts</div>
+
+        <!-- Blogs -->
+
+        <a class="blog-row" href="Blog_Modern_WebThreat.html" target="_blank" rel="noopener">
+          <div class="blog-title">Exploring Modern web threats</div>
+          <div class="blog-description">Exploring the infrastrucutre of a modern phishing webpage.</div>
+          <div class="blog-date">August 2025</div>
+        </a>
+
+
+        <a class="blog-row" href="Blog_Compromised_Domain.html" target="_blank" rel="noopener">
+          <div class="blog-title">How I found and mapped a compromised subdomain</div>
+          <div class="blog-description">
+            An invalueable learning experience into how criminals function. Techniques observed were subdomain takeover, phishing, iframe injection, namesever pivoting, and much more.</div>
+          <div class="blog-date">July 2025</div>
+        </a>
+
+        <a class="blog-row" href="Blog_SQL_XML.html" target="_blank" rel="noopener">
+            <div class="blog-title">SQL injection with filter bypass via XML encoding</div>
+            <div class="blog-description">This was one of the most insightful labs I've ever done that took me several days, follow me on my journey through it.</div>
+            <div class="blog-date">May 2025</div>
+          </a>
+
+        <a class="blog-row" href="Blog_Bug_Bounty.html" target="_blank" rel="noopener">
+            <div class="blog-title">Bug Bounty Journey</div>
+            <div class="blog-description">How a simple university page misconfiguration led me down the rabbit hole of bounty hunting.</div>
+            <div class="blog-date">April 2025</div>
+        </a>
+
+        <a class="blog-row" href="Blog_CSRF.html" target="_blank" rel="noopener">
+        <div class="blog-title">CSRF And OAuth</div>
+        <div class="blog-description">Learn about the complex nature of the OAuth process and its security mechanisms.</div>
+        <div class="blog-date">March 2025</div>
+        </a>
+
+        <a class="blog-row" href="Blog_Privacy_Data.html" target="_blank" rel="noopener">
+            <div class="blog-title">The Nature Of Data Collection</div>
+            <div class="blog-description">A look at how platforms quietly collect data behind the promises of better user experience.</div>
+            <div class="blog-date">January 2025</div>
+          </a>
+        <!-- Add more rows here -->
+
+      </div>
+    </div>
+
+    <!-- ── SKILLS ── -->
+    <div id="skills">
+      <div class="prompt">
+        <div class="ps1"><span class="host">dweebler</span><span style="color:#2a2a2a">@</span><span class="host">github</span> <span class="dir">~/portfolio</span> $</div>
+        <div class="cmd">cat ./skills.txt</div>
+      </div>
+      <div class="output">
+        <div class="section-label">skills &amp; tools</div>
+        <div class="skills-grid">
+          <!-- Skills -->
+          <div class="skill-item">Penetration Testing</div>
+          <div class="skill-item">Network Security</div>
+          <div class="skill-item">Python</div>
+          <div class="skill-item">C</div>
+          <div class="skill-item">Bash / Linux</div>
+          <div class="skill-item">Windows</div>
+          <div class="skill-item">OSINT</div>
+          <div class="skill-item">Web Security</div>
+          <div class="skill-item">Threat Analysis</div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CONTACT ── -->
+    <div id="contact">
+      <div class="prompt">
+        <div class="ps1"><span class="host">dweebler</span><span style="color:#2a2a2a">@</span><span class="host">github</span> <span class="dir">~/portfolio</span> $</div>
+        <div class="cmd">./contact --all</div>
+      </div>
+      <div class="output">
+        <div class="section-label">reach me</div>
+        <div class="contact-links">
+          <!-- Links -->
+          <a class="contact-link" href="https://github.com/spinklerz" target="_blank" rel="noopener">GitHub</a>
+          <a class="contact-link" href="https://www.linkedin.com/in/david-shonack/" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="contact-link" href="https://yourblog.com" target="_blank" rel="noopener">Blog</a>
+          <a class="contact-link" href="mailto:dshonack@ucsc.edu">Email</a>
+          <a class="contact-link" href="resume.pdf" target="_blank" rel="noopener">Resume.pdf</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── FOOTER ── -->
+    <footer>
+      <span>© 2026 David Shonack</span>
+    </footer>
+
+  </main>
+
+</body>
+</html>

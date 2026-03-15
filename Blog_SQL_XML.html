@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SQL XML — David Shonack</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0a0a0a;
+      --bg-2:     #111111;
+      --bg-3:     #141414;
+      --border:   #1f1f1f;
+      --border-2: #2a2a2a;
+      --border-h: #444444;
+      --text:     #e8e8e8;
+      --muted:    #777777;
+      --dim:      #555555;
+      --dimmer:   #333333;
+      --green:    #28c840;
+      --mint:     #5fd4a8;
+      --mint-dim: #2a5c4e;
+      --font:     'JetBrains Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--bg-3);
+      border-bottom: 1px solid var(--border);
+    }
+    .dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+    .dot.r { background: #ff5f57; }
+    .dot.y { background: #febc2e; }
+    .dot.g { background: var(--green); }
+    .tab {
+      margin-left: 10px;
+      font-size: 12px;
+      color: var(--dim);
+      padding: 3px 14px;
+      border: 1px solid var(--border-2);
+      border-radius: 4px;
+      cursor: default;
+    }
+    .tab.active { color: var(--text); border-color: #444; background: #1e1e1e; }
+    .nav {
+      margin-left: auto;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+    .nav a {
+      font-size: 11px;
+      color: var(--dim);
+      text-decoration: none;
+      letter-spacing: 1px;
+      transition: color 0.2s;
+    }
+    .nav a:hover { color: var(--mint); }
+    .nav a.back {
+      color: var(--mint-dim);
+      border: 1px solid var(--border-2);
+      padding: 3px 12px;
+      border-radius: 4px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .nav a.back:hover { color: var(--mint); border-color: var(--mint); }
+    .nav a.back::before { content: '← '; }
+
+    /* ── LAYOUT ── */
+    .page { max-width: 720px; margin: 0 auto; padding: 48px 28px 100px; }
+
+    /* ── PROMPT ── */
+    .prompt {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 14px;
+      user-select: none;
+    }
+    .ps1 { font-size: 12px; color: var(--dim); white-space: nowrap; flex-shrink: 0; }
+    .ps1 .host { color: #888; }
+    .ps1 .dir  { color: #bbb; }
+    .cmd { font-size: 13px; color: var(--text); }
+
+    /* ── POST HEADER ── */
+    .post-header { margin-bottom: 40px; }
+
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .post-date {
+      font-size: 11px;
+      color: #3a3a3a;
+    }
+    .post-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .post-tag {
+      font-size: 10px;
+      color: var(--mint-dim);
+      border: 1px solid var(--mint-dim);
+      padding: 2px 8px;
+      letter-spacing: 0.5px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .post-tag:hover { color: var(--mint); border-color: var(--mint); }
+
+    .post-title {
+      font-size: clamp(20px, 4vw, 30px);
+      font-weight: 700;
+      letter-spacing: -1px;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 14px;
+    }
+    .post-subtitle {
+      font-size: 13px;
+      color: var(--mint-dim);
+      line-height: 1.7;
+      max-width: 580px;
+    }
+
+    .post-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 28px 0;
+    }
+
+    /* ── BODY CONTENT ── */
+    .post-body { font-size: 13px; color: #aaa; line-height: 1.95; }
+
+    .post-body h2 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin: 36px 0 12px;
+      letter-spacing: -0.5px;
+    }
+    .post-body h2::before {
+      content: '## ';
+      color: var(--mint-dim);
+      font-weight: 400;
+    }
+
+    .post-body h3 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #e8e8e8;
+      margin: 28px 0 10px;
+    }
+    .post-body h3::before {
+      content: '### ';
+      color: var(--dimmer);
+      font-weight: 400;
+    }
+
+    .post-body p { margin-bottom: 18px; }
+
+    .post-body a {
+      color: var(--mint);
+      text-decoration: none;
+      border-bottom: 1px solid var(--mint-dim);
+      transition: border-color 0.2s;
+    }
+    .post-body a:hover { border-color: var(--mint); }
+
+    .post-body strong { color: #e8e8e8; font-weight: 700; }
+
+    .post-body ul, .post-body ol {
+      margin: 0 0 18px 0;
+      padding-left: 0;
+      list-style: none;
+    }
+    .post-body ul li::before { content: '- '; color: var(--mint-dim); }
+    .post-body ol { counter-reset: list; }
+    .post-body ol li { counter-increment: list; }
+    .post-body ol li::before { content: counter(list) '. '; color: var(--mint-dim); }
+    .post-body li { margin-bottom: 6px; padding-left: 16px; text-indent: -16px; }
+
+    /* ── CODE BLOCKS ── */
+    .post-body pre {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--mint-dim);
+      padding: 18px 20px;
+      overflow-x: auto;
+      margin: 0 0 22px;
+      position: relative;
+    }
+    .post-body pre code {
+      font-family: var(--font);
+      font-size: 12px;
+      color: #ccc;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+    .code-label {
+      font-size: 10px;
+      color: var(--mint-dim);
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    /* inline code */
+    .post-body code {
+      font-family: var(--font);
+      font-size: 12px;
+      color: var(--mint);
+      background: #131313;
+      border: 1px solid var(--border);
+      padding: 1px 6px;
+    }
+
+    /* ── IMAGE ── */
+    .post-image {
+      margin: 28px 0;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .post-image img {
+      width: 100%;
+      display: block;
+      filter: brightness(0.92);
+      transition: filter 0.3s;
+    }
+    .post-image:hover img { filter: brightness(1); }
+    .post-image figcaption {
+      font-size: 11px;
+      color: #3a3a3a;
+      padding: 8px 12px;
+      border-top: 1px solid var(--border);
+      background: var(--bg-2);
+    }
+
+    /* ── CALLOUT / NOTE ── */
+    .callout {
+      border-left: 2px solid var(--mint-dim);
+      background: #0e1a16;
+      padding: 14px 18px;
+      margin: 0 0 22px;
+      font-size: 12px;
+      color: var(--mint-dim);
+      line-height: 1.8;
+    }
+    .callout::before {
+      content: '> note: ';
+      color: var(--mint);
+      font-weight: 700;
+    }
+
+    /* ── FOOTER ── */
+    .post-footer {
+      margin-top: 64px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .post-footer-left { font-size: 11px; color: #2e2e2e; }
+    .post-footer-right a {
+      font-size: 11px;
+      color: var(--mint-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .post-footer-right a:hover { color: var(--mint); }
+    .post-footer-right a::after { content: ' →'; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .page { padding: 28px 16px 60px; }
+      .nav .back-label { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── TOPBAR ── -->
+  <div class="topbar">
+    <div class="dot r"></div>
+    <div class="dot y"></div>
+    <div class="dot g"></div>
+    <div class="tab">bash</div>
+    <div class="tab active">~/blog/post</div>
+    <nav class="nav">
+      <a href="index.html#blog" class="back"><span class="back-label">portfolio</span></a>
+    </nav>
+  </div>
+
+  <main class="page">
+
+    <!-- ── PROMPT ── -->
+    <div class="prompt">
+      <div class="ps1">
+        <span class="host">dweebler</span><span style="color:#d5d5d5">@</span><span class="host">github</span>
+        <span class="dir">~/blog</span> $
+      </div>
+      <!-- ✏️ Update the filename to match your post slug -->
+      <div class="cmd">cat SQL_XML.md</div>
+    </div>
+
+    <!-- ── POST HEADER ── -->
+    <div class="post-header">
+      <div class="post-meta">
+        <span class="post-date">May 2025</span>
+        <!-- ✏️ Add/remove tags as needed -->
+        <div class="post-tags">
+          <span class="post-tag">SQL</span>
+          <span class="post-tag">XML</span>
+          <span class="post-tag">Web Security</span>
+        </div>
+      </div>
+
+
+      <div class="post-title">SQL injection with filter bypass via XML encoding</div>
+
+      <div class="post-subtitle">
+        SQL and XML lab. 
+      </div>
+    </div>
+
+    <hr class="post-divider" />
+
+    <!-- ── POST BODY ── -->
+    <div class="post-body">
+        <h2>Day 1</h2>
+        <p>Day 1 I spent a lot of time learning sql since I didn't know too much, as I completed the previous labs fairly easily I was feeling pretty good. </p>
+        <p>The first issue I faced was trying to understand what I was doing. Up until this point ive just worked on running everything through burp suite but this was different. The form I was suppose to inject was not being run through the proxy. It took me a little bit to figure out that inside the form to request for stock, contains an endpoint. So what I did was fire up burp suite look at the current webpage, reload it, send it to the repeater, modify the host headers and path to POST. </p>
+        <p>Then after I got correct endpoint to POST, how was I suppose to structure the xml. I did some research and found out there is no universal standard to implement xml. This was an unfortunate find as it didnt really give me any help. I decided to look at the source code once again and found an intersting endpoint, that was a js script detailing how xml is formed, so I analyzed it and starting sending post's and eventually I got the correct format! Then I sent some common payload like <code>' OR 1=1</code> and got a "Attack detected" and called it a day.
+          <h2>Day 2</h2>
+          <p>Day 2 I started to learn about encoding since the encoding method being used was not url encoding. Here is where I learned a lot, so xml files decode encoded text on the server side so we can use this to bypass the WAF. The encoding method was very intersting where <code>&</code> was used to symbolize html encoding <code>#</code> to indicate a number and <code>x</code>to indicate a hex value, then I would look up a ASCII table and manually encode each character by its hex value. For example I was using SELECT a lot and its encoding would look like: <code>&#x53;&#x45;&#x4c;&#x45;&#x43;&#x54;</code>. After I understood the encoding, I went right into it spamming random sqli's, it didn't take long to understand that I was getting no where constantly getting a stock of 0. I didn't understand what this meant, after spending a large portion of time messing around with commands i took a piece of paper out and decided to stop hitting my head against a keyboard. So what I knew was that we had two values at least the product ID and the store ID. My first formula came up with something like <code>SELECT stock FROM sometable WHERE storeId=userStoreId AND productId=userProductId;</code></p>
+          <p>I finally out of prue luck finally ran a command like <code>OR 1=1</code> next to the store ID, sent the request and got a list of stock quantities. Before moving on further I spent a large amount of time trying to understand why I recieved this output. When i ran the same command next to the product ID why didn't I get a similar response? I made a crucial mistake, when checking for sqli I've always been told and seen people say use <code>'</code> or <code>"</code>. What I failed to see was in both these cases it only considers senarios where the user input is being passed as some string. I would never check to see if user input was being passed as any other data type then a string. The reason the query worked with the <code>'</code> or <code>"</code> was because the backend was processing the query without using them and taking there values in directly so I came up with another forumla. <code>SELECT stock FROM sometable WHERE storeId=num(userStoreId) AND productId=num(userProductId)</code>. Naturally this looks very similar to the first formula with a distinct difference, in that the user input was a number. That big clue then let me to my next query which was the encoded <code>UNION SELECT username FROM users--</code> which output all the users! I did the same thing with passwords and got the same result!: </p>
+          <p>But I wanted to be a bit more professional then brute forcing the passwords, so with the usernames I constructed a new query to find the password of a user by creating: <code>UNION SELECT password FROM users WHERE username='administrator'--</code>. It worked! I got the password for the administrator!</p>
+          <p>I was so happy to see this screen😭</p>
+          <figure class="post-image">
+            <img src="./images/Screenshot 2025-05-18 at 8.04.58 PM.png" alt="phpinfo page" />
+            <figcaption></figcaption>
+          </figure>
+      </p>
+          <h2>What I Learned</h2>
+          <p>It may not of been super clear but let me lay it out.</p>
+          <ul class="indented-list">
+              <li>File acceptance types can be a attack vector( In this case xml ) and can be leverage to avoid WAF's</li>
+              <li>SQLi's can be very dynamic, taking it slow having a metholdogy and make sure you document progress is vital</li>
+              <li>Learned a lot about xml and how it decodes html encodings on the server side </li>
+              <li>Also this site was a lifesaver for encoding the sqli: <a href="http://www.mynikko.com/tools/tool_htmlencoding.html"> Link </a></li>
+          </ul>
+
+
+  <!-- SECOND IMAGE EXAMPLE -->
+      <!-- 
+      <figure class="post-image">
+        <img src="path/to/your/image.png" alt="Description" />
+        <figcaption>Your caption here</figcaption>
+      </figure>
+      -->
+
+    </div>
+
+    <!-- ── POST FOOTER ── -->
+    <div class="post-footer">
+      <span class="post-footer-left">© 2025 David Shonack</span>
+      <div class="post-footer-right">
+        <!-- ✏️ Link to next post or back to blog index -->
+        <a href="index.html#blog">back to posts</a>
+      </div>
+    </div>
+
+  </main>
+
+</body>
+</html>
