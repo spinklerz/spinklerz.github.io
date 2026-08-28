@@ -1,503 +1,715 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>David Shonack — Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>David Shonack — Network &amp; Infrastructure</title>
+<meta name="description" content="David Shonack — IT Technician specializing in networking, cloud infrastructure, and security. Portfolio of labs, deployments, and writing.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0D1117;
+    --panel:#121920;
+    --panel-2:#182029;
+    --line:#232C36;
+    --text:#E7EDF3;
+    --muted:#8A96A3;
+    --signal:#5EEAD4;
+    --signal-dim:rgba(94,234,212,0.12);
+    --amber:#F5A524;
+    --amber-dim:rgba(245,165,36,0.12);
+    --danger:#F0796B;
+    --radius:10px;
+    --maxw:1080px;
+    --font-display:'Space Grotesk', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+  }
 
-    :root {
-      --bg:        #0a0a0a;
-      --bg-2:      #111111;
-      --bg-3:      #141414;
-      --border:    #1f1f1f;
-      --border-2:  #2a2a2a;
-      --border-h:  #444444;
-      --text:      #e8e8e8;
-      --muted:     #777777;
-      --dim:       #555555;
-      --dimmer:    #333333;
-      --green:     #28c840;
-      --mint:      #5fd4a8;
-      --font:      'JetBrains Mono', monospace;
-    }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--text);
+    font-family:var(--font-body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--signal-dim);color:var(--signal);}
 
-    html { scroll-behavior: smooth; }
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font);
-      font-size: 14px;
-      line-height: 1.6;
-      min-height: 100vh;
-    }
-    
-    .blog-description {
-    font-size: 11px;
-    color: #2a5c4e;
-    margin-top: 3px;
-    line-height: 1.6;
-    flex-basis: 100%;
-    }
-    /* ── TOPBAR ── */
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 20px;
-      background: var(--bg-3);
-      border-bottom: 1px solid var(--border);
-    }
-    .dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
-    .dot.r { background: #ff5f57; }
-    .dot.y { background: #febc2e; }
-    .dot.g { background: var(--green); }
-    .tab {
-      margin-left: 10px;
-      font-size: 12px;
-      color: var(--dim);
-      padding: 3px 14px;
-      border: 1px solid var(--border-2);
-      border-radius: 4px;
-      cursor: default;
-    }
-    .tab.active { color: var(--text); border-color: #444; background: #1e1e1e; }
-    .nav {
-      margin-left: auto;
-      display: flex;
-      gap: 18px;
-    }
-    .nav a {
-      font-size: 11px;
-      color: var(--dim);
-      text-decoration: none;
-      letter-spacing: 1px;
-      transition: color 0.2s;
-    }
-    .nav a:hover { color: var(--text); }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;}
 
-    /* ── LAYOUT ── */
-    .page { max-width: 860px; margin: 0 auto; padding: 40px 28px 80px; }
+  h1,h2,h3{font-family:var(--font-display);font-weight:600;margin:0;letter-spacing:-0.01em;}
 
-    /* ── PROMPT ── */
-    .prompt {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      margin-bottom: 14px;
-      user-select: none;
-    }
-    .ps1 { font-size: 12px; color: var(--dim); white-space: nowrap; flex-shrink: 0; }
-    .ps1 .host { color: #888; }
-    .ps1 .dir  { color: #bbb; }
-    .cmd { font-size: 13px; color: var(--text); }
+  .mono{font-family:var(--font-mono);}
 
-    /* ── OUTPUT BLOCK ── */
-    .output { margin-bottom: 48px; }
+  :focus-visible{outline:2px solid var(--signal);outline-offset:3px;border-radius:4px;}
 
-    /* ── SECTION LABEL ── */
-    .section-label {
-      font-size: 10px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: #3a3a3a;
-      border-bottom: 1px solid #181818;
-      padding-bottom: 8px;
-      margin-bottom: 18px;
-    }
+  /* ---------- NAV ---------- */
+  .nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(13,17,23,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav__row{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 0;gap:16px;flex-wrap:wrap;
+  }
+  .nav__brand{
+    display:flex;align-items:center;gap:10px;
+    font-family:var(--font-mono);font-size:14px;color:var(--text);
+  }
+  .nav__dot{
+    width:8px;height:8px;border-radius:50%;background:var(--signal);
+    box-shadow:0 0 0 3px var(--signal-dim);
+    flex-shrink:0;
+  }
+  .nav__avatar{
+    width:24px;height:24px;border-radius:50%;object-fit:cover;
+    border:1px solid var(--line);flex-shrink:0;
+  }
+  .nav__links{display:flex;gap:24px;flex-wrap:wrap;}
+  .nav__links a{
+    font-size:13px;color:var(--muted);font-family:var(--font-mono);
+    letter-spacing:0.02em;transition:color .15s ease;
+  }
+  .nav__links a:hover{color:var(--signal);}
+  .nav__cta{
+    font-family:var(--font-mono);font-size:12px;
+    border:1px solid var(--line);padding:8px 14px;border-radius:6px;
+    color:var(--text);transition:border-color .15s ease, color .15s ease;
+    white-space:nowrap;
+  }
+  .nav__cta:hover{border-color:var(--signal);color:var(--signal);}
 
-    /* ── HERO ── */
-    .hero-name {
-      font-size: clamp(28px, 5vw, 42px);
-      font-weight: 700;
-      letter-spacing: -1.5px;
-      color: #fff;
-      line-height: 1;
-      margin-bottom: 8px;
-    }
-    .hero-role {
-      font-size: 11px;
-      color: var(--dim);
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
-    .hero-desc {
-      margin-top: 14px;
-      font-size: 13px;
-      color: var(--muted);
-      max-width: 520px;
-      line-height: 1.8;
-    }
-    .blink {
-      display: inline-block;
-      width: 9px;
-      height: 15px;
-      background: var(--text);
-      animation: blink 1s step-end infinite;
-      vertical-align: middle;
-      margin-left: 2px;
-    }
-    @keyframes blink { 50% { opacity: 0; } }
+  /* ---------- HERO ---------- */
+  .hero{padding:72px 0 40px;position:relative;overflow:hidden;}
+  .hero__grid{
+    display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;
+  }
+  .hero__identity{display:flex;align-items:center;gap:16px;margin-bottom:28px;}
+  .hero__photo{
+    width:64px;height:64px;border-radius:50%;object-fit:cover;
+    border:2px solid var(--signal);flex-shrink:0;
+    background:var(--signal-dim);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-mono);font-weight:600;color:var(--signal);font-size:18px;
+  }
+  .hero__eyebrow{
+    font-family:var(--font-mono);font-size:12px;color:var(--signal);
+    letter-spacing:0.14em;text-transform:uppercase;margin-bottom:16px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .hero__eyebrow::before{content:"●";font-size:10px;color:var(--signal);}
+  .hero h1{
+    font-size:clamp(2.4rem,5vw,3.4rem);line-height:1.05;color:var(--text);
+  }
+  .hero h1 span{color:var(--signal);}
+  .hero__role{
+    font-family:var(--font-mono);font-size:15px;color:var(--muted);
+    margin-top:14px;letter-spacing:0.01em;
+  }
+  .hero__desc{
+    margin-top:20px;color:var(--muted);font-size:16px;max-width:52ch;
+  }
+  .hero__actions{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap;}
+  .btn{
+    font-family:var(--font-mono);font-size:13px;padding:12px 20px;border-radius:7px;
+    display:inline-flex;align-items:center;gap:8px;transition:all .15s ease;
+    border:1px solid transparent;
+  }
+  .btn--primary{background:var(--signal);color:#06231F;font-weight:600;}
+  .btn--primary:hover{background:#7FF3DB;}
+  .btn--ghost{border-color:var(--line);color:var(--text);}
+  .btn--ghost:hover{border-color:var(--muted);}
 
-    .avail {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 14px;
-      font-size: 11px;
-      color: var(--dim);
-    }
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--green);
-      animation: pulse 2s ease-in-out infinite;
-    }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+  .topo{width:100%;height:auto;}
+  .topo .link{stroke:var(--line);stroke-width:1.5;fill:none;}
+  .topo .packet{stroke:var(--signal);stroke-width:2;fill:none;stroke-linecap:round;}
+  .topo .node-ring{fill:var(--panel-2);stroke:var(--line);stroke-width:1.5;}
+  .topo .node-ring--center{fill:var(--signal-dim);stroke:var(--signal);}
+  .topo text{font-family:var(--font-mono);fill:var(--muted);font-size:11px;}
+  .topo .center-label{fill:var(--text);font-size:13px;font-weight:600;}
 
-    /* ── PROJECTS GRID ── */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-      gap: 12px;
-    }
-    .card {
-      border: 1px solid var(--border);
-      padding: 18px;
-      background: var(--bg-2);
-      transition: border-color 0.2s, background 0.2s;
-      cursor: default;
-      text-decoration: none;
-      display: block;
-      color: inherit;
-    }
+  @keyframes flow{to{stroke-dashoffset:-240;}}
+  .packet{stroke-dasharray:5 26;animation:flow 3.2s linear infinite;}
+  .packet--2{animation-duration:3.8s;}
+  .packet--3{animation-duration:2.9s;}
+  .packet--4{animation-duration:4.4s;}
 
-    
-    .card:hover { border-color: #5fd4a8; background: #161616; }
-    .card-title  { font-size: 13px; color: #ffffff; margin-bottom: 5px; }
-    .card-meta  { font-size: 11px; color: #3d3d3d; margin-bottom: 10px; }
-    .card-desc   { font-size: 11px; color: #2a5c4e; line-height: 1.7; }
-    .tags       { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 5px; }
-    .tag {
-      font-size: 10px;
-      color: var(--dimmer);
-      border: 1px solid var(--border-2);
-      padding: 2px 8px;
-      letter-spacing: 0.5px;
-    }
+  @media (prefers-reduced-motion: reduce){
+    .packet{animation:none;}
+    html{scroll-behavior:auto;}
+  }
 
-    /* ── BLOG ── */
-    .blog-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      flex-wrap: wrap;          /* add this */
-      gap: 4px 16px; 
-      padding: 13px 0;
-      border-bottom: 1px solid #141414;
-      text-decoration: none;
-      color: inherit;
-      transition: color 0.2s;
-    }
-    .blog-row:last-child { border-bottom: none; }
-    .blog-row:hover .blog-title { color: #5fd4a8; }
-    blog-title  { font-size: 13px; color: #ffffff; }
-    .blog-date  { font-size: 11px; color: #3a3a3a; white-space: nowrap; flex-shrink: 0; }
+  /* ---------- STATUS BAR ---------- */
+  .status{
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    background:var(--panel);
+  }
+  .status__row{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    padding:22px 0;gap:20px;
+  }
+  .status__item{padding:0 20px;border-left:1px solid var(--line);}
+  .status__item:first-child{border-left:none;}
+  .status__label{
+    font-family:var(--font-mono);font-size:11px;color:var(--muted);
+    text-transform:uppercase;letter-spacing:0.1em;
+  }
+  .status__value{
+    font-family:var(--font-display);font-size:20px;margin-top:6px;color:var(--text);
+  }
 
-    /* ── SKILLS LIST ── */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 8px;
-    }
-    .skill-item {
-    font-size: 12px;
-    color: var(--dim);
-    padding: 8px 12px;
-    border: 1px solid var(--border);
-    background: var(--bg-2);
-    transition: color 0.2s, border-color 0.2s;
-    cursor: default;
-    }
+  /* ---------- SECTIONS ---------- */
+  section{padding:88px 0;}
+  .segment-label{
+    font-family:var(--font-mono);font-size:12px;color:var(--signal);
+    letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .segment-label::after{content:"";flex:1;height:1px;background:var(--line);}
+  .section-title{font-size:clamp(1.6rem,3vw,2.1rem);margin-bottom:14px;}
+  .section-intro{color:var(--muted);max-width:60ch;margin-bottom:48px;font-size:15.5px;}
 
-    .skill-item:hover {
-    color: #5fd4a8;
-    border-color: #5fd4a8;
-    }
-    .skill-item::before { content: '$ '; color: var(--dimmer); }
+  /* ---------- TIMELINE (Experience) ---------- */
+  .timeline{position:relative;border-left:1px solid var(--line);margin-left:6px;padding-left:36px;}
+  .timeline__item{position:relative;margin-bottom:48px;}
+  .timeline__item:last-child{margin-bottom:0;}
+  .timeline__item::before{
+    content:"";position:absolute;left:-42px;top:4px;
+    width:11px;height:11px;border-radius:50%;
+    background:var(--ink);border:2px solid var(--signal);
+  }
+  .timeline__meta{
+    display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;margin-bottom:6px;
+  }
+  .timeline__date{font-family:var(--font-mono);font-size:12px;color:var(--signal);}
+  .timeline__org{font-family:var(--font-mono);font-size:13px;color:var(--muted);}
+  .timeline__role{font-size:19px;font-weight:600;font-family:var(--font-display);margin-bottom:12px;}
+  .timeline__list{margin:0;padding-left:20px;color:var(--muted);font-size:15px;}
+  .timeline__list li{margin-bottom:6px;}
+  .timeline__list li::marker{color:var(--signal);}
 
-    /* ── CONTACT LINKS ── */
-    .contact-links { display: flex; flex-wrap: wrap; gap: 20px; }
-    .contact-link {
-      font-size: 12px;
-      color: var(--dim);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .contact-link::before { content: '> '; color: var(--dimmer); }
-    .contact-link:hover { color: var(--text); }
+  /* ---------- PROJECTS ---------- */
+  .projects__grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;
+  }
+  .card{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:24px;display:flex;flex-direction:column;gap:12px;
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .card:hover{border-color:var(--signal);transform:translateY(-2px);}
+  .card__top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+  .card__title{font-size:16.5px;font-weight:600;font-family:var(--font-display);}
+  .card__year{font-family:var(--font-mono);font-size:11px;color:var(--muted);white-space:nowrap;}
+  .card__desc{color:var(--muted);font-size:14px;flex:1;}
+  .card__tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;}
+  .tag{
+    font-family:var(--font-mono);font-size:11px;color:var(--signal);
+    background:var(--signal-dim);padding:4px 9px;border-radius:5px;
+  }
+  .card__link{
+    font-family:var(--font-mono);font-size:12px;color:var(--text);
+    display:inline-flex;align-items:center;gap:6px;margin-top:6px;
+  }
+  .card__link:hover{color:var(--signal);}
 
-    /* ── FOOTER ── */
-    footer {
-      margin-top: 60px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border);
-      font-size: 11px;
-      color: #2e2e2e;
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
+  /* ---------- SKILLS (OSI-inspired layers) ---------- */
+  .skills__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;}
+  .skill-group{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px;
+  }
+  .skill-group__head{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+  .skill-group__layer{
+    font-family:var(--font-mono);font-size:11px;color:var(--ink);
+    background:var(--signal);border-radius:4px;padding:3px 7px;font-weight:600;
+  }
+  .skill-group__title{font-size:15px;font-weight:600;font-family:var(--font-display);}
+  .skill-group ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;}
+  .skill-group li{
+    font-size:13.5px;color:var(--muted);display:flex;align-items:baseline;gap:8px;
+  }
+  .skill-group li::before{content:"›";color:var(--signal);font-family:var(--font-mono);}
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 600px) {
-      .nav a:hover { color: #5fd4a8; }
-      .page { padding: 28px 16px 60px; }
-      .grid { grid-template-columns: 1fr; }
-    }
-  </style>
+  /* ---------- CERTIFICATIONS ---------- */
+  .certs__grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;}
+  .cert{
+    border:1px solid var(--line);background:var(--panel);border-radius:var(--radius);
+    padding:20px;display:flex;flex-direction:column;gap:8px;
+  }
+  .cert--progress{border-style:dashed;border-color:var(--amber);}
+  .cert__status{
+    font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.08em;
+    text-transform:uppercase;color:var(--signal);display:flex;align-items:center;gap:6px;
+  }
+  .cert--progress .cert__status{color:var(--amber);}
+  .cert__status::before{content:"●";font-size:8px;}
+  .cert__name{font-family:var(--font-display);font-size:15.5px;font-weight:600;}
+  .cert__issuer{font-family:var(--font-mono);font-size:12px;color:var(--muted);}
+/* ---------- EDUCATION ---------- */
+.edu-card{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:28px 32px;display:flex;justify-content:space-between;align-items:center;
+  gap:20px;flex-wrap:wrap;transition:border-color .15s ease;
+}
+.edu-card:hover{border-color:var(--signal);}
+.edu-card__left{display:flex;align-items:center;gap:18px;}
+.edu-card__badge{
+  width:48px;height:48px;border-radius:50%;flex-shrink:0;
+  background:var(--signal-dim);border:1px solid var(--signal);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-weight:600;font-size:11px;color:var(--signal);
+}
+.edu-card__degree{font-family:var(--font-display);font-weight:600;font-size:17px;}
+.edu-card__school{color:var(--muted);font-size:14px;margin-top:4px;}
+.edu-card__date{font-family:var(--font-mono);font-size:12px;color:var(--signal);white-space:nowrap;}
+
+/* tighten spacing since certs → education → writing are closely related */
+#certifications{padding-bottom:32px;}
+#education{padding-top:0;padding-bottom:32px;}
+#writing{padding-top:64px;}
+
+  /* ---------- WRITING ---------- */
+  .posts{display:flex;flex-direction:column;}
+  .post{
+    display:flex;justify-content:space-between;gap:20px;align-items:baseline;
+    padding:20px 0;border-bottom:1px solid var(--line);flex-wrap:wrap;
+    transition:padding-left .15s ease;
+  }
+  .post:first-child{border-top:1px solid var(--line);}
+  .post:hover{padding-left:8px;}
+  .post__main{flex:1;min-width:240px;}
+  .post__title{font-family:var(--font-display);font-size:16px;font-weight:600;}
+  .post__desc{color:var(--muted);font-size:13.5px;margin-top:5px;max-width:60ch;}
+  .post__date{font-family:var(--font-mono);font-size:12px;color:var(--muted);white-space:nowrap;}
+  .post:hover .post__title{color:var(--signal);}
+
+  /* ---------- CONTACT / FOOTER ---------- */
+  .contact{
+    background:var(--panel);border-top:1px solid var(--line);
+    padding:80px 0 40px;
+  }
+  .contact__inner{text-align:center;max-width:600px;margin:0 auto;}
+  .contact h2{font-size:clamp(1.8rem,4vw,2.6rem);}
+  .contact p{color:var(--muted);margin-top:14px;font-size:15.5px;}
+  .contact__links{
+    display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:32px;
+  }
+  .footer__meta{
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+    margin-top:64px;padding-top:24px;border-top:1px solid var(--line);
+    font-family:var(--font-mono);font-size:11.5px;color:var(--muted);
+  }
+
+  @media (max-width: 860px){
+    .hero__grid{grid-template-columns:1fr;}
+    .hero__visual{order:-1;}
+    .status__item{border-left:none;padding:0;}
+    .status__row{grid-template-columns:repeat(2,1fr);}
+  }
+  @media (max-width: 520px){
+    .nav__links{display:none;}
+    section{padding:64px 0;}
+  }
+</style>
 </head>
 <body>
 
-  <!-- ── TOPBAR ── -->
-  <div class="topbar">
-    <div class="dot r"></div>
-    <div class="dot y"></div>
-    <div class="dot g"></div>
-    <div class="tab">bash</div>
-    <div class="tab active">~/portfolio</div>
-    <nav class="nav">
+<nav class="nav">
+  <div class="wrap nav__row">
+    <div class="nav__brand">
+      <!-- Swap for: <img class="nav__avatar" src="your-photo.jpg" alt="David Shonack"> -->
+      <span class="nav__dot"></span> david shonack
+    </div>
+    <div class="nav__links">
+      <a href="#experience">experience</a>
       <a href="#projects">projects</a>
-      <a href="#blog">blog</a>
       <a href="#skills">skills</a>
-      <a href="#contact">contact</a>
-    </nav>
+      <a href="#certifications">certs</a>
+      <a href="#writing">writing</a>
+    </div>
+    <a class="nav__cta" href="mailto:dshonack@ucsc.edu">contact →</a>
   </div>
+</nav>
 
-  <main class="page">
-
-    <!-- ── WHOAMI ── -->
-    <div class="prompt">
-      <div class="ps1"><span class="host">spinklerz</span><span style="color:#d5d5d5">@</span><span class="host">github</span> <span class="dir">~/portfolio</span> $</div>
-      <div class="cmd">whoami</div>
-    </div>
-    <div class="output">
-      <!-- ✏️ Replace with your name, role, and bio -->
-      <div class="hero-name">David Shonack</div>
-      <div class="hero-role">Cybersecurity · Networking · Infrastructure</div>
-      <div class="hero-desc">
-        Hello, I graduated from the University of California Santa Cruz and am currently looking for a launch pad to start and grow my IT career. <span class="blink"></span>
-      </div>
-      <!-- ✏️ Remove the .avail line if you're not open to work -->
-      <div class="avail">
-        <div class="status-dot"></div>
-        <a style="color: #28c840;">available for work</a>
-      </div>
-    </div>
-
-    <!-- ── PROJECTS ── -->
-    <div id="projects">
-      <div class="prompt">
-        <div class="ps1"><span class="host">spinklerz</span><span style="color:#d5d5d5">@</span><span class="host">github</span> <span class="dir">~/portfolio</span> $</div>
-        <div class="cmd">ls ./projects</div>
-      </div>
-      <div class="output">
-        <div class="section-label">projects</div>
-        <div class="grid">
-
-          <!-- Project cards -->
-
-          <!-- ── Card 1 ── -->
-
-          <a class="card" href="https://github.com/spinklerz/Active-Directory-and-Azure-Lab" target="_blank" rel="noopener">
-            <div class="card-title">Active Directory and Azure Lab</div>
-            <div class="card-meta">2026 · Networking </div>
-            <div class="card-desc">Created a hybrid network infrastructure with a tunnel between Azure and my LAN. </div>
-            <div class="tags">
-              <span class="tag">AD</span>
-              <span class="tag">Networking</span>
-              <span class="tag">Azure</span>
-            </div>
-          </a>
-
-          <!-- ── Card 2 ── -->
-
-          <a class="card" href="https://github.com/spinklerz/SIEM-Wazuh-Lab" target="_blank" rel="noopener">
-            <div class="card-title">SIEM Wazuh Lab</div>
-            <div class="card-meta">2026 · Wazuh/Metasploit</div>
-            <div class="card-desc">Created a gap analysis lab, simulating initial access, execution, persistence, privilege escalation, and lateral movement.</div>
-            <div class="tags">
-              <span class="tag">Wazuh</span>
-              <span class="tag">Metasploit</span>
-              <span class="tag">C</span>
-            </div>
-          </a>
-
-          <!-- ── Card 3 ── -->
-
-
-          <a class="card" href="https://github.com/spinklerz/Network-IDS" target="_blank" rel="noopener">
-            <div class="card-title">Network IDS</div>
-            <div class="card-meta">2025 · Various</div>
-            <div class="card-desc">Recorded around 1.2 million packets from my local machine to then created an autoencoded model to detect anomalous traffic.</div>
-            <div class="tags">
-              <span class="tag">Python</span>
-              <span class="tag">SQLite3</span>
-              <span class="tag">Matplotlib</span>
-            </div>
-          </a>
-
-          <!-- ── Card 4 ── -->
-
-          <a class="card" href="https://github.com/spinklerz/Network-Attack-Toolkit" target="_blank" rel="noopener">
-            <div class="card-title">Network Attack Toolkit</div>
-            <div class="card-meta">2025 · Networking</div>
-            <div class="card-desc">Built a network stressing toolkit including ARP poisons, SLAAC spoofs, SYN port scanning, DoS, and DHCP exhaustion.</div>
-            <div class="tags">
-              <span class="tag">Python</span>
-              <span class="tag">Scapy</span>
-              <span class="tag">Wireshark</span>
-            </div>
-          </a>
-
-            <!-- ── Card 5 ── -->
-          <a class="card" href="https://github.com/spinklerz/Mininet-routing" target="_blank" rel="noopener">
-            <div class="card-title">Mininet Routing</div>
-            <div class="card-meta">2025 · Networking</div>
-            <div class="card-desc">Built a software-defined network, implemented flow rules, and troubleshooted network issues using ping/iperf and more.</div>
-            <div class="tags">
-              <span class="tag">Python</span>
-              <span class="tag">SDN</span>
-              <span class="tag">POX</span>
-            </div>
-          </a>
-
-            <!-- ── Card 6 ── -->
-            <a class="card" href="https://github.com/spinklerz/Network-Monitoring" target="_blank" rel="noopener">
-                <div class="card-title">Network Monitoring</div>
-                <div class="card-meta">2025 · Networking</div>
-                <div class="card-desc">Configured a machine to be monitored by Prometheus, stress tested that machine, and created alerts and rules to prevent denial-of-service floods.</div>
-                <div class="tags">
-                  <span class="tag">Node Exporter</span>
-                  <span class="tag">Prometheus</span>
-                  <span class="tag">Alerting</span>
-                </div>
-              </a>
-
+<header class="hero">
+  <div class="wrap hero__grid">
+    <div>
+      <div class="hero__identity">
+        <!-- Swap this div for: <img class="hero__photo" src="your-photo.jpg" alt="David Shonack"> -->
+        <div class="hero__photo">DS</div>
+        <div>
+          <div style="font-family:var(--font-mono);font-size:13px;color:var(--muted);">Torrance, CA</div>
         </div>
       </div>
-    </div>
-
-    <!-- ── BLOG ── -->
-    <div id="blog">
-      <div class="prompt">
-        <div class="ps1"><span class="host">spinklerz</span><span style="color:#d5d5d5">@</span><span class="host">github</span> <span class="dir">~/portfolio</span> $</div>
-        <div class="cmd">cat ./blog/recent.log</div>
-      </div>
-      <div class="output">
-        <div class="section-label">recent posts</div>
-
-        <!-- Blogs -->
-
-        <a class="blog-row" href="Blog_Modern_WebThreat.html" target="_blank" rel="noopener">
-          <div class="blog-title">Exploring Modern web threats</div>
-          <div class="blog-description">Exploring the infrastrucutre of a modern phishing webpage.</div>
-          <div class="blog-date">August 2025</div>
-        </a>
-
-
-        <a class="blog-row" href="Blog_Compromised_Domain.html" target="_blank" rel="noopener">
-          <div class="blog-title">How I found and mapped a compromised subdomain</div>
-          <div class="blog-description">
-            An invalueable learning experience into how criminals function. Techniques observed were subdomain takeover, phishing, iframe injection, namesever pivoting, and much more.</div>
-          <div class="blog-date">July 2025</div>
-        </a>
-
-        <a class="blog-row" href="Blog_SQL_XML.html" target="_blank" rel="noopener">
-            <div class="blog-title">SQL injection with filter bypass via XML encoding</div>
-            <div class="blog-description">This was one of the most insightful labs I've ever done that took me several days, follow me on my journey through it.</div>
-            <div class="blog-date">May 2025</div>
-          </a>
-
-        <a class="blog-row" href="Blog_Bug_Bounty.html" target="_blank" rel="noopener">
-            <div class="blog-title">Bug Bounty Journey</div>
-            <div class="blog-description">How a simple university page misconfiguration led me down the rabbit hole of bounty hunting.</div>
-            <div class="blog-date">April 2025</div>
-        </a>
-
-        <a class="blog-row" href="Blog_CSRF.html" target="_blank" rel="noopener">
-        <div class="blog-title">CSRF And OAuth</div>
-        <div class="blog-description">Learn about the complex nature of the OAuth process and its security mechanisms.</div>
-        <div class="blog-date">March 2025</div>
-        </a>
-
-        <a class="blog-row" href="Blog_Privacy_Data.html" target="_blank" rel="noopener">
-            <div class="blog-title">The Nature Of Data Collection</div>
-            <div class="blog-description">A look at how platforms quietly collect data behind the promises of better user experience.</div>
-            <div class="blog-date">January 2025</div>
-          </a>
-        <!-- Add more rows here -->
-
+      <div class="hero__eyebrow">open to networking &amp; IT roles</div>
+      <h1>Building and hardening the <span>networks</span> behind the work.</h1>
+      <div class="hero__role">IT Technician — Networking · Cloud Infrastructure · Security</div>
+      <p class="hero__desc">
+        I deploy, connect, and secure the systems people rely on — from on-site hardware rollouts
+        to hybrid cloud labs bridging Azure and VMware. UC Santa Cruz grad, Torrance, CA.
+      </p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="#projects">View projects</a>
+        <a class="btn btn--ghost" href="./resume2.pdf">Download résumé</a>
       </div>
     </div>
 
-    <!-- ── SKILLS ── -->
-    <div id="skills">
-      <div class="prompt">
-        <div class="ps1"><span class="host">spinklerz</span><span style="color:#2a2a2a">@</span><span class="host">github</span> <span class="dir">~/portfolio</span> $</div>
-        <div class="cmd">cat ./skills.txt</div>
-      </div>
-      <div class="output">
-        <div class="section-label">skills &amp; tools</div>
-        <div class="skills-grid">
-          <!-- Skills -->
-          <div class="skill-item">Penetration Testing</div>
-          <div class="skill-item">Network Security</div>
-          <div class="skill-item">Python</div>
-          <div class="skill-item">C</div>
-          <div class="skill-item">Bash / Linux</div>
-          <div class="skill-item">Windows</div>
-          <div class="skill-item">OSINT</div>
-          <div class="skill-item">Web Security</div>
-          <div class="skill-item">Threat Analysis</div>
+    <div class="hero__visual">
+      <svg class="topo" viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram showing David connected to Networking, Cloud, Security, and Systems nodes">
+        <path class="link" d="M280,160 L140,80"/>
+        <path class="link" d="M280,160 L420,80"/>
+        <path class="link" d="M280,160 L140,240"/>
+        <path class="link" d="M280,160 L420,240"/>
 
+        <path class="packet packet--1" d="M280,160 L140,80"/>
+        <path class="packet packet--2" d="M280,160 L420,80"/>
+        <path class="packet packet--3" d="M280,160 L140,240"/>
+        <path class="packet packet--4" d="M280,160 L420,240"/>
+
+        <circle class="node-ring node-ring--center" cx="280" cy="160" r="34"/>
+        <text class="center-label" x="280" y="165" text-anchor="middle">DS</text>
+
+        <circle class="node-ring" cx="140" cy="80" r="26"/>
+        <text x="140" y="84" text-anchor="middle">NET</text>
+
+        <circle class="node-ring" cx="420" cy="80" r="26"/>
+        <text x="420" y="84" text-anchor="middle">CLOUD</text>
+
+        <circle class="node-ring" cx="140" cy="240" r="26"/>
+        <text x="140" y="244" text-anchor="middle">SEC</text>
+
+        <circle class="node-ring" cx="420" cy="240" r="26"/>
+        <text x="420" y="244" text-anchor="middle">SYS</text>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<div class="status">
+  <div class="wrap status__row">
+    <div class="status__item">
+      <div class="status__label">Focus</div>
+      <div class="status__value mono">Net / Cloud / Sec</div>
+    </div>
+    <div class="status__item">
+      <div class="status__label">Certifications active</div>
+      <div class="status__value mono">4 + 1 in progress</div>
+    </div>
+    <div class="status__item">
+      <div class="status__label">Field deployments</div>
+      <div class="status__value mono">20+ sites</div>
+    </div>
+    <div class="status__item">
+      <div class="status__label">Based in</div>
+      <div class="status__value mono">Torrance, CA</div>
+    </div>
+  </div>
+</div>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="segment-label">// Experience</div>
+    <h2 class="section-title">Where I've worked</h2>
+    <p class="section-intro">From on-site desktop deployments to a self-built hybrid cloud lab, connecting infrastructure end to end.</p>
+
+    <div class="timeline">
+
+      <div class="timeline__item">
+        <div class="timeline__meta">
+          <span class="timeline__date">2026 — Present</span>
+          <span class="timeline__org">Apex Systems · Torrance, CA</span>
+        </div>
+        <div class="timeline__role">Field Service Technician II / Desktop Support</div>
+        <ul class="timeline__list">
+          <li>Deployed 20+ workstations and printers across client sites with on-time, error-free installations.</li>
+          <li>Coordinated full deployment lifecycles: pre-site readiness calls, site surveys, physical installation, and post-install sign-off.</li>
+          <li>Served as primary on-site technical point of contact, managing scheduling, client communication, and site walkthroughs.</li>
+        </ul>
+      </div>
+
+      <div class="timeline__item">
+        <div class="timeline__meta">
+          <span class="timeline__date">2025 — Present</span>
+          <span class="timeline__org">Personal Homelab</span>
+        </div>
+        <div class="timeline__role">Independent Infrastructure &amp; Cloud Lab</div>
+        <ul class="timeline__list">
+          <li>Designed and built virtual networks in VMware, deploying end-user and network devices.</li>
+          <li>Stood up an osTicket helpdesk on Ubuntu and simulated common end-user events, including Active Directory password resets.</li>
+          <li>Built a hybrid cloud environment linking an Azure VPN Gateway to a local VMware network.</li>
+        </ul>
+      </div>
+
+      <div class="timeline__item">
+        <div class="timeline__meta">
+          <span class="timeline__date">2021 — 2022</span>
+          <span class="timeline__org">El Camino Special Resource Center</span>
+        </div>
+        <div class="timeline__role">Student Worker V</div>
+        <ul class="timeline__list">
+          <li>Provided technical and software troubleshooting support to students.</li>
+          <li>Helped students navigate campus resources and resolve general issues.</li>
+          <li>Built strong communication skills supporting a high volume of in-person requests.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="segment-label">// Projects</div>
+    <h2 class="section-title">Labs &amp; builds</h2>
+    <p class="section-intro">Hands-on networking, cloud, and security work — most run in my homelab.</p>
+
+    <div class="projects__grid">
+
+      <div class="card">
+        <div class="card__top"><span class="card__title">Active Directory &amp; Azure Lab</span><span class="card__year">2026</span></div>
+        <p class="card__desc">Hybrid network infrastructure with a VPN tunnel bridging Azure and a local LAN.</p>
+        <div class="card__tags"><span class="tag">AD</span><span class="tag">Networking</span><span class="tag">Azure</span></div>
+        <a class="card__link" href="https://github.com/spinklerz/Active-Directory-and-Azure-Lab">View on GitHub →</a>
+      </div>
+
+      <div class="card">
+        <div class="card__top"><span class="card__title">SIEM Wazuh Lab</span><span class="card__year">2026</span></div>
+        <p class="card__desc">Gap analysis lab simulating initial access, execution, persistence, privilege escalation, and lateral movement.</p>
+        <div class="card__tags"><span class="tag">Wazuh</span><span class="tag">Metasploit</span></div>
+        <a class="card__link" href="https://github.com/spinklerz/SIEM-Wazuh-Lab">View on GitHub →</a>
+      </div>
+
+      <div class="card">
+        <div class="card__top"><span class="card__title">Network IDS</span><span class="card__year">2025</span></div>
+        <p class="card__desc">Captured ~1.2M packets from a local machine and trained an autoencoder to flag anomalous traffic.</p>
+        <div class="card__tags"><span class="tag">Python</span><span class="tag">SQLite3</span><span class="tag">Matplotlib</span></div>
+        <a class="card__link" href="https://github.com/spinklerz/Network-IDS">View on GitHub →</a>
+      </div>
+
+      <div class="card">
+        <div class="card__top"><span class="card__title">Network Attack Toolkit</span><span class="card__year">2025</span></div>
+        <p class="card__desc">Network stress-testing toolkit: ARP poisoning, SLAAC spoofing, SYN scanning, DoS, and DHCP exhaustion.</p>
+        <div class="card__tags"><span class="tag">Python</span><span class="tag">Scapy</span><span class="tag">Wireshark</span></div>
+        <a class="card__link" href="https://github.com/spinklerz/Network-Attack-Toolkit">View on GitHub →</a>
+      </div>
+
+      <div class="card">
+        <div class="card__top"><span class="card__title">Mininet Routing</span><span class="card__year">2025</span></div>
+        <p class="card__desc">Software-defined network with custom flow rules, debugged via ping and iperf.</p>
+        <div class="card__tags"><span class="tag">SDN</span><span class="tag">POX</span><span class="tag">Python</span></div>
+        <a class="card__link" href="https://github.com/spinklerz/Mininet-routing">View on GitHub →</a>
+      </div>
+
+      <div class="card">
+        <div class="card__top"><span class="card__title">Network Monitoring</span><span class="card__year">2025</span></div>
+        <p class="card__desc">Prometheus-based monitoring with stress testing and alerting rules to catch denial-of-service floods.</p>
+        <div class="card__tags"><span class="tag">Prometheus</span><span class="tag">Node Exporter</span></div>
+        <a class="card__link" href="https://github.com/spinklerz/Network-Monitoring">View on GitHub →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="segment-label">Segment 30 // Skills</div>
+    <h2 class="section-title">What I work with</h2>
+    <p class="section-intro">Organized the way I think about a network — from the wire up to the policies protecting it.</p>
+
+    <div class="skills__grid">
+
+      <div class="skill-group">
+        <div class="skill-group__head"><span class="skill-group__layer">L1–L2</span><span class="skill-group__title">Infrastructure &amp; Hardware</span></div>
+        <ul>
+          <li>Workstation &amp; printer deployment, imaging</li>
+          <li>Windows &amp; Linux administration</li>
+          <li>Site surveys and physical installs</li>
+        </ul>
+      </div>
+
+      <div class="skill-group">
+        <div class="skill-group__head"><span class="skill-group__layer">L3–L4</span><span class="skill-group__title">Networking</span></div>
+        <ul>
+          <li>TCP/IP, DNS, ping-based troubleshooting</li>
+          <li>VMware virtual networking</li>
+          <li>SDN fundamentals (Mininet, POX)</li>
+        </ul>
+      </div>
+
+      <div class="skill-group">
+        <div class="skill-group__head"><span class="skill-group__layer">Cloud</span><span class="skill-group__title">Cloud &amp; Virtualization</span></div>
+        <ul>
+          <li>Microsoft Azure — VPN Gateway, hybrid cloud</li>
+          <li>VMware virtualization</li>
+          <li>Active Directory user &amp; password management</li>
+        </ul>
+      </div>
+
+      <div class="skill-group">
+        <div class="skill-group__head"><span class="skill-group__layer">Sec</span><span class="skill-group__title">Security</span></div>
+        <ul>
+          <li>Penetration testing &amp; threat analysis</li>
+          <li>OSINT and web security</li>
+          <li>Network security fundamentals</li>
+        </ul>
+      </div>
+
+      <div class="skill-group">
+        <div class="skill-group__head"><span class="skill-group__layer">Ops</span><span class="skill-group__title">Tools &amp; Scripting</span></div>
+        <ul>
+          <li>Python, C, Bash</li>
+          <li>osTicket helpdesk deployment</li>
+          <li>Prometheus monitoring &amp; alerting</li>
+        </ul>
+      </div>
+
+      <div class="skill-group">
+        <div class="skill-group__head"><span class="skill-group__layer">Lang</span><span class="skill-group__title">Languages</span></div>
+        <ul>
+          <li>English — fluent</li>
+          <li>Spanish — basic</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="certifications">
+  <div class="wrap">
+    <div class="segment-label">// Credentials</div>
+    <h2 class="section-title">Certifications</h2>
+    <p class="section-intro">Active certifications spanning security, networking, and cloud — plus one in progress.</p>
+
+    <div class="certs__grid">
+      <div class="cert">
+        <span class="cert__status">Active</span>
+        <span class="cert__name">CompTIA Security+</span>
+        <span class="cert__issuer">CompTIA</span>
+      </div>
+      <div class="cert">
+        <span class="cert__status">Active</span>
+        <span class="cert__name">CompTIA Network+</span>
+        <span class="cert__issuer">CompTIA</span>
+      </div>
+      <div class="cert">
+        <span class="cert__status">Active</span>
+        <span class="cert__name">Certified Cloud Associate (ICCA)</span>
+        <span class="cert__issuer">INE</span>
+      </div>
+      <div class="cert">
+        <span class="cert__status">Active</span>
+        <span class="cert__name">Junior Penetration Tester (eJPT)</span>
+        <span class="cert__issuer">INE</span>
+      </div>
+      <div class="cert cert--progress">
+        <span class="cert__status">In progress</span>
+        <span class="cert__name">AZ-700: Azure Network Engineer Associate</span>
+        <span class="cert__issuer">Microsoft</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <div class="segment-label">// Education</div>
+    <h2 class="section-title">University</h2>
+
+    <div class="edu-card">
+      <div class="edu-card__left">
+        <div class="edu-card__badge">UCSC</div>
+        <div>
+          <div class="edu-card__degree">B.S., Network and Digital Technology</div>
+          <div class="edu-card__school">University of California, Santa Cruz</div>
         </div>
       </div>
+      <div class="edu-card__date">2022 — 2025</div>
     </div>
+  </div>
+</section>
+<section id="writing">
+  <div class="wrap">
+    <div class="segment-label">// Writing</div>
+    <h2 class="section-title">Notes from the lab</h2>
+    <p class="section-intro">Write-ups from security research and bug bounty work.</p>
 
-    <!-- ── CONTACT ── -->
-    <div id="contact">
-      <div class="prompt">
-        <div class="ps1"><span class="host">spinklerz</span><span style="color:#2a2a2a">@</span><span class="host">github</span> <span class="dir">~/portfolio</span> $</div>
-        <div class="cmd">./contact --all</div>
-      </div>
-      <div class="output">
-        <div class="section-label">reach me</div>
-        <div class="contact-links">
-          <!-- Links -->
-          <a class="contact-link" href="https://github.com/spinklerz" target="_blank" rel="noopener">GitHub</a>
-          <a class="contact-link" href="https://www.linkedin.com/in/david-shonack/" target="_blank" rel="noopener">LinkedIn</a>
-          <a class="contact-link" href="https://yourblog.com" target="_blank" rel="noopener">Blog</a>
-          <a class="contact-link" href="mailto:dshonack@ucsc.edu">Email</a>
-          <a class="contact-link" href="resume.pdf" target="_blank" rel="noopener">Resume.pdf</a>
+    <div class="posts">
+      <a class="post" href="./Blog_Modern_WebThreat.html">
+        <div class="post__main">
+          <div class="post__title">Exploring modern web threats</div>
+          <div class="post__desc">Mapping the infrastructure behind a modern phishing webpage.</div>
         </div>
-      </div>
+        <div class="post__date">Aug 2025</div>
+      </a>
+      <a class="post" href="./Blog_Compromised_Domain.html">
+        <div class="post__main">
+          <div class="post__title">How I found and mapped a compromised subdomain</div>
+          <div class="post__desc">Subdomain takeover, phishing, iframe injection, and nameserver pivoting, observed firsthand.</div>
+        </div>
+        <div class="post__date">Jul 2025</div>
+      </a>
+      <a class="post" href="./Blog_SQL_XML.html">
+        <div class="post__main">
+          <div class="post__title">SQL injection with filter bypass via XML encoding</div>
+          <div class="post__desc">A multi-day lab into bypassing input filters using XML encoding tricks.</div>
+        </div>
+        <div class="post__date">May 2025</div>
+      </a>
+      <a class="post" href="./Blog_Bug_Bounty.html">
+        <div class="post__main">
+          <div class="post__title">Bug bounty journey</div>
+          <div class="post__desc">How a university page misconfiguration led down the rabbit hole of bounty hunting.</div>
+        </div>
+        <div class="post__date">Apr 2025</div>
+      </a>
+      <a class="post" href="./Blog_CSRF.html">
+        <div class="post__main">
+          <div class="post__title">CSRF and OAuth</div>
+          <div class="post__desc">The complex nature of the OAuth process and its security mechanisms.</div>
+        </div>
+        <div class="post__date">Mar 2025</div>
+      </a>
+      <a class="post" href="./Blog_Privacy_Data.html">
+        <div class="post__main">
+          <div class="post__title">The nature of data collection</div>
+          <div class="post__desc">How platforms quietly collect data behind promises of better UX.</div>
+        </div>
+        <div class="post__date">Jan 2025</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="contact" id="contact">
+  <div class="wrap contact__inner">
+    <div class="segment-label" style="justify-content:center;">// Contact</div>
+    <h2>Let's connect the dots.</h2>
+    <p>Open to networking, cloud, and IT support roles. Based in Torrance, CA — happy to talk remote or on-site.</p>
+    <div class="contact__links">
+      <a class="btn btn--primary" href="mailto:dshonack@ucsc.edu">Email me</a>
+      <a class="btn btn--ghost" href="https://www.linkedin.com/in/david-shonack/">LinkedIn</a>
+      <a class="btn btn--ghost" href="https://github.com/spinklerz">GitHub</a>
+      <a class="btn btn--ghost" href="tel:+13105256535">+1 310-525-6535</a>
     </div>
 
-    <!-- ── FOOTER ── -->
-    <footer>
+    <div class="footer__meta">
       <span>© 2026 David Shonack</span>
-    </footer>
-
-  </main>
+      <span>Built by hand · spinklerz.github.io</span>
+    </div>
+  </div>
+</footer>
 
 </body>
 </html>
